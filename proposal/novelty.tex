@@ -1,0 +1,15 @@
+\begin{par}
+    \par \hspace{15pt} Although the field of music generation is not as well developed as the field of image generation, there are still some rather impressive works that can generate drum beats or music in general. The model that the group is most interested in is the MuseGAN \cite{musegan} model. It is a multi-track sequential generative adversarial network. It is a state-of-the-art temporal model for symbolic music generation, and is one of the only known models for generating polyphonic music. 
+    
+    \par This paper has suggested that the convolutional neural networks (CNN) could offer optimal performance in recognizing local, translation-invariant patterns. Such observation was also confirmed in an internet article \cite{lamb_of_God} that discussed generation of drum beats for non-drum musics. It was specifically addressed that CNN could usually out-perform LSTM while longer input length is offered during training. Beyond that, training the CNN models would be more attainable for this course project comparing to the computation equipment needed for training LSTM models.
+
+    \par Another important implementation details about the MuseGAN is the way this model uses to segment the input music into fixed size matrices for CNNs, namely the multi-track piano-roll representation. This representation has made possible for this course project to fine tune some GAN or CNN with different architecture and compare their performance against the existing models. 
+
+    % However, the focus of this paper was rather broad comparing to the scope of this project, due to its polyphonic generation nature. It also incorporates RNNs, namely Long Short-Term Memory Networks (LSTM). This course project, on the other hand, would focus more on a single-track generation model that is easier to train. However, the main ideas of this project were largely based on the MuseGAN model, which would be discussed in further details in Section \ref{sec:approach}.
+    
+    % \par There are also many successful models that concentrates only on generating drum beats under different conditions. 
+    % \textbf{INCOMPLETE}
+
+    % \par However, the models mentioned above are all Recurrent Neural Network (RNN) paired with a Discriminator. RNN are known for their difficulties in training. They require tremendous amount of computation resources, and usually takes a lot of time for training before the result of the model becomes acceptable. For a course project, the group would have neither the computation power nor the time, so the group would like to investigate how well light-weight models, or even supervised learning model would perform in the music generation tasks. 
+
+\end{par}

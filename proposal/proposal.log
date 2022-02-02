@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7440 64-bit) (preloaded format=pdflatex 2020.7.14)  4 JAN 2022 16:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7440 64-bit) (preloaded format=pdflatex 2020.7.14)  31 JAN 2022 16:53
 entering extended mode
 **./proposal.tex
 (proposal.tex
@@ -298,56 +298,83 @@ LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
 (Font)              using `OMS/cmsy/m/n' instead
 (Font)              for symbol `textbraceleft' on input line 25.
 
-(problem_statement.tex) (significance.tex) (novelty.tex) (approach.tex [1
+(problem_statement.tex
 
-{C:/Users/ChengJerry/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-<image/proposal_architecture.png, id=39, 1075.01625pt x 748.7975pt>
+LaTeX Warning: Citation `musegan' on page 1 undefined on input line 2.
+
+) (significance.tex) (novelty.tex
+
+LaTeX Warning: Citation `musegan' on page 1 undefined on input line 2.
+
+
+LaTeX Warning: Citation `lamb_of_God' on page 1 undefined on input line 4.
+
+[1
+
+{C:/Users/ChengJerry/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}])
+(approach.tex
+
+LaTeX Warning: Reference `fig:archie' on page 2 undefined on input line 3.
+
+<image/proposal_architecture.png, id=27, 1075.01625pt x 748.7975pt>
 File: image/proposal_architecture.png Graphic file (type png)
 <use image/proposal_architecture.png>
 Package pdftex.def Info: image/proposal_architecture.png  used on input line 7.
 
 (pdftex.def)             Requested size: 361.34999pt x 251.69707pt.
-)
-(proposal.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 48.
- [2pdfTeX warning (ext4): destination with the same identifier (name{figure.1})
- has been already used, duplicate ignored
+) (proposal.bbl [2pdfTeX warning (ext4): destination with the same identifier (
+name{figure.1}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.48 \end{document}
-                    <./image/proposal_architecture.png>]
+l.8 \bibitem{convGAN}
+                      <./image/proposal_architecture.png>])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 48.
+ [3]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 48.
  (proposal.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 48.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 48.
-Package rerunfilecheck Info: File `proposal.out' has not changed.
-(rerunfilecheck)             Checksum: 3284002FC084D57FE0E0825D869DF916;260.
 
+
+Package rerunfilecheck Warning: File `proposal.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `proposal.out':
+(rerunfilecheck)             Before: FC3EDA63A5C0ED88BD1D0C46C2531B80;155
+(rerunfilecheck)             After:  3284002FC084D57FE0E0825D869DF916;260.
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 48.
  ) 
 Here is how much of TeX's memory you used:
- 5311 strings out of 480799
- 85171 string characters out of 2893449
- 341540 words of memory out of 3000000
- 21213 multiletter control sequences out of 15000+200000
- 536447 words of font info for 38 fonts, out of 3000000 for 9000
+ 5312 strings out of 480799
+ 85135 string characters out of 2893449
+ 341273 words of memory out of 3000000
+ 21212 multiletter control sequences out of 15000+200000
+ 536755 words of font info for 39 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 34i,6n,29p,641b,331s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 34i,6n,29p,1154b,425s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/ChengJerry/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/ams
-fonts/cm/cmbx12.pfb><C:/Users/ChengJerry/AppData/Local/Programs/MiKTeX 2.9/font
-s/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/ChengJerry/AppData/Local/Program
-s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/ChengJerry/AppD
-ata/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/User
-s/ChengJerry/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
-msy10.pfb><C:/Users/ChengJerry/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
-blic/amsfonts/cm/cmtt12.pfb>
-Output written on proposal.pdf (2 pages, 120517 bytes).
+fonts/cm/cmbx10.pfb><C:/Users/ChengJerry/AppData/Local/Programs/MiKTeX 2.9/font
+s/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/ChengJerry/AppData/Local/Progra
+ms/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/ChengJerry/App
+Data/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Use
+rs/ChengJerry/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
+cmr17.pfb><C:/Users/ChengJerry/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
+blic/amsfonts/cm/cmsy10.pfb><C:/Users/ChengJerry/AppData/Local/Programs/MiKTeX 
+2.9/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on proposal.pdf (3 pages, 131541 bytes).
 PDF statistics:
- 75 PDF objects out of 1000 (max. 8388607)
- 14 named destinations out of 1000 (max. 500000)
- 46 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 74 PDF objects out of 1000 (max. 8388607)
+ 15 named destinations out of 1000 (max. 500000)
+ 30 words of extra memory for PDF output out of 10000 (max. 10000000)
 

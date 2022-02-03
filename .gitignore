@@ -1,1 +1,9 @@
+# virtual environment
 src/venv
+
+# latex related
+*.aux
+*.bbl
+*.blg
+*.log
+*.out

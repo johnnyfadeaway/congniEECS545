@@ -4,38 +4,38 @@
     
     \subsection{Pre-Generator Ablations} % (fold)
     \label{sub:Pre-Generator Ablations}
-    \par First, the completed tracks of other instruments are collected and feed into a classification/encoding algorithm. There are many different music styles such as Jazz, Blues and Rock. Each of these styles has its certain nuances, phrases, techniques, and sounds which are associated with the style of drumming that accompanies it. thus, music genre classification is critical. The algorithm would produce a drum genre space that will be utilized as the global inductive bias vector $z$ for the segmented generators. After reading some related materials upon music genre classifications \cite{transfer_classification, active_classification, cnn_classification, svm_classification}, the group proposed three methods for the classification/encoding algorithm to implement this part of the network.
+    \par \hspace{15pt}  First, the completed tracks of other instruments are collected and feed into a classification/encoding algorithm. There are many different music styles such as Jazz, Blues and Rock. Each of these styles has its certain nuances, phrases, techniques, and sounds which are associated with the style of drumming that accompanies it. thus, music genre classification is critical. The algorithm would produce a drum genre space that will be utilized as the global inductive bias vector $z$ for the segmented generators. After reading some related materials upon music genre classifications \cite{transfer_classification, active_classification, cnn_classification, svm_classification}, the group proposed three methods for the classification/encoding algorithm to implement this part of the network.
 
         \subsubsection{CNN Encoders} % (fold)
         \label{ssub:Convolution Neural Network Encoders}
-            \par For the first option, the group would like to implement a conventional CNN encoder for the classification/encoding task. It is expected to be the most computationally intensive implementation but the most mature encoding structure available as of today. The group would probably inspect both the CNN encoder with freezed implementation during generation task or continuously fine-tuning the CNN encoder while training for the generation task.
+            \par \hspace{15pt} For the first option, the group would like to implement a conventional CNN encoder for the classification/encoding task. It is expected to be the most computationally intensive implementation but the most mature encoding structure available as of today. The group would probably inspect both the CNN encoder with freezed implementation during generation task or continuously fine-tuning the CNN encoder while training for the generation task.
 
         % subsubsection Convolution Neural Network Encoders (end)
 
-        \subsection{Subspace Learning} % (fold)
+        \subsubsection{Subspace Learning} % (fold)
         \label{ssub:Subspace Learning}
-            \par For the second option, the group would like to test the classification task with the subspaces learning technique. Subspace learning should be much faster in inference comparing to the CNN encoder. \input{subspace}
-        % subsection Subspace Learning (end)
+            \par \hspace{15pt}  For the second option, the group would like to test the classification task with the subspaces learning technique. Subspace learning should be much faster in inference comparing to the CNN encoder. \input{subspace}
+        % subsubsection Subspace Learning (end)
 
         \subsubsection{Perceiver} % (fold)
         \label{ssub:Perceiver}
-            \par In the last option, one of the student in the group would like to implement an attention-based model, namely the Perceiver \cite{perceiver}. Since the output space of the perceiver model would be a logits vector, it can also serve as a traditional classifier/encoder structure. This part of the project would potentially be adopted from one of the student's EECS-542, Advanced Computer Vision course project. 
+            \par \hspace{15pt}  In the last option, one of the student in the group would like to implement an attention-based model, namely the Perceiver \cite{perceiver}. Since the output space of the perceiver model would be a logits vector, it can also serve as a traditional classifier/encoder structure. This part of the project would potentially be adopted from one of the student's EECS-542, Advanced Computer Vision course project. 
         % subsubsection Perceiver (end)
     % subsection Pre-Generator Ablations (end)
 
     \subsection{Discriminator Ablations} % (fold)
     \label{sub:Discriminator Ablations}
-        \par The group would also like to do a study upon the ablation of the discriminator architecture, which the group has two variations in mind. 
+        \par \hspace{15pt}  The group would also like to do a study upon the ablation of the discriminator architecture, which the group has two variations in mind. 
 
         \subsubsection{No Discriminator} % (fold)
         \label{ssub:No Discriminator}
-            \par The most natural and intuitive idea the group has raised and would like to test on is completely removing the discriminator architecture from the original MuseGAN model. Thus instead of using a discriminator, the group would like to see if the model would solely work with L2-norm loss between the generated and the labels.
+            \par \hspace{15pt} The most natural and intuitive idea the group has raised and would like to test on is completely removing the discriminator architecture from the original MuseGAN model. Thus instead of using a discriminator, the group would like to see if the model would solely work with L2-norm loss between the generated and the labels.
             \input{distance_metric}
         % subsubsection No Discriminator (end)
 
         \subsubsection{Traditional Discriminator} % (fold)
         \label{ssub:Traditional Discriminator}
-            \par The second intuitive method that came to the group was to use a traditional discriminators in GANs \cite{generative} instead of the probabilistic Wasserstein distance discriminator in the MuseGAN model. 
+            \par \hspace{15pt}  The second intuitive method that came to the group was to use a traditional discriminators in GANs \cite{generative} instead of the probabilistic Wasserstein distance discriminator in the MuseGAN model. 
         % subsubsection Traditional Discriminator (end)
 
     % subsection Discriminator Ablations (end)

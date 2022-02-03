@@ -1,17 +1,10 @@
 % approach.tex
 \begin{par}
     \par \hspace{15pt} Inspired by the related reading materials, the group has decided that the generative networks of the project's model should also be a temporal model, which it would have information related to both the entire track and the local segments of the music for pattern recognition. A coarse architecture of the model is demonstrated in Figure \ref{fig:archie}. 
-
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=3in]{image/proposal_architecture}
-        \caption{Course Architecture of the model}
-        \label{fig:archie}
-    \end{figure}
     
     \subsection{Pre-Generator Ablations} % (fold)
     \label{sub:Pre-Generator Ablations}
-    \par In the above diagram, first the completed tracks of other instruments are collected and feed into a classification/encoding algorithm. The algorithm would produce a drum genre space that will be utilized as the global inductive bias vector $z$ for the segmented generators. The group has proposed three methods for the classification/encoding algorithm to implement this part of the network.
+    \par First, the completed tracks of other instruments are collected and feed into a classification/encoding algorithm. There are many different music styles such as Jazz, Blues and Rock. Each of these styles has its certain nuances, phrases, techniques, and sounds which are associated with the style of drumming that accompanies it. thus, music genre classification is critical. The algorithm would produce a drum genre space that will be utilized as the global inductive bias vector $z$ for the segmented generators. After reading some related materials upon music genre classifications \cite{transfer_classification, active_classification, cnn_classification, svm_classification}, the group proposed three methods for the classification/encoding algorithm to implement this part of the network.
 
         \subsubsection{CNN Encoders} % (fold)
         \label{ssub:Convolution Neural Network Encoders}
@@ -32,19 +25,19 @@
 
     \subsection{Discriminator Ablations} % (fold)
     \label{sub:Discriminator Ablations}
-        \par The group would also like to do a study upon the ablation of the discriminator architecture, which the group also has three variations in mind. 
+        \par The group would also like to do a study upon the ablation of the discriminator architecture, which the group has two variations in mind. 
 
         \subsubsection{No Discriminator} % (fold)
         \label{ssub:No Discriminator}
             \par The most natural and intuitive idea the group has raised and would like to test on is completely removing the discriminator architecture from the original MuseGAN model.  Thus instead of using a discriminator, the group would like to see if the model would solely work with L2-norm loss between the generated and the labels.
-            
         % subsubsection No Discriminator (end)
 
+        \subsubsection{Traditional Discriminator} % (fold)
+        \label{ssub:Traditional Discriminator}
+            \par The second intuitive method that came to the group was to use a traditional discriminators in GANs \cite{generative} instead of the probabilistic Wasserstein distance discriminator in the MuseGAN model. 
+        % subsubsection Traditional Discriminator (end)
 
     % subsection Discriminator Ablations (end)
     
-    
-
-
 
 \end{par}

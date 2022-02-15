@@ -1,0 +1,8 @@
+# python virtual environment
+venv/
+
+# data files
+data/*
+
+# IDE, text editor files, if any
+.vscode/

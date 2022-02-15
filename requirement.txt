@@ -1,0 +1,20 @@
+# general
+numpy
+scipy
+matplotlib
+gdown
+
+# deep learning related
+torch
+torchvision
+torchaudio
+torchsummary
+
+# audio related
+mido
+midi2audio
+# audio-to-midi2 ## for some reason this one is not working, prob not needed anyway
+
+# data loader
+pypianoroll
+

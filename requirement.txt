@@ -13,7 +13,7 @@ torchsummary
 # audio related
 mido
 midi2audio
-# audio-to-midi2 ## for some reason this one is not working, prob not needed anyway
+audio-to-midi2 ## seems working now, idk why tho
 
 # data loader
 pypianoroll

@@ -7,6 +7,10 @@ from torch.utils.data import DataLoader, Dataset
 import pypianoroll as ppr
 
 class tempo_loader(Dataset):
+    """
+    class for loading LPD data.
+    """
+
     def __init__(self, data_dir):
         """
         Args:
@@ -33,12 +37,12 @@ class tempo_loader(Dataset):
                         f_path = os.path.join(root_dir, f_name)
                         self.listing[counter] = f_path, f_name.replace(".npz", "")
                         counter += 1
-                        if counter % 100 == 0:
-                            print("DEBUG num of songs found", counter)
                         
             # save the listing file
             json.dump(self.listing, open(listing_dir, "w+"))
     
+
+
     def __len__(self):
         return len(self.listing)
 

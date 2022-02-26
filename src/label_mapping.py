@@ -1,4 +1,6 @@
 # This program matches LPD ids and MSD ids to their labels
+import os
+import json
 
 def main():
     cleansed_ids_obj = open("id_label_mapping/cleansed_ids.txt")
@@ -102,6 +104,12 @@ def main():
         MSD_id_map_genre[id_list_Rock[i]] = 7
 
     LPD_id_map_genre = dict(zip(clensed_LPD_ids,list(MSD_id_map_genre.values())))
+
+    # saving results
+    map_genre_dict_dir = "../data/id_label_mapping/LPD_id_map_genre.json"
+    os.makedirs(os.path.dirname(map_genre_dict_dir), exist_ok=True)
+    with open(map_genre_dict_dir, 'w+') as fp:
+        json.dump(LPD_id_map_genre, fp)
     ## LPD_id_map_genre is the output dict
 
     ## print(LPD_id_map_genre["dfe2d11eec4c667e99ce399204276aa2"])

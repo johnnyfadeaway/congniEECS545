@@ -105,11 +105,13 @@ def main():
 
     LPD_id_map_genre = dict(zip(clensed_LPD_ids,list(MSD_id_map_genre.values())))
 
+
     # saving results
-    map_genre_dict_dir = "../data/id_label_mapping/LPD_id_map_genre.json"
+    map_genre_dict_dir = "../data/lpd_5/lpd_5_cleansed/lpd_5_cleansed_genre_label.json"
     os.makedirs(os.path.dirname(map_genre_dict_dir), exist_ok=True)
     with open(map_genre_dict_dir, 'w+') as fp:
         json.dump(LPD_id_map_genre, fp)
+
     ## LPD_id_map_genre is the output dict
 
     ## print(LPD_id_map_genre["dfe2d11eec4c667e99ce399204276aa2"])

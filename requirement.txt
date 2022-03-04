@@ -10,6 +10,9 @@ torchvision
 torchaudio
 torchsummary
 
+# for tracking progress
+tqdm
+
 # audio related
 mido
 midi2audio

@@ -1,14 +1,18 @@
 from audioop import mul
+import imp
+from itertools import count
 import numpy as np 
 import os
 import json
 import time
+
 from pypianoroll import track
+from tqdm import tqdm
 
 from torch.utils.data import DataLoader, Dataset
 import torch
 
-from utils import print_progress_bar
+from utils import print_progress_bar, tqdm_wrapper
 
 import pypianoroll as ppr
 
@@ -41,6 +45,10 @@ class TempoItem(object):
     def toJson(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 '''
+
+# fix seed for reproducibility
+np.random.seed(545)
+
 class TempoSet(Dataset):
     """
     class for loading LPD data.
@@ -93,15 +101,14 @@ class TempoSet(Dataset):
 
             # counter for indexing purpose
             counter = 0
-            for root_dir, sub_dir, f_names in os.walk(data_dir):
+
+            # description
+            d = "loading {}".format(os.path.basename(data_dir))
+            for root_dir, sub_dir, f_names in tqdm_wrapper(os.walk(data_dir), desc=d):
 
                 # find all .npz files
                 for f_name in f_names:
                     if ".npz" in f_name:
-
-                        if counter % 1000 == 0:
-                            
-                            print("{} files loaded".format(counter))
 
                         f_path = os.path.join(root_dir, f_name)
                         song_name = f_name.replace(".npz", "")
@@ -186,7 +193,7 @@ class TempoSet(Dataset):
 
         # construct horizontal stacked pianoroll np array
         htracks = torch.zeros((track_len, 128*4))
-        ## starting index at 1, since the first track seems always to be the drums track
+        ## starting index at 1, since the first track seems always to be the drums trac
         for i in range(1, len(multitrack_object.tracks)):
             tmp_track = torch.tensor(multitrack_object.tracks[i].pianoroll)
             if tmp_track.shape[0] != track_len:
@@ -264,32 +271,76 @@ class ClassifierSet(Dataset):
             print("constructing classification listing file")
             # counter for indexing purpose
             counter = 0
-            
-            for loader_idx in range(len(self.loader)):
-                # get information about the tracks
-                htracks, gt_dict = self.loader[loader_idx]
-                track_len = htracks.shape[0]
 
-                # break the track into chunks
-                num_chunks = track_len // chunk_size
-                for j in range(num_chunks):
-                    
-                    chunk_start = j * chunk_size
-                    chunk_end = (j+1) * chunk_size
-                    # check if chunk is all zeros
-                    if torch.sum(htracks[chunk_start:chunk_end, :]) == 0:
-                        continue
-                    # saving chunk info
-                    self.parsed_listing[str(counter)] = loader_idx, chunk_start, chunk_end
-                    counter += 1
+            # create index storage for listing with different classes
+            idx_genre = [[]] * self.loader.num_unique_genre
+            num_idx_genre = [0] * self.loader.num_unique_genre
+            chunk_info_dict = dict()
+            
+            self_loader_len = len(self.loader)
+
+            
+            with tqdm(total=self_loader_len, desc="Parsing chunks") as pbar:
+                for loader_idx in range(self_loader_len):
+                    # get information about the tracks
+                    htracks, gt_dict = self.loader[loader_idx]
+                    track_len = htracks.shape[0]
+                    track_genre = torch.argmax(gt_dict["genre"])
+
+                    # break the track into chunks
+                    num_chunks = track_len // chunk_size
+                    for j in range(num_chunks):
+                        
+                        chunk_start = j * chunk_size
+                        chunk_end = (j+1) * chunk_size
+                        # check if chunk is all zeros
+                        if torch.sum(htracks[chunk_start:chunk_end, :]) == 0:
+                            continue
+                        # saving chunk info
+                        chunk_info_dict[counter] = loader_idx, chunk_start, chunk_end
+                        # recording the index to respecitve genre
+                        idx_genre[track_genre].append(counter)
+                        num_idx_genre[track_genre] += 1
+                        
+                        # housekeeping
+                        counter += 1
+                    pbar.update(1)
+                pbar.close()
+
+
+                print("Loading completed, {} chunks found\n".format(counter))
+                print("Saving classification listing file")
                 
-                print_progress_bar( loader_idx, len(self.loader), 
-                                    prefix = 'Chunk Parsing Progress:', 
-                                    suffix = 'Complete', 
-                                    length = 50)
-            # save the listing file
+                print("=============\nNew Loading Summary:")
+                print("Number of chunks created: {}".format(counter))
+                print("Genre {} has the most data entries {}".format(np.argmax(num_idx_genre), max(num_idx_genre)))
+                print("Genre {} has the least data entries {}".format(np.argmin(num_idx_genre), min(num_idx_genre)))
+                print("=============\n")
+                print("Start shuffling the data and keep all num data entries as the same...")
+                
+                # save the listing file
+                num_data_entries = min(num_idx_genre)
+                # convert to np array, shuffle, and crop to the same number of data entries
+                for i in range(self.loader.num_unique_genre):
+                    idx_genre[i] = np.array(idx_genre[i])
+                    np.random.shuffle(idx_genre[i])
+                    idx_genre[i] = idx_genre[i][:num_data_entries]
+            
+            # start constructing the parsed_listing
+            ## for indexing
+            counter = 0
+            total_len = num_data_entries * self.loader.num_unique_genre
+            print("Total number of chunks to be created: {}".format(total_len))
+            with tqdm(total=num_data_entries*self.loader.num_unique_genre, desc="Saving listing") as pbar:
+                for i in range(self.loader.num_unique_genre):
+                    for j in idx_genre[i]:
+                        self.parsed_listing[str(counter)] = chunk_info_dict[j]
+                        counter += 1
+                        pbar.update(1)
+            pbar.close()
             json.dump(self.parsed_listing, open(classification_listing_dir, "w+"))
-        
+            print("Saving completed")
+            print("Initialization completed!")
         return 
 
     def __len__(self):

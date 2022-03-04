@@ -228,7 +228,7 @@ class ClassifierSet(Dataset):
         super().__init__()
         self.loader = in_set
 
-        self.parsed_listing_gt = dict()
+        self.parsed_listing = dict()
         self.chunk_size = chunk_size
 
         data_dir = self.loader.data_dir
@@ -236,9 +236,10 @@ class ClassifierSet(Dataset):
         # check if classification listing directory exist
         classification_listing_dir = os.path.join(data_dir, "{}_classification_listing.json".format(os.path.basename(data_dir)))
         if os.path.exists(classification_listing_dir):
-            self.parsed_listing_gt = json.load(open(classification_listing_dir, "r"))
+            self.parsed_listing = json.load(open(classification_listing_dir, "r"))
             
-            """
+
+            """ # no longer needed
             # create place holding variables to prevent repeated loading
             previous_loader_idx = None
 
@@ -260,12 +261,9 @@ class ClassifierSet(Dataset):
             """
 
         else:
+            print("constructing classification listing file")
             # counter for indexing purpose
             counter = 0
-            # make directory for saving chunks
-            chunk_files_dir = os.path.join(data_dir, "chunks")
-            if not os.path.exists(chunk_files_dir):
-                os.mkdir(chunk_files_dir)
             
             for loader_idx in range(len(self.loader)):
                 # get information about the tracks
@@ -274,18 +272,12 @@ class ClassifierSet(Dataset):
 
                 # break the track into chunks
                 num_chunks = track_len // chunk_size
-                for j in range(0, num_chunks, 3):
+                for j in range(num_chunks):
                     
                     chunk_start = j * chunk_size
                     chunk_end = (j+1) * chunk_size
-                    chunk = htracks[chunk_start:chunk_end, :]
-                    
-                    # saving parsed chunk
-                    chunk_dir = os.path.join(chunk_files_dir, "{}.pt".format(counter))
-                    torch.save(chunk, chunk_dir)
-                    
-                    # saving related ground truth
-                    self.parsed_listing_gt[counter] = gt_dict["genre"]
+                    # saving chunk info
+                    self.parsed_listing[str(counter)] = loader_idx, chunk_start, chunk_end
                     counter += 1
                 
                 print_progress_bar( loader_idx, len(self.loader), 
@@ -293,7 +285,7 @@ class ClassifierSet(Dataset):
                                     suffix = 'Complete', 
                                     length = 50)
             # save the listing file
-            json.dump(self.parsed_listing_gt, open(classification_listing_dir, "w+"))
+            json.dump(self.parsed_listing, open(classification_listing_dir, "w+"))
         
         return 
 
@@ -301,12 +293,13 @@ class ClassifierSet(Dataset):
         """
         return num of data loaded
         """
-        return len(self.parsed_listing_gt)
+        return len(self.parsed_listing)
     
     def __getitem__(self, index):
-        chunk_dir = os.path.join(self.loader.data_dir, "chunks", "{}.pt".format(index))
-        chunk = torch.load(chunk_dir)
-        return chunk, self.parsed_listing_gt[index]
+        loader_idx, chunk_start, chunk_end = self.parsed_listing[str(index)]
+        htracks, gt_dict = self.loader[loader_idx]
+        chunk = htracks[chunk_start:chunk_end, :]
+        return chunk, gt_dict["genre"]
 
         
 
@@ -319,17 +312,20 @@ if __name__ == "__main__":
     loader.load(data_dir)
     print("DEBUG length of loader", len(loader))
     
-    time_start = time.time()
-    for i in range(1000):
-        htracks, gt_dict = loader[i]
-    time_end = time.time()
-    print("DEBUG time taken for 1 loads", (time_end - time_start)/1000)
+    
+    # time_start = time.time()
+    # for i in range(1000):
+    #     htracks, gt_dict = loader[i]
+    # time_end = time.time()
+    # print("DEBUG time taken for 1 loads", (time_end - time_start)/1000)
+    
     # print("DEBUG wtf is this ", loader.get_multitrack(8146))
     # print("DEBUG and wtf is this", loader.get_multitrack(6307))
 
     # testbench for the classifier loader
-    # classifier_loader = ClassifierSet(loader)
-    # print("DEBUG length of classifier loader", len(classifier_loader))
+    classifier_loader = ClassifierSet(loader)
+    print("DEBUG length of classifier loader", len(classifier_loader))
+    print("DEBUG first chunk", classifier_loader[711][0].shape, classifier_loader[711][1])
 
     """
     size_hist = np.zeros((len(loader), ))

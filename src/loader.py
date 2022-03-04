@@ -1,12 +1,19 @@
+from audioop import mul
 import numpy as np 
 import os
 import json
+import time
 from pypianoroll import track
 
 from torch.utils.data import DataLoader, Dataset
+import torch
+
+from utils import print_progress_bar
 
 import pypianoroll as ppr
 
+# == class removed, not working
+'''
 class TempoItem(object):
     """
     simple stuct for saving some information about lpd dataset items
@@ -33,18 +40,36 @@ class TempoItem(object):
     
     def toJson(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
-    
-class TempoLoader(Dataset):
+'''
+class TempoSet(Dataset):
     """
     class for loading LPD data.
     """
 
-    def __init__(self, data_dir):
-        """
-        Args:
-            data_dir (str, ): the directory of the dataset, please specify to e.g. `lpd_5/lpd_5_cleansed`
-        """
+    def __init__(self, data_dir=""):
+        super().__init__()
         self.data_dir = data_dir
+        self.genre_labels_dir = ""
+
+        self.genre_labels = dict()
+        self.num_unique_genre = 0
+        self.listing = dict()
+
+        return
+
+    def load(self, data_dir=None):
+        """
+        load LPD data, all data saved in class attributes
+
+
+        Args:
+            data_dir (str, ): the directory of the LPD data
+        """
+        if data_dir is not None:
+            self.data_dir = data_dir
+        data_dir = self.data_dir
+
+        # load genre labels
         self.genre_labels_dir = os.path.join(data_dir, "{}_genre_label.json".format(os.path.basename(data_dir)))
         # check if genre_label directory exist
         if not os.path.exists(self.genre_labels_dir):
@@ -60,10 +85,11 @@ class TempoLoader(Dataset):
 
         # create new listing file if not exist
         else:
+            print("constructing new listing file")
             # declaring a dict for listing file
             self.listing = dict()
-            ## for saving json file for future use
-            listing_json = dict()
+            ## for saving json file for future use ## == removed
+            # listing_json = dict() ## == removed
 
             # counter for indexing purpose
             counter = 0
@@ -72,63 +98,280 @@ class TempoLoader(Dataset):
                 # find all .npz files
                 for f_name in f_names:
                     if ".npz" in f_name:
+
+                        if counter % 1000 == 0:
+                            
+                            print("{} files loaded".format(counter))
+
                         f_path = os.path.join(root_dir, f_name)
                         song_name = f_name.replace(".npz", "")
                         
-                        # construct TempomItem object
-                        tmp_item = TempoItem(f_path, song_name, self.genre_labels[song_name])
-
-                        self.listing[counter] = tmp_item
-                        listing_json[counter] = tmp_item.toJson()
+                        # construct TempomItem object ##== removed
+                        # tmp_item = TempoItem(f_path, song_name, self.genre_labels[song_name]) ##== removed
+                        
+                        # check if drum track exist
+                        multitrack = ppr.load(f_path)
+                        # skip if drum track does not exist
+                        if multitrack.tracks[0].pianoroll.shape[0] == 0:
+                            continue
+                        self.listing[str(counter)] = f_path, song_name
+                        # listing_json[counter] = tmp_item.toJson() ## -- removed 
                         counter += 1
                         
             # save the listing file
-            json.dump(listing_json, open(listing_dir, "w+"))
+            print("DEBUG: save listing file, listing_dir: {}".format(listing_dir))
+            json.dump(self.listing, open(listing_dir, "w+"))
         return 
+    
+
     
     def get_song_genre(self, song_name):
         """
+        Get the genre of one song through its name
+
         Args:
             song_name (str, ): the name of the song
+        
+        Returns:
+            genre_one_hot (numpy.ndarray, ): the genre of the song, in one-hot vector
         """
         if song_name in self.genre_labels.keys():
             # return the genre of the song, in one-hot vector
             genre_val = self.genre_labels[song_name]
-            genre_one_hot = np.zeros(self.num_unique_genre)
+            genre_one_hot = torch.zeros((self.num_unique_genre, ))
             genre_one_hot[genre_val] = 1
             return genre_one_hot
         else:
             raise ValueError("Song {} not found in genre_labels.".format(song_name))
+        
+        return
     
+    def get_multitrack(self, idx):
+        """
+        get a multitrack of the data
+
+        Args:
+            idx (int, ): the index of the data
+        
+        Returns:
+            ppr.Multitrack, the multitrack of the data
+        """
+        f_path, song_name = self.listing[str(idx)]
+        multitrack = ppr.load(f_path)
+        return multitrack
     
     def __len__(self):
+        """
+        return num of data loaded
+        """
         return len(self.listing)
 
     def __getitem__(self, idx):
         """
         Args:
             idx (int, ): the index of the track
+
+        Returns:
+            htracks (torch.Tensor, (track_len, 128*4=512)): horizontally stacked non-drum tracks
+            gt_dict (dict, ): the ground truth of the data, containing the following keys:
+                - "genre": the genre of the song, in one-hot vector
+                - "drum_track": the drum track of the data, in torch.Tensor
         """
         # load the track
-        tmp_item = self.listing[idx]
+        track_dir, track_name = self.listing[str(idx)]
 
-        track_dir = tmp_item.fpath
         multitrack_object = ppr.load(track_dir)
+        # get size of the track
+        track_len = multitrack_object.downbeat.shape[0]
 
-        track_name = tmp_item.song_name
+        # construct horizontal stacked pianoroll np array
+        htracks = torch.zeros((track_len, 128*4))
+        ## starting index at 1, since the first track seems always to be the drums track
+        for i in range(1, len(multitrack_object.tracks)):
+            tmp_track = torch.tensor(multitrack_object.tracks[i].pianoroll)
+            if tmp_track.shape[0] != track_len:
+                tmp_track = torch.zeros((track_len, 128))
+            htracks[:, (i-1)*128:i*128] = tmp_track
+            
+
+
         # make one-hot vector for genre
-        genre_val = tmp_item.genre
-        genre_one_hot = np.zeros(self.num_unique_genre)
-        genre_one_hot[genre_val] = 1
+        genre_one_hot = self.get_song_genre(track_name)
 
-        return multitrack_object, track_name, genre_one_hot
+        # take the first track from tracks, which is the drum track
+        drum_track = multitrack_object.tracks[0]
+        if not drum_track.is_drum:
+            raise ValueError("Drum track is not drum track")
+        # check if drum track is empty
+        drum_track = torch.tensor(drum_track.pianoroll)
+        
+        # construct ground truth dict
+        gt_dict = { # "track_name": track_name, ## TODO: do we actually need this?
+                    "genre": genre_one_hot,
+                    "drum_track": drum_track 
+                    }
+
+        return htracks, gt_dict
+
+
+class ClassifierSet(Dataset):
+    """
+    torch Dataset class for Classification tasks
+    breaks each track into chunks of (600, 128*4) for training
+    since most tracks have a resolution of 24, this is 30 seconds
+    """
+    def __init__(self, in_set, chunk_size=600):
+        """
+        Args:
+            in_set (Dataset, ): the dataset to be broken into chunks
+        """
+        super().__init__()
+        self.loader = in_set
+
+        self.parsed_listing_gt = dict()
+        self.chunk_size = chunk_size
+
+        data_dir = self.loader.data_dir
+
+        # check if classification listing directory exist
+        classification_listing_dir = os.path.join(data_dir, "{}_classification_listing.json".format(os.path.basename(data_dir)))
+        if os.path.exists(classification_listing_dir):
+            self.parsed_listing_gt = json.load(open(classification_listing_dir, "r"))
+            
+            """
+            # create place holding variables to prevent repeated loading
+            previous_loader_idx = None
+
+            # no longer needed with new approach
+            
+            # counter for indexing purpose 
+            counter = 0
+            for i in pickeled_parsed_listing_gt.keys():
+                current_loader_idx = pickeled_parsed_listing_gt[i]["loader_idx"]
+                chunk_start = int(pickeled_parsed_listing_gt[i]["chunk_start"])
+                chunk_end = int(pickeled_parsed_listing_gt[i]["chunk_end"])
+                
+                # check if htrack is the same as previous htrack
+                if (previous_loader_idx != None) and (current_loader_idx != previous_loader_idx):
+                    htracks, gt_dict = self.loader[current_loader_idx]
+                chuck = htracks[chunk_start:chunk_end, :]
+                self.parsed_listing_gt[counter] = chuck, gt_dict
+                counter += 1
+            """
+
+        else:
+            # counter for indexing purpose
+            counter = 0
+            # make directory for saving chunks
+            chunk_files_dir = os.path.join(data_dir, "chunks")
+            if not os.path.exists(chunk_files_dir):
+                os.mkdir(chunk_files_dir)
+            
+            for loader_idx in range(len(self.loader)):
+                # get information about the tracks
+                htracks, gt_dict = self.loader[loader_idx]
+                track_len = htracks.shape[0]
+
+                # break the track into chunks
+                num_chunks = track_len // chunk_size
+                for j in range(0, num_chunks, 3):
+                    
+                    chunk_start = j * chunk_size
+                    chunk_end = (j+1) * chunk_size
+                    chunk = htracks[chunk_start:chunk_end, :]
+                    
+                    # saving parsed chunk
+                    chunk_dir = os.path.join(chunk_files_dir, "{}.pt".format(counter))
+                    torch.save(chunk, chunk_dir)
+                    
+                    # saving related ground truth
+                    self.parsed_listing_gt[counter] = gt_dict["genre"]
+                    counter += 1
+                
+                print_progress_bar( loader_idx, len(self.loader), 
+                                    prefix = 'Chunk Parsing Progress:', 
+                                    suffix = 'Complete', 
+                                    length = 50)
+            # save the listing file
+            json.dump(self.parsed_listing_gt, open(classification_listing_dir, "w+"))
+        
+        return 
+
+    def __len__(self):
+        """
+        return num of data loaded
+        """
+        return len(self.parsed_listing_gt)
+    
+    def __getitem__(self, index):
+        chunk_dir = os.path.join(self.loader.data_dir, "chunks", "{}.pt".format(index))
+        chunk = torch.load(chunk_dir)
+        return chunk, self.parsed_listing_gt[index]
+
+        
+
 
 
 if __name__ == "__main__":
     # testbench for the loader
     data_dir = "../data/lpd_5/lpd_5_cleansed"
-    loader = TempoLoader(data_dir)
+    loader = TempoSet()
+    loader.load(data_dir)
     print("DEBUG length of loader", len(loader))
-    print("DEBUG first track", loader[0])
+    
+    time_start = time.time()
+    for i in range(1000):
+        htracks, gt_dict = loader[i]
+    time_end = time.time()
+    print("DEBUG time taken for 1 loads", (time_end - time_start)/1000)
+    # print("DEBUG wtf is this ", loader.get_multitrack(8146))
+    # print("DEBUG and wtf is this", loader.get_multitrack(6307))
+
+    # testbench for the classifier loader
+    # classifier_loader = ClassifierSet(loader)
+    # print("DEBUG length of classifier loader", len(classifier_loader))
+
+    """
+    size_hist = np.zeros((len(loader), ))
+    for i in range(len(loader)):
+        if i % 100 == 0:
+            print("DEBUG current index: {}".format(i))
+            print("DEBUG current size: {}".format(size_hist[i]))
+            print("DEBUG current min max: {} {}".format(np.min(size_hist), np.max(size_hist)))
+            print("DEBUG current argmin argmax: {} {}".format(np.argmin(size_hist), np.argmax(size_hist)))
+
+        mlttrack, song_name, genre = loader[i]
+        downbeat_size = mlttrack.downbeat.shape[0]
+        temp_lens = []
+        for j in range(5):
+            track_lens, track_pitchs = mlttrack.tracks[j].pianoroll.shape
+            temp_lens.append(track_lens)
+            
+
+        size_hist[i] = np.max(temp_lens)
+        
+    print("DEBUG min max of track length", np.min(size_hist), np.max(size_hist))
+    print("DEBUG argmin max of track length", np.argmin(size_hist), np.argmax(size_hist))
+    print("DEBUG some smallest lengths: ", np.sort(size_hist)[:10])
+    """
+
+    '''
+
+
+    example, song_name, genre = loader[23]
+    track_len, track_pitch = example.tracks[0].pianoroll.shape
+    print("DEBUG: track_len: {}, track_pitch: {}".format(track_len, track_pitch))
+    tracks_except_drum = list()
+    for i, t in enumerate(example.tracks):
+        if not t.is_drum and t.pianoroll.shape[0] != 0:
+            print("DEBUG inspect non drum idxs", i, t.name)
+            print("DEBUG inspect track size", t.pianoroll.shape)
+            tracks_except_drum.append(t)
+    
+    print("DEBUG: len(tracks_except_drum): {}".format(len(tracks_except_drum)))
+    tracks_except_drum = np.hstack(tuple([t.pianoroll for t in tracks_except_drum]))
+    print("DEBUG: tracks_except_drum.shape: {}".format(tracks_except_drum.shape))
+    '''
+    # print("DEBUG piano_track shape", piano_track)
         
 

@@ -276,6 +276,9 @@ class ClassifierSet(Dataset):
                     
                     chunk_start = j * chunk_size
                     chunk_end = (j+1) * chunk_size
+                    # check if chunk is all zeros
+                    if torch.sum(htracks[chunk_start:chunk_end, :]) == 0:
+                        continue
                     # saving chunk info
                     self.parsed_listing[str(counter)] = loader_idx, chunk_start, chunk_end
                     counter += 1
@@ -325,7 +328,7 @@ if __name__ == "__main__":
     # testbench for the classifier loader
     classifier_loader = ClassifierSet(loader)
     print("DEBUG length of classifier loader", len(classifier_loader))
-    print("DEBUG first chunk", classifier_loader[711][0].shape, classifier_loader[711][1])
+    print("DEBUG first chunk", classifier_loader[11][0].shape, classifier_loader[11][1])
 
     """
     size_hist = np.zeros((len(loader), ))

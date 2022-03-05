@@ -218,6 +218,8 @@ class TempoSet(Dataset):
                     "drum_track": drum_track 
                     }
 
+        htracks = htracks * 20 + 1 # eliminating zeros to prevent deprecating gradient
+
         return htracks, gt_dict
 
 
@@ -332,9 +334,9 @@ class ClassifierSet(Dataset):
             total_len = num_data_entries * self.loader.num_unique_genre
             print("Total number of chunks to be created: {}".format(total_len))
             with tqdm(total=num_data_entries*self.loader.num_unique_genre, desc="Saving listing") as pbar:
-                for i in range(self.loader.num_unique_genre):
-                    for j in idx_genre[i]:
-                        self.parsed_listing[str(counter)] = chunk_info_dict[j]
+                for i in range(idx_genre[0].shape[0]):
+                    for j in range(len(idx_genre)):
+                        self.parsed_listing[str(counter)] = chunk_info_dict[idx_genre[j][i]]
                         counter += 1
                         pbar.update(1)
             pbar.close()
@@ -354,6 +356,18 @@ class ClassifierSet(Dataset):
         htracks, gt_dict = self.loader[loader_idx]
         chunk = htracks[chunk_start:chunk_end, :]
         return chunk, gt_dict["genre"]
+
+class ClassifierTrainTest(Dataset):
+    def __init__(self, classifier_set, idx_list):
+        super().__init__()
+        self.classifier_set = classifier_set
+        self.idx_list = idx_list
+    
+    def __getitem__(self, index):
+        return self.classifier_set[self.idx_list[index]]
+    
+    def __len__(self):
+        return len(self.idx_list)
 
         
 

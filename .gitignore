@@ -6,3 +6,6 @@ data/*
 
 # IDE, text editor files, if any
 .vscode/
+
+# ignore pycache folder
+src/__pycache__/*

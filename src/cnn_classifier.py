@@ -1,3 +1,4 @@
+import enum
 import json
 from selectors import EpollSelector
 import numpy as np
@@ -11,33 +12,71 @@ from torch.utils.data import DataLoader
 
 from loader import ClassifierTrainTest, TempoSet, ClassifierSet, ClassifierTrainTest
 
-def conv_layer(in_dim, out_dim, need_batch=True):
-    layer = list()
-    layer.append(nn.Conv2d(in_dim, out_dim, kernel_size=3, stride=1, padding=1))
+def conv_layer(in_dim, out_dim, need_batch=True, conv_kernel_size=4):
+    """
+    VGG like convolutional layer constructor
+    Following conventional:
+        conv-batch-relu
+
+    Args:
+        in_dim (int, ): input dimension
+        out_dim (int, ): output dimension
+        need_batch (bool, optional): whether to add batch normalization layer. Defaults to True.
+        conv_kernel_size (int, optional): kernel size of convolutional layer. Defaults to 4.
+    
+    Returns:
+        layer (nn.ModuleList, ): list of nn.Module
+    """
+    layer = nn.ModuleList()
+    layer.append(nn.Conv2d(in_dim, out_dim, kernel_size=conv_kernel_size, stride=1, padding=1))
     if need_batch:
         layer.append(nn.BatchNorm2d(out_dim))
     layer.append(nn.ReLU(inplace=True))
     return layer
 
-def feature_forger(cfg, need_batch=True):
-    all_layers = list()
-    initial_dim = 1
-    for layer_info in cfg:
+def feature_forger(cfg, need_batch=True, conv_size=4):
+    """
+    function for construct feature extraction network
+    Also adapted from VGG
+    
+    Args:
+        cfg (list, ): list of layer configuration
+        need_batch (bool, optional): whether to add batch normalization layer. Defaults to True.
+        conv_size (int, optional): kernel size of convolutional layer. Defaults to 4.
+    
+    Returns:
+        all_layer (nn.ModuleList, ): list of nn.Module
+    """
+    all_layers = nn.ModuleList()
+    previous_dim = 1
+    
+    for i, layer_info in enumerate(cfg):
+        
         if type(layer_info) == int:
-            all_layers.extend(conv_layer(initial_dim, layer_info, need_batch))
+            if i == 0:
+                all_layers.extend(conv_layer(previous_dim, layer_info, need_batch=False, conv_kernel_size=conv_size))
+            else:
+                all_layers.extend(conv_layer(previous_dim, layer_info, need_batch, conv_kernel_size=conv_size))
             previous_dim = layer_info
+        
         elif layer_info == "M":
             all_layers.append(nn.MaxPool2d(kernel_size=2, stride=2, padding=0, ceil_mode=False))
+        
+        elif layer_info == "A":
+            all_layers.append(nn.AvgPool2d(kernel_size=2, stride=2, padding=0, ceil_mode=False))
+        
         else:
             raise ValueError("Unknown layer type: {}".format(layer_info))
-    feature = nn.Sequential(*all_layers)
-    return feature
-
-
+    return all_layers
 
 
 class PianorollGenreClassifierCNN(nn.Module):
     def __init__(self, feature, num_class=8, init_weight=None):
+        super(PianorollGenreClassifierCNN, self).__init__()
+        self.feature = feature,
+        self.num_class = num_class
+        
+
         return 
     
     def forward(self, x):
@@ -67,7 +106,7 @@ if __name__ == "__main__":
     all_data = TempoSet()
     all_data.load(data_dir)
 
-    classifier_set = ClassifierSet(all_data)
+    classifier_set = ClassifierSet(all_data, chunk_size=(128*4))
 
     # separate training and testing data
     classifier_idxes = np.array(range(len(classifier_set)))

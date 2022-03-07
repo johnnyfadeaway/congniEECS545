@@ -243,7 +243,7 @@ class ClassifierSet(Dataset):
         data_dir = self.loader.data_dir
 
         # check if classification listing directory exist
-        classification_listing_dir = os.path.join(data_dir, "{}_classification_listing.json".format(os.path.basename(data_dir)))
+        classification_listing_dir = os.path.join(data_dir, "{}_classification_listing_{}.json".format(os.path.basename(data_dir), chunk_size))
         if os.path.exists(classification_listing_dir):
             self.parsed_listing = json.load(open(classification_listing_dir, "r"))
             

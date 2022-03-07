@@ -364,7 +364,9 @@ class ClassifierTrainTest(Dataset):
         self.idx_list = idx_list
     
     def __getitem__(self, index):
-        return self.classifier_set[self.idx_list[index]]
+        htracks, genre_one_hot = self.classifier_set[self.idx_list[index]]
+        htracks = torch.unsqueeze(htracks, 0)
+        return htracks, genre_one_hot
     
     def __len__(self):
         return len(self.idx_list)

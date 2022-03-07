@@ -1,3 +1,6 @@
+import imp
+from tqdm import tqdm
+
 def print_progress_bar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
     """
     Call in a loop to create terminal progress bar
@@ -18,3 +21,7 @@ def print_progress_bar (iteration, total, prefix = '', suffix = '', decimals = 1
     # Print New Line on Complete
     if iteration == total: 
         print()
+
+
+def tqdm_wrapper(iter, desc="", total=None):
+    return tqdm(iter, desc=desc, ncols=100, position=0, leave=False, total=total)

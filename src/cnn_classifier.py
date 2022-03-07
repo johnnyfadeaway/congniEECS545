@@ -14,6 +14,7 @@ from tqdm import tqdm, trange
 
 
 from loader import ClassifierTrainTest, TempoSet, ClassifierSet, ClassifierTrainTest
+import cnnclfr_config as config
 
 def conv_layer(in_dim, out_dim, need_batch=True, conv_kernel_size=4):
     """
@@ -278,12 +279,12 @@ if __name__ == "__main__":
     print("train size: {}, test size: {}\n".format(len(train_loader.dataset), len(test_loader.dataset)))
 
     # construct model
-    feature_cfg = [64, "M", 128, "M", 128, 128, "M"]
-    feature_conv_size = 3
+    feature_cfg = config.feature_cfg
+    feature_conv_size = config.feature_conv_size
     feature_extractor = feature_forger(feature_cfg, need_batch=True, conv_size=feature_conv_size)
 
     # construct classifier
-    classifier_cfg = [512, 256, 128, 64, 32]
+    classifier_cfg = config.classifier_cfg
     classifier_classifier = classifier_forger(classifier_cfg, num_class=8)
     
     model = PianorollGenreClassifierCNN(feature_extractor, classifier_classifier, num_class=8)
@@ -300,25 +301,10 @@ if __name__ == "__main__":
     model_save_dir = "../model/pianoroll_classifier_cnn"
     if not os.path.exists(model_save_dir):
         os.makedirs(model_save_dir)
-    train(model, train_loader, device, model_save_dir, num_epoch=25)
+    train(model, train_loader, device, model_save_dir, num_epoch=config.num_epoch)
     print("\ntraining finished!")
 
     # test model
     test_loss, test_acc = test(model, test_loader, device)
     print("\ntesting finished!")
 
-
-
-
-
-
-
-
-    
-
-
-
-
-
-    
-    

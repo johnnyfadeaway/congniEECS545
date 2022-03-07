@@ -9,3 +9,6 @@ data/*
 
 # pycache
 src/__pycache__/*
+
+# for greatlakes submissions
+*.sbat

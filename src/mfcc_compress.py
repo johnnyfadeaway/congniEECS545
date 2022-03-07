@@ -1,3 +1,6 @@
+# The MFCC calculation code from line 39 to 236 and 
+# the signal_processing.py should be credited to:
+# jameslyons/python_speech_features
 import scipy.fft as fft
 import signal_processing as sigproc
 from scipy.fftpack import dct

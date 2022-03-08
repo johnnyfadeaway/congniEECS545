@@ -3,6 +3,9 @@ import json
 import os
 from selectors import EpollSelector
 import numpy as np
+from datetime import datetime
+import time
+import math
 
 import torch
 from torch import nn as nn
@@ -158,50 +161,97 @@ def train(pianoroll_classifier, train_data, device, model_save_dir, num_epoch=30
     print("Model training start!")
 
     train_len = len(train_data)
+    date_hour_info = "{}_{}".format(datetime.now().date(), datetime.now().hour)
+    with open(os.path.join(model_save_dir, "train_log_{}.log".format(date_hour_info)), "w+") as f:
+        f.write("training started on {}\n".format(datetime.now()))
+        train_start_time = time.time()
 
-    for epoch in range(num_epoch):
-        print("Current Epoch {}/{}".format(epoch+1, num_epoch))
-        print("="*10)
+        for epoch in range(num_epoch):
+            
+            time_epoch_start = time.time()
+            used_time = time_epoch_start - train_start_time
+            used_hrs = used_time // 3600
+            used_mins = (used_time - 3600 * used_hrs) // 60
+            used_secs = used_time - 3600 * used_hrs - 60 * used_mins
 
-        # loss and correct prediction number record
-        running_loss = 0.0
-        running_correct = 0.0
+            print("Current Epoch {}/{}".format(epoch+1, num_epoch))
+            print("Curretly used time: {}h {}m {:.2f}s".format(used_hrs, used_mins, used_secs))
+            print("="*10)
 
-        # iterate over data
-        
-        for inputs, labels in tqdm(train_data, total=train_len):
-            # send data to device
-            inputs = inputs.to(device)
-            labels = labels.to(device)
+            
+            f.write("="*10 + "\n")
+            
+            f.write("Current Epoch {}/{}\n".format(epoch+1, num_epoch))
+            f.write("Entry on {}\n".format(time.asctime(time.localtime(time.time()))))
+            f.write("Currently used time: {}h {}m {:.2f}s\n".format(used_hrs, used_mins, used_secs))
+            
+            # loss and correct prediction number record
+            running_loss = 0.0
+            running_correct = 0.0
 
-            # zero the parameter gradients
-            optimizer.zero_grad()
+            # iterate over data
+            
+            for inputs, labels in tqdm(train_data, total=train_len):
+                # send data to device
+                inputs = inputs.to(device)
+                labels = labels.to(device)
 
-            # forward
-            output = pianoroll_classifier(inputs)
-            loss = criterion(output, labels)
+                # zero the parameter gradients
+                optimizer.zero_grad()
 
-            loss.backward()
-            optimizer.step()
+                # forward
+                output = pianoroll_classifier(inputs)
+                # print("DEBUG output: {}".format(output.shape))
+                # print("DEBUG labels: {}".format(labels.shape))
+                loss = criterion(output, labels)
 
-            # record loss and correct prediction number
-            running_loss += loss.item() * inputs.size(0) 
-            running_correct += torch.sum(output.argmax(dim=1) == labels.data.argmax(dim=1))
-        
-        # calculate loss and correct prediction number
-        epoch_loss = running_loss / len(train_data.dataset)
-        epoch_acc = running_correct.double() / len(train_data.dataset)
-        
-        print("Epoch Loss: {:.4f}, Epoch Accs: {:.4f}".format(epoch_loss, epoch_acc))
-        hist_model_loss.append(epoch_loss)
-        hist_model_acc.append(epoch_acc)
+                loss.backward()
+                optimizer.step()
+
+                # record loss and correct prediction number
+                running_loss += loss.item() * inputs.size(0) 
+                # print("DEBUG output: {}".format(output.argmax(dim=1)))
+                # print("DEBUG ground truth: {}".format(labels.data.argmax(dim=1)))
+                # print("DEBUG correct: {}".format((output.argmax(dim=1) == labels.data.argmax(dim=1)).int()))
+                running_correct += torch.sum(output.argmax(dim=1) == labels.data.argmax(dim=1))
+            
+            # calculate loss and correct prediction number
+            
+            epoch_loss = running_loss / len(train_data.dataset)
+            epoch_acc = running_correct.double() / len(train_data.dataset)
+
+            time_epoch_end = time.time()
+            
+            print("Epoch Loss: {:.4f}, Epoch Accs: {:.4f}".format(epoch_loss, epoch_acc))
+            f.write("Epoch Loss: {:.4f}, Epoch Accs: {:.4f}\n".format(epoch_loss, epoch_acc))
+            time_used_epoch = round(time_epoch_end - time_epoch_start) 
+            f.write("Epoch Time: {}:{}\n".format(time_used_epoch // 60, time_used_epoch % 60))
+
+            hist_model_loss.append(epoch_loss)
+            hist_model_acc.append(epoch_acc)
+
+    train_end_time = time.time()
+    train_total_time = round(train_end_time - train_start_time)
+    train_total_hours = train_total_time // 3600
+    train_total_minutes = (train_total_time - train_total_hours * 3600) // 60
+    train_total_seconds = train_total_time - train_total_hours * 3600 - train_total_minutes * 60
+    sec_per_epoch = round(train_total_time / num_epoch)
 
     print("Training finished!")
     print("="*10)
     print("Training Summary:")
     print("Final Loss: {:.4f}, \nFinal Acc: {:.4f}".format(hist_model_loss[-1], hist_model_acc[-1]))
+    
+    f.write("\nTraining Finished\nTraining Summary:\n")
+    f.write("Final Loss: {:.4f}, \nFinal Acc: {:.4f}\n".format(hist_model_loss[-1], hist_model_acc[-1]))
+    f.write("\ntraining ended on {}\n".format(datetime.now()))
+    f.write("training total time: {} hours {} minutes {} seconds\n".format(train_total_hours, train_total_minutes, train_total_seconds))
+    f.write("with average time of {} min {} sec per epoch\n".format(sec_per_epoch//60, sec_per_epoch%60))
+    f.write("="*10+"\n")
+    f.close()
+
     print("Saving model...")
-    torch.save(pianoroll_classifier.state_dict(), os.path.join(model_save_dir, "pianoroll_classifier.pth"))
+    torch.save(pianoroll_classifier.state_dict(), os.path.join(model_save_dir, "pianoroll_classifier_{}.pth".format(date_hour_info)))
     print("Model saved!")
 
     return 
@@ -273,10 +323,15 @@ if __name__ == "__main__":
     classifier_test_set = ClassifierTrainTest(classifier_set, test_idxes)
 
     # construct dataloader
-    train_loader = DataLoader(classifier_train_set, batch_size=16, shuffle=True, num_workers=4)
-    test_loader = DataLoader(classifier_test_set, batch_size=16, shuffle=False, num_workers=4)
+    train_loader = DataLoader(classifier_train_set, batch_size=16, shuffle=True, )  
+    test_loader = DataLoader(classifier_test_set, batch_size=16, shuffle=False, )
+    
+    
+    
     print("Train/Test loader constructed!")
     print("train size: {}, test size: {}\n".format(len(train_loader.dataset), len(test_loader.dataset)))
+
+
 
     # construct model
     feature_cfg = config.feature_cfg

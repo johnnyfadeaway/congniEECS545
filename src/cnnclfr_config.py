@@ -1,5 +1,7 @@
 
-num_epoch = 100
+num_epoch = 50
+
+num_workers = 2
 
 feature_cfg = [64, "M", 128, "M", 128, 128, "M"]
 feature_conv_size = 3

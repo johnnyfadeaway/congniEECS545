@@ -1,0 +1,92 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{fullpage}
+%\usepackage{nips15submit_e,times}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{blindtext}
+\usepackage{amsmath}
+\usepackage{titling}
+\usepackage{lipsum}
+
+% preambles 
+\title{EECS 545 Project Progress Report: \\
+        Tempo-Lite: Drum Beats Generated from Other Instruments}
+
+\author{Congni Shi, Li Ye, Muye Jia, Jerry Cheng\\
+        \texttt{\{congni, yeliqd ,muyej, chengjry\}@umich.edu}
+}
+        
+
+% document body
+\begin{document}
+
+% title
+\maketitle
+
+% \input{abstract} %% Jerry
+
+\section{Introduction}
+    \label{sec:introduction}
+    % \input{introduction} %% Congni
+
+\section{Proposed Method}
+    \label{sec:proposed}
+    % \input{proposed_intro} %% Congni
+
+    \subsection{Classification for Global Induction}
+        \label{sub:class}
+        % \input{proposed_classification_vgg} %% Jerry
+        % \input{proposed_classification_svd} %% Congni
+        % \input{proposed_classification_perceiver} %% Jerry
+
+    \subsection{Generator}
+        % \input{proposed_generator} %% Muye
+    
+    \subsection{Discriminator}
+        % \input{proposed_L2} %% Muye
+        % \input{proposed_traditional} %% Jerry
+        % \input{proposed_wasserstein} %% Congni
+
+
+\section{Related Work}
+    \label{sec:related}
+    % \input{related} %% Congni
+
+\section{Experimental Results}
+    \label{sec:experimental}
+    
+    \subsection{Classification}
+        \label{sub:exp_class}
+        % \input{experimental_cnn} %% Jerry
+        % \input{experimental_svd} %% Congni
+        % \input{experimental_mfcc} %% Muye
+
+    \subsection{Generator}
+        \label{sub:exp_gen}
+        % \input{experimental_generator} %% Muye
+
+\section{Future Milestone}
+    \label{sec:future}
+    % \input{future} 
+    %% for the next 6 weeks
+    %% Dates and sub-goals
+    %% Together
+
+\section{Conclusion}
+    \label{sec:conclusion}
+    % \input{conclusion}
+
+\section*{Author Contributions}
+    \label{sec:contributions}
+    % \input{contributions}
+
+\bibliography{reference} % put your bibtex file here
+\nocite{*}
+\bibliographystyle{abbrv}
+
+
+\end{document}
+

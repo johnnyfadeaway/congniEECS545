@@ -8,6 +8,7 @@ import numpy
 import sys
 sys.path.append(".")
 from loader import TempoSet
+from matplotlib import pyplot as plt
 
 # compress the pypianoroll to calculable size
 def compress(index):
@@ -236,14 +237,46 @@ def lifter(cepstra, L=22):
         # values of L <= 0, do nothing
         return cepstra
 
+def svd_test():
+    tracks = numpy.load('../src/subs_learn_data.npz')
+
+    # store all mfcc vectors in one matrix
+    # then store all mfcc matrices in one list
+    mfcc_genre = []
+    for genre in range(1,8):
+        genre_tracks = tracks["genre_" + str(genre) + "_mat"]
+        mfcc_matrix = []
+        for i in range(genre_tracks.shape[2]):
+            song = genre_tracks[:, :, i]
+            mfcc_vector = mfcc(song)
+            mfcc_matrix.append(mfcc_vector.flatten())
+        mfcc_genre.append(numpy.array(mfcc_matrix))
+
+    return mfcc_genre
+    
 
 if __name__ == "__main__":
-    """
-    vector = compress(1)
-    print("the size of the compressed music: ")
-    print(vector.shape)
+    
+    # mfcc_genre_list = svd_test()
+    #mfcc_genre_list = numpy.array(mfcc_genre_list)
+    # numpy.save('../src/mfcc_list.npy', mfcc_genre_list)
+
+    mfcc_list = numpy.load('../src/mfcc_list.npy')
+    genre_mfcc = mfcc_list[0]
+    U,s,V = numpy.linalg.svd(genre_mfcc[1:61 ,:])
+    x = numpy.arange(1, 61)
+    plt.plot(x, s)
+    plt.show()
 
     """
+    
+
+    vector = numpy.random.randn(512,512)
+    #vector = compress(1)
+    result = mfcc(vector)
+    print("the size of the compressed music: ")
+    print(result.shape)
+
     loader = TempoSet()
     data_dir = "../data/lpd_5/lpd_5_cleansed"
     loader.load(data_dir)
@@ -308,4 +341,5 @@ if __name__ == "__main__":
     print(average_same)
     print("l2 distance between diff genre: ")
     print(average_diff)
+    """
 

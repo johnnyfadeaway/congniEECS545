@@ -1,0 +1,12 @@
+training started on 2022-03-09 00:14:39.119490
+==========
+Current Epoch 1/50
+Entry on Wed Mar  9 00:14:39 2022
+Currently used time: 0.0h 0.0m 0.00s
+
+********
+ERROR ENCOUNTERED
+
+CUDA out of memory. Tried to allocate 2.00 GiB (GPU 0; 7.92 GiB total capacity; 7.07 GiB already allocated; 31.19 MiB free; 7.09 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+training stopped on 2022-03-09 00:14:44.074208
+training failed!

@@ -1,7 +1,8 @@
 
 num_epoch = 50
 
-num_workers = 2
+batch_size = 16
+num_workers = 0
 
 feature_cfg = [64, "M", 128, "M", 128, 128, "M"]
 feature_conv_size = 3

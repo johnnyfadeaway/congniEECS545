@@ -10,5 +10,8 @@ data/*
 # pycache
 src/__pycache__/*
 
+# trainig logs
+logs/*
+
 # for greatlakes submissions
 *.sbat

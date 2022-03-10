@@ -371,12 +371,9 @@ if __name__ == "__main__":
         os.makedirs(model_save_dir)
     
     log_dir = "../log/pianoroll_classifier_cnn"
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
-    date_hour_info = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    logger = Logger(os.path.join(log_dir, "train_log_{}.log".format(date_hour_info)))
+    logger = Logger(log_dir)
     print("logger constructed!")
-    print("logger located at {}\n".format(os.path.join(log_dir, "train_log_{}.log".format(date_hour_info))))
+    print("logger located at {}\n".format(logger.current_log_dir))
 
     torch.cuda.empty_cache()
     gc.collect()
@@ -420,9 +417,9 @@ if __name__ == "__main__":
 
 
     # test model
-    test_loss, test_acc = test(model, test_loader, device)
+    test_acc = test(model, test_loader, device)
     print("\ntesting finished!")
-    print("test loss: {}, test acc: {}".format(test_loss, test_acc))
+    print("test acc: {}".format(test_acc))
     logger.write("\n======\nTest info:\n")
     logger.write("test loss: {}, test acc: {}\n".format(test_loss, test_acc))
     logger.write("testing finished!\n")

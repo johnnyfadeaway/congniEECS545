@@ -32,7 +32,7 @@ class Logger(object):
     def __init__(self, log_files_dir):
         self.log_files_dir = log_files_dir
         self.init_date_hour_info = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        self.current_log_dir = os.path.join(self.log_files_dir, "train_log_{}".format(self.init_date_hour_info))
+        self.current_log_dir = os.path.join(self.log_files_dir, "train_log_{}.log".format(self.init_date_hour_info))
 
         self._make_dir()
 

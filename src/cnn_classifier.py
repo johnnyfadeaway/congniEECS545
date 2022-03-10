@@ -3,6 +3,7 @@ import json
 import os
 from selectors import EpollSelector
 from matplotlib.font_manager import findfont
+from matplotlib import pyplot as plt
 import numpy as np
 from datetime import datetime
 import time
@@ -20,6 +21,7 @@ from tqdm import tqdm, trange
 
 from loader import ClassifierTrainTest, TempoSet, ClassifierSet, ClassifierTrainTest
 import cnnclfr_config as config
+from utils import Logger
 
    
 
@@ -70,11 +72,13 @@ def feature_forger(cfg, need_batch=True, conv_size=4):
                 all_layers.extend(conv_layer(previous_dim, layer_info, need_batch, conv_kernel_size=conv_size))
             previous_dim = layer_info
         
-        elif layer_info == "M":
-            all_layers.append(nn.MaxPool2d(kernel_size=2, stride=2, padding=0, ceil_mode=False))
+        elif layer_info[0] == "M":
+            kernel_size = int(layer_info[1:]) 
+            all_layers.append(nn.MaxPool2d(kernel_size=kernel_size, stride=2, padding=0, ceil_mode=False))
         
-        elif layer_info == "A":
-            all_layers.append(nn.AvgPool2d(kernel_size=2, stride=2, padding=0, ceil_mode=False))
+        elif layer_info[0] == "A":
+            kernel_size = int(layer_info[1:])
+            all_layers.append(nn.AvgPool2d(kernel_size=kernel_size, stride=2, padding=0, ceil_mode=False))
         
         else:
             raise ValueError("Unknown layer type: {}".format(layer_info))
@@ -116,16 +120,6 @@ def classifier_forger(cfg, num_class):
     all_layers.append(nn.Linear(previous_dim, num_class))    
     return nn.Sequential(*all_layers)
 
-class Logger(object):
-    def __init__(self, log_file_dir):
-        self.log_file_dir = log_file_dir
-        return 
-    
-    def write(self, msg):
-        with open(self.log_file_dir, 'a') as f:
-            f.write(msg)
-            f.close()
-        return
 
 class PianorollGenreClassifierCNN(nn.Module):
     def __init__(self, feature, classifier, num_class=8, init_weight=None):
@@ -181,6 +175,7 @@ def train(pianoroll_classifier, train_data, device, model_save_dir, recorder, nu
     recorder.write("training started on {}\n".format(datetime.now()))
     train_start_time = time.time()
 
+    
     for epoch in range(num_epoch):
         
         time_epoch_start = time.time()
@@ -224,7 +219,7 @@ def train(pianoroll_classifier, train_data, device, model_save_dir, recorder, nu
             optimizer.step()
 
             # record loss and correct prediction number
-            running_loss += loss.item() * inputs.size(0) 
+            running_loss += loss.detach().item() # * inputs.size(0) 
             # print("DEBUG output: {}".format(output.argmax(dim=1)))
             # print("DEBUG ground truth: {}".format(labels.data.argmax(dim=1)))
             # print("DEBUG correct: {}".format((output.argmax(dim=1) == labels.data.argmax(dim=1)).int()))
@@ -272,15 +267,12 @@ def train(pianoroll_classifier, train_data, device, model_save_dir, recorder, nu
     recorder.write("Model saved\n")
     recorder.write("model saved at {}\n".format(model_save_dir))
 
-    return 
+    return hist_model_loss, hist_model_acc
 
 
 def test(pianoroll_classifier, test_data, device):
-    # declare loss function
-    criterion = nn.CrossEntropyLoss().to(device)
-
-    # loss and correct prediction number record
-    running_loss = 0.0
+    
+    # correct prediction number record
     running_correct = 0.0
 
     # iterate over data
@@ -294,18 +286,15 @@ def test(pianoroll_classifier, test_data, device):
 
         # forward
         output = pianoroll_classifier(inputs)
-        loss = criterion(output, labels)
-
-        # record loss and correct prediction number
-        running_loss += loss.item() * inputs.size(0) 
+        
+        # record los and correct prediction number
         running_correct += torch.sum(output.argmax(dim=1) == labels.data.argmax(dim=1))
     
     # calculate loss and correct prediction number
-    test_loss = running_loss / len(test_data.dataset)
     test_acc = running_correct.double() / len(test_data.dataset)
 
-    print("Test Loss: {:.4f}, Test Acc: {:.4f}".format(test_loss, test_acc))
-    return test_loss, test_acc
+    print("Test Acc: {:.4f}".format(test_acc))
+    return test_acc
 
 if __name__ == "__main__":
 
@@ -373,7 +362,7 @@ if __name__ == "__main__":
     print("model constructed!\n======== \nmodel structure:\n")
     print(model)
     print("== model summary ==")
-    summary(model, (1, 512, 512))
+    model_stat = summary(model, (1, 512, 512))
     print("========\n")
 
     # train model
@@ -393,9 +382,31 @@ if __name__ == "__main__":
     gc.collect()
     print("gpu memory cache emptied!")
 
+    # general config and env info
+    # write into logger
+    logger.write("\n======\nGeneral Training info:\n")
+    logger.write("device: {}\n".format(device))
+    logger.write("device name: {}\n".format(device_name))
+    logger.write("model save dir: {}\n".format(model_save_dir))
+    logger.write("log dir: {}\n".format(log_dir))
+    
+    logger.write("total num of epochs: {}\n".format(config.num_epoch))
+    logger.write("batch size: {}\n".format(config.batch_size))
+    logger.write("num of workers: {}\n".format(config.num_workers))
+    logger.write("feature conv size: {}\n".format(config.feature_conv_size))
+    logger.write("==========\n")
+
+    # log network structure
+    logger.write("\n======\nModel info:\n")
+    logger.write("model structure:\n")
+    logger.write(str(model))
+    logger.write("\nmodel summary:\n")
+    logger.write(str(model_stat))
+    logger.write("==========\n")
+    
     print("starting training...")
     try:
-        train(model, train_loader, device, model_save_dir, logger, num_epoch=config.num_epoch)
+        hist_loss, hist_acc = train(model, train_loader, device, model_save_dir, logger, num_epoch=config.num_epoch)
     except Exception as errormsg:
         print(errormsg)
         logger.write("\n********\nERROR ENCOUNTERED\n")
@@ -406,7 +417,28 @@ if __name__ == "__main__":
 
     print("\ntraining finished!")
 
+
+
     # test model
     test_loss, test_acc = test(model, test_loader, device)
     print("\ntesting finished!")
+    print("test loss: {}, test acc: {}".format(test_loss, test_acc))
+    logger.write("\n======\nTest info:\n")
+    logger.write("test loss: {}, test acc: {}\n".format(test_loss, test_acc))
+    logger.write("testing finished!\n")
+
+    logger.save_hist(hist_loss, hist_acc)
+
+    # plot and save training curve
+    x_range = np.arange(0, config.num_epoch)
+    fig, ax = plt.subplots()
+    ax.plot(x_range, hist_loss, label="train loss")
+    ax.set_xlabel("epoch")
+    ax.set_ylabel("loss")
+    ax.legend()
+    ax.grid(True)
+    fig.savefig(os.path.join(log_dir, "train_loss_{}.png".format(date_hour_info)))
+
+
+    logger.write("=============")
 

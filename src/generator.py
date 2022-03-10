@@ -1,6 +1,6 @@
 from turtle import position
 import torch as torch
-from torch.nn import ConvTranspose2d, LeakyReLU, Module, BatchNorm2d, ModuleList
+from torch.nn import ConvTranspose2d, Module, BatchNorm2d, ModuleList
 import numpy as np
 from loader import TempoSet
 
@@ -15,7 +15,7 @@ class generator_block(Module):
       def forward(self, input):
             input = self.deconv(input)
             input = self.batchnorm(input)
-            return LeakyReLU(input)
+            return torch.nn.functional.relu(input)
 
 
 class generator(Module):
@@ -105,6 +105,8 @@ class test_generator(Module):
 
 if __name__ == "__main__":
       a = test_generator()
+      # result: a list object containing 4 tensors
       result = a.test()
-
-      print("generation finished !")
+      for t in result:
+            print(t.shape)
+      

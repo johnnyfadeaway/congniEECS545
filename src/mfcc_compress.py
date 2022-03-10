@@ -237,7 +237,9 @@ def lifter(cepstra, L=22):
         # values of L <= 0, do nothing
         return cepstra
 
+"""
 def svd_test():
+    
     tracks = numpy.load('../src/subs_learn_data.npz')
 
     # store all mfcc vectors in one matrix
@@ -258,7 +260,7 @@ def svd_test():
 if __name__ == "__main__":
     
     # mfcc_genre_list = svd_test()
-    #mfcc_genre_list = numpy.array(mfcc_genre_list)
+    # mfcc_genre_list = numpy.array(mfcc_genre_list)
     # numpy.save('../src/mfcc_list.npy', mfcc_genre_list)
 
     mfcc_list = numpy.load('../src/mfcc_list.npy')
@@ -268,7 +270,7 @@ if __name__ == "__main__":
     plt.plot(x, s)
     plt.show()
 
-    """
+    
     
 
     vector = numpy.random.randn(512,512)

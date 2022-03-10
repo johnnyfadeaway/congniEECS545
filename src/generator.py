@@ -1,6 +1,5 @@
-from turtle import position
 import torch as torch
-from torch.nn import ConvTranspose2d, Module, BatchNorm2d, ModuleList
+from torch.nn import ConvTranspose2d, Module, BatchNorm2d
 import numpy as np
 from loader import TempoSet
 
@@ -35,7 +34,7 @@ class generator(Module):
 
             return x
 
-      def sampling(self, loader:TempoSet, M):
+def training_loader(loader:TempoSet, M):
             """
             Sample inter-track random vector z and intra-track
             random vector z_i

@@ -4,8 +4,6 @@ from torch.nn import ConvTranspose2d, Module, BatchNorm2d, ModuleList
 import numpy as np
 from loader import TempoSet
 
-# TODO: TypeError: conv_transpose2d(): argument 'input' (position 1) must be Tensor, not LeakyReLU
-#       Line 14
 class generator_block(Module):
       def __init__(self, in_dim, out_dim, kernel, stride):
           super().__init__()
@@ -26,17 +24,14 @@ class generator(Module):
             self.convtrans1 = generator_block(128, 64, 2, 1)
             self.convtrans2 = generator_block(64, 32, 2, 1)
             self.convtrans3 = generator_block(32, 16, 2, 1)
-            self.convtrans4 = ModuleList(
-                  generator_block(16, 3, 2, 1)
-                  for i in range(4)
-            )
+            self.convtrans4 = generator_block(16, 3, 2, 1)
 
       def generate(self, x):
             x = self.convtrans0(x)
             x = self.convtrans1(x)
             x = self.convtrans2(x)
             x = self.convtrans3(x)
-            x = [f(x) for f in self.convtrans4]
+            x = self.convtrans4(x)
 
             return x
 
@@ -105,8 +100,6 @@ class test_generator(Module):
 
 if __name__ == "__main__":
       a = test_generator()
-      # result: a list object containing 4 tensors
       result = a.test()
-      for t in result:
-            print(t.shape)
+      print(result.size())
       

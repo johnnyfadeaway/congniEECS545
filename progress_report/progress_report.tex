@@ -26,7 +26,7 @@
 % title
 \maketitle
 
-% \input{abstract} %% Jerry
+\input{abstract} %% Jerry %% done checked NOT proofread
 
 \section{Introduction}
     \label{sec:introduction}
@@ -38,10 +38,22 @@
 
     \subsection{Classification for Global Induction}
         \label{sub:class}
-        % \input{proposed_classification_vgg} %% Jerry
-        % \input{proposed_classification_svd} %% Congni
-        % \input{proposed_classification_perceiver} %% Jerry
+        \subsubsection{VGG-based classifier} % (fold)
+        \label{ssub:VGG-based classifier}
+            \input{proposed_classification_vgg} %% Jerry %% done checked NOT proofread
+        % subsubsection VGG-based classifier (end)
+        
+        \subsubsection{SVD classifier} % (fold)
+        \label{ssub:SVD classifier}
+            % \input{proposed_classification_svd} %% Congni
+        % subsubsection SVD classifier (end)
+        
+        \subsubsection{Perceiver Classifier} % (fold)
+        \label{ssub:Perceiver Classifier}
+            % \input{proposed_classification_perceiver} %% Jerry
+        % subsubsection Perceiver Classifier (end)
 
+        
     \subsection{Generator}
         % \input{proposed_generator} %% Muye
     
@@ -60,10 +72,18 @@
     
     \subsection{Classification}
         \label{sub:exp_class}
-        % \input{experimental_cnn} %% Jerry
-        % \input{experimental_svd} %% Congni
-        % \input{experimental_mfcc} %% Muye
-
+        \subsubsection{CNN Classifier Results} % (fold)
+        \label{ssub:CNN Classifier Results}
+            \input{experimental_cnn} %% Jerry
+        % subsubsection CNN Classifier Results (end)
+        
+        \subsubsection{SVD Classifier} % (fold)
+        \label{ssub:SVD Classifier}
+            % \input{experimental_svd} %% Congni
+            % \input{experimental_mfcc} %% Muye
+        % subsubsection SVD Classifier (end)
+        
+        
     \subsection{Generator}
         \label{sub:exp_gen}
         % \input{experimental_generator} %% Muye
@@ -81,7 +101,7 @@
 
 \section*{Author Contributions}
     \label{sec:contributions}
-    % \input{contributions}
+    \input{contributions}
 
 \bibliography{reference} % put your bibtex file here
 \nocite{*}

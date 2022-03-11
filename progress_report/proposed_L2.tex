@@ -1,0 +1,14 @@
+\begin{par}
+      \par To evaluate the similarity between the generated vector and 
+      the vector in the data sample -- i.e. to check whether the model-generated drum beats 
+      fit with provided music notes-we propose (as an initial proposition) to use Euclidean distance for 
+      measuring the similarity between two vectors. Specifically, the group is considering L1 or L2 
+      distance metric. The error calculation works as the following: 
+      \begin{equation}
+          \emph{J}(w) = \frac{1}{N} \sum_{i=1}^{N} (\norm{G(\mathbf{z})-x^{(i)}})^2
+      \end{equation}
+      where $G(\mathbf{z})$ represents generated drum beat vector, and $x^{(i)}$
+      represents the data sample in training data set. The discriminator will denote the generated drum 
+      beat as adequate as long as the above error is lower than a threshold value.
+  
+  \end{par}

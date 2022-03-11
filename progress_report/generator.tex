@@ -1,3 +1,6 @@
+\usepackage{amsmath}
+
+newcommand\norm[1]{\left\lVert#1\right\rVert}
 \begin{par}
     \par The team proposes to use Generator Network to generate pieces of music. Each input of the Generator has 
     multiple sub-components, and each sub-component of the Generator has three channels-first channel is a randomly 
@@ -10,7 +13,10 @@
     connectivity of the beats. Similar to processing a string of words, the ordering of the words is probably the most important information in
     determining the meaning of the sentence-so is the ordering of the notes in a song-the team is hoping that the positional encoding can provide
     this ordering information to the Generator. The advantage of this adopted positional encoding lies in: 1) its ability to provide unique coding
-    for the note at each time-step. 2) its ability to generalize to input of arbitrary length. 3) the encoding does not explode as the input length
-    increases. \cite{NEURIPS2020_55053683} 
+    for the note at each time-step. 2) its ability to generalize to input of arbitrary length. 3) the encoding does not expload as the input length
+    increases. The encoding is calculated as the following:
+
+    
+    
 
 \end{par}

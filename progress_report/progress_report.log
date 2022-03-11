@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7440 64-bit) (preloaded format=pdflatex 2020.7.14)  10 MAR 2022 18:12
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7440 64-bit) (preloaded format=pdflatex 2020.7.14)  8 MAR 2022 15:02
 entering extended mode
 **./progress_report.tex
 (progress_report.tex
@@ -344,7 +344,8 @@ Package: lipsum 2021-09-20 v2.7 150 paragraphs of Lorem Ipsum dummy text
 \l__lipsum_b_int=\count289
 
 ("C:\Users\ChengJerry\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lipsum\lipsum
-.ltd.tex")) (progress_report.aux)
+.ltd.tex"))
+No file progress_report.aux.
 \openout1 = `progress_report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
@@ -383,7 +384,6 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 24.
 LaTeX Info: Redefining \pageref on input line 24.
 LaTeX Info: Redefining \nameref on input line 24.
- (progress_report.out) (progress_report.out)
 \@outlinefile=\write3
 \openout3 = `progress_report.out'.
 
@@ -418,90 +418,16 @@ LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
 (Font)              using `OMS/cmsy/m/n' instead
 (Font)              for symbol `textbraceleft' on input line 27.
 
-(abstract.tex
-
-LaTeX Warning: Citation `musegan' on page 1 undefined on input line 2.
-
-) (introduction.tex) (proposed_intro.tex
-<image/proposal_architecture.png, id=19, 1076.02pt x 748.7975pt>
-File: image/proposal_architecture.png Graphic file (type png)
-<use image/proposal_architecture.png>
-Package pdftex.def Info: image/proposal_architecture.png  used on input line 4.
-
-(pdftex.def)             Requested size: 216.81pt x 150.87656pt.
- [1
-
-{C:/Users/ChengJerry/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]) (prop
-osed_classification_vgg.tex
-<image/cnn_classifier_feature_architecture.png, id=33, 1536.74126pt x 844.15375
-pt>
-File: image/cnn_classifier_feature_architecture.png Graphic file (type png)
-<use image/cnn_classifier_feature_architecture.png>
-Package pdftex.def Info: image/cnn_classifier_feature_architecture.png  used on
- input line 5.
-(pdftex.def)             Requested size: 289.07999pt x 158.79367pt.
- [2pdfTeX warning (ext4): destination with the same identifier (name{figure.1})
- has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.13 
-     pdfTeX warning (ext4): destination with the same identifier (name{figure.2
-}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.13 
-      <./image/proposal_architecture.png> <./image/cnn_classifier_feature_archi
-tecture.png>]
-<image/cnn_classifier_architecture.png, id=43, 940.51375pt x 851.18pt>
-File: image/cnn_classifier_architecture.png Graphic file (type png)
-<use image/cnn_classifier_architecture.png>
-Package pdftex.def Info: image/cnn_classifier_architecture.png  used on input l
-ine 16.
-(pdftex.def)             Requested size: 289.07999pt x 261.61615pt.
-
-
-LaTeX Warning: Reference `fig:cnn_class' on page 3 undefined on input line 21.
-
-) (proposed_classification_perceiver.tex
-
-LaTeX Warning: Citation `perceiver' on page 3 undefined on input line 2.
-
-) (proposed_generator.tex [3pdfTeX warning (ext4): destination with the same id
-entifier (name{figure.3}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.8 
-     <./image/cnn_classifier_architecture.png>]) (experimental_cnn.tex
-<image/loss_vs_epoch_train_log_2022-03-09_23-05-36.png, id=54, 462.528pt x 346.
-896pt>
-File: image/loss_vs_epoch_train_log_2022-03-09_23-05-36.png Graphic file (type 
-png)
-<use image/loss_vs_epoch_train_log_2022-03-09_23-05-36.png>
-Package pdftex.def Info: image/loss_vs_epoch_train_log_2022-03-09_23-05-36.png 
- used on input line 7.
-(pdftex.def)             Requested size: 289.07999pt x 216.82004pt.
- [4]
-
-LaTeX Warning: Reference `fig:loss_hist' on page 5 undefined on input line 12.
-
-) (experimental_mfcc.tex) (contributions.tex) [5pdfTeX warning (ext4): destinat
-ion with the same identifier (name{figure.4}) has been already used, duplicate 
-ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.105 
-       <./image/loss_vs_epoch_train_log_2022-03-09_23-05-36.png>]
 No file progress_report.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 111.
-[6]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 111.
- (progress_report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 111.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 111.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 78.
+[1
+
+{C:/Users/ChengJerry/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 78.
+
+(progress_report.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 78.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 78.
 
 
 Package rerunfilecheck Warning: File `progress_report.out' has changed.
@@ -509,40 +435,35 @@ Package rerunfilecheck Warning: File `progress_report.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `progress_report.out':
-(rerunfilecheck)             Before: 75F7AC923BFDC860E752180EE3716403;260
-(rerunfilecheck)             After:  1B8998280D558FAFD3093DAAB804F14F;1012.
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  BCCD85D548E5D8E3ACFE26D13958D530;295.
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 
-LaTeX Warning: There were undefined references.
-
-
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 111.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 78.
  ) 
 Here is how much of TeX's memory you used:
- 7032 strings out of 480799
- 120621 string characters out of 2893449
- 466649 words of memory out of 3000000
- 22858 multiletter control sequences out of 15000+200000
- 538884 words of font info for 47 fonts, out of 3000000 for 9000
+ 6919 strings out of 480799
+ 117190 string characters out of 2893449
+ 464225 words of memory out of 3000000
+ 22795 multiletter control sequences out of 15000+200000
+ 537121 words of font info for 41 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 44i,6n,41p,862b,339s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 44i,6n,41p,252b,315s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/ChengJerry/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/ams
-fonts/cm/cmbx10.pfb><C:/Users/ChengJerry/AppData/Local/Programs/MiKTeX 2.9/font
-s/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/ChengJerry/AppData/Local/Progra
-ms/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/ChengJerry/Ap
-pData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Us
-ers/ChengJerry/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
-/cmr12.pfb><C:/Users/ChengJerry/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/p
-ublic/amsfonts/cm/cmr17.pfb><C:/Users/ChengJerry/AppData/Local/Programs/MiKTeX 
-2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/ChengJerry/AppData/Loca
-l/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on progress_report.pdf (6 pages, 286539 bytes).
+fonts/cm/cmbx12.pfb><C:/Users/ChengJerry/AppData/Local/Programs/MiKTeX 2.9/font
+s/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/ChengJerry/AppData/Local/Program
+s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/ChengJerry/AppD
+ata/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/User
+s/ChengJerry/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
+msy10.pfb><C:/Users/ChengJerry/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
+blic/amsfonts/cm/cmtt12.pfb>
+Output written on progress_report.pdf (1 page, 62988 bytes).
 PDF statistics:
- 112 PDF objects out of 1000 (max. 8388607)
- 28 named destinations out of 1000 (max. 500000)
- 53 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 44 PDF objects out of 1000 (max. 8388607)
+ 9 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

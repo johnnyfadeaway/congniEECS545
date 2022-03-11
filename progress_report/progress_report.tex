@@ -1,5 +1,4 @@
 \documentclass[11pt,letterpaper]{article}
-
 \usepackage{fullpage}
 %\usepackage{nips15submit_e,times}
 \usepackage{hyperref}
@@ -26,7 +25,7 @@
 % title
 \maketitle
 
-\input{abstract} %% Jerry %% done checked NOT proofread
+ \input{abstract} %% Jerry
 
 \section{Introduction}
     \label{sec:introduction}
@@ -34,59 +33,36 @@
 
 \section{Proposed Method}
     \label{sec:proposed}
-    \input{proposed_intro} %% Congni
+     \input{proposed_intro} %% Congni
 
     \subsection{Classification for Global Induction}
         \label{sub:class}
-        \subsubsection{VGG-based classifier} % (fold)
-        \label{ssub:VGG-based classifier}
-            \input{proposed_classification_vgg} %% Jerry %% done checked NOT proofread
-        % subsubsection VGG-based classifier (end)
-        
-        \subsubsection{SVD classifier} % (fold)
-        \label{ssub:SVD classifier}
-            % \input{proposed_classification_svd} %% Congni
-        % subsubsection SVD classifier (end)
-        
-        \subsubsection{Perceiver Classifier} % (fold)
-        \label{ssub:Perceiver Classifier}
-            \input{proposed_classification_perceiver} %% Jerry
-        % subsubsection Perceiver Classifier (end)
+         \input{proposed_classification_vgg} %% Jerry
+         \input{proposed_classification_svd} %% Congni
+         \input{proposed_classification_perceiver} %% Jerry
 
-        
     \subsection{Generator}
-        \input{proposed_generator} %% Muye
+         \input{proposed_generator} %% Muye
     
     \subsection{Discriminator}
-        % \input{proposed_L2} %% Muye
-        % \input{proposed_traditional} %% Jerry
-        % \input{proposed_wasserstein} %% Congni
-
+        \input{distance_metric} %% Muye
 
 \section{Related Work}
     \label{sec:related}
-    % \input{related} %% Congni
+     \input{related} %% Congni
 
 \section{Experimental Results}
     \label{sec:experimental}
     
     \subsection{Classification}
         \label{sub:exp_class}
-        \subsubsection{CNN Classifier Results} % (fold)
-        \label{ssub:CNN Classifier Results}
-            \input{experimental_cnn} %% Jerry
-        % subsubsection CNN Classifier Results (end)
-        
-        \subsubsection{SVD Classifier} % (fold)
-        \label{ssub:SVD Classifier}
-            % \input{experimental_svd} %% Congni
-            \input{experimental_mfcc} %% Muye
-        % subsubsection SVD Classifier (end)
-        
-        
-    \subsection{Generator}
-        \label{sub:exp_gen}
-        % \input{experimental_generator} %% Muye
+         \input{experimental_cnn} %% Jerry
+         \input{experimental_svd} %% Congni
+         \input{experimental_mfcc} %% Muye
+
+    %\subsection{Generator}
+        %\label{sub:exp_gen}
+         %\input{experimental_generator} %% Muye
 
 \section{Future Milestone}
     \label{sec:future}
@@ -101,7 +77,7 @@
 
 \section*{Author Contributions}
     \label{sec:contributions}
-    \input{contributions}
+     \input{contributions}
 
 \bibliography{reference} % put your bibtex file here
 \nocite{*}

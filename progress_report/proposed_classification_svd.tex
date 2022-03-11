@@ -1,0 +1,5 @@
+\begin{par}
+    \par \hspace{15pt} Subspace learning is another method that the group proposed for genre classification. First, for the pre-processing of the data, 512 rows with the highest 0-norm (with the most notes played) are selected to represent the entire song. After that, For each genre, we construct a training set, and then use Singular Value Decomposition (SVD) to obtain an orthonormal basis for each genre space. Some related training can be seen in \cite{pca}. After having learned the genre subspaces, classification can be done by comparing the projections of one particular test data onto the orthogonal complement of the genre subspaces. If a song is the closest to a particular genre subspace among all the genre subspaces, then this song is classified as that particular genre. 
+\end{par}
+
+

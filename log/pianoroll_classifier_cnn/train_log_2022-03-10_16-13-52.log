@@ -1,0 +1,229 @@
+
+======
+General Training info:
+device: cuda
+device name: NVIDIA GeForce GTX 1070
+model save dir: ../model/pianoroll_classifier_cnn
+log dir: ../log/pianoroll_classifier_cnn
+total num of epochs: 50
+batch size: 16
+num of workers: 2
+feature conv size: 3
+==========
+
+======
+Model info:
+model structure:
+PianorollGenreClassifierCNN(
+  (feature): Sequential(
+    (0): Conv2d(1, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): ReLU(inplace=True)
+    (2): AvgPool2d(kernel_size=2, stride=2, padding=0)
+    (3): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (4): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU(inplace=True)
+    (6): AvgPool2d(kernel_size=2, stride=2, padding=0)
+    (7): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (8): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (9): ReLU(inplace=True)
+    (10): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (11): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (12): ReLU(inplace=True)
+    (13): AvgPool2d(kernel_size=2, stride=2, padding=0)
+  )
+  (avgpool): AdaptiveAvgPool2d(output_size=(5, 5))
+  (classifier): Sequential(
+    (0): Linear(in_features=3200, out_features=512, bias=True)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.3, inplace=False)
+    (3): Linear(in_features=512, out_features=256, bias=True)
+    (4): ReLU(inplace=True)
+    (5): Dropout(p=0.3, inplace=False)
+    (6): Linear(in_features=256, out_features=128, bias=True)
+    (7): ReLU(inplace=True)
+    (8): Dropout(p=0.3, inplace=False)
+    (9): Linear(in_features=128, out_features=64, bias=True)
+    (10): ReLU(inplace=True)
+    (11): Dropout(p=0.3, inplace=False)
+    (12): Linear(in_features=64, out_features=32, bias=True)
+    (13): ReLU(inplace=True)
+    (14): Dropout(p=0.3, inplace=False)
+    (15): Linear(in_features=32, out_features=8, bias=True)
+  )
+  (softmax): Softmax(dim=1)
+)
+model summary:
+None==========
+training started on 2022-03-10 16:13:52.868149
+==========
+Current Epoch 1/50
+Entry on Thu Mar 10 16:13:52 2022
+Currently used time: 0.0h 0.0m 0.00s
+Epoch Loss: 0.0961, Epoch Accs: 0.7961
+Epoch Time: 6:13
+==========
+Current Epoch 2/50
+Entry on Thu Mar 10 16:20:05 2022
+Currently used time: 0.0h 6.0m 12.52s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:8
+==========
+Current Epoch 3/50
+Entry on Thu Mar 10 16:26:13 2022
+Currently used time: 0.0h 12.0m 20.30s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:9
+==========
+Current Epoch 4/50
+Entry on Thu Mar 10 16:32:22 2022
+Currently used time: 0.0h 18.0m 29.70s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:18
+==========
+Current Epoch 5/50
+Entry on Thu Mar 10 16:38:40 2022
+Currently used time: 0.0h 24.0m 48.13s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:23
+==========
+Current Epoch 6/50
+Entry on Thu Mar 10 16:45:03 2022
+Currently used time: 0.0h 31.0m 10.64s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:25
+==========
+Current Epoch 7/50
+Entry on Thu Mar 10 16:51:28 2022
+Currently used time: 0.0h 37.0m 35.52s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:13
+==========
+Current Epoch 8/50
+Entry on Thu Mar 10 16:57:41 2022
+Currently used time: 0.0h 43.0m 48.75s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:19
+==========
+Current Epoch 9/50
+Entry on Thu Mar 10 17:04:00 2022
+Currently used time: 0.0h 50.0m 7.48s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:18
+==========
+Current Epoch 10/50
+Entry on Thu Mar 10 17:10:17 2022
+Currently used time: 0.0h 56.0m 25.09s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:22
+==========
+Current Epoch 11/50
+Entry on Thu Mar 10 17:16:39 2022
+Currently used time: 1.0h 2.0m 47.02s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:21
+==========
+Current Epoch 12/50
+Entry on Thu Mar 10 17:23:00 2022
+Currently used time: 1.0h 9.0m 7.54s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:15
+==========
+Current Epoch 13/50
+Entry on Thu Mar 10 17:29:15 2022
+Currently used time: 1.0h 15.0m 22.25s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:12
+==========
+Current Epoch 14/50
+Entry on Thu Mar 10 17:35:27 2022
+Currently used time: 1.0h 21.0m 34.69s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:14
+==========
+Current Epoch 15/50
+Entry on Thu Mar 10 17:41:41 2022
+Currently used time: 1.0h 27.0m 48.21s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:12
+==========
+Current Epoch 16/50
+Entry on Thu Mar 10 17:47:53 2022
+Currently used time: 1.0h 34.0m 0.35s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:16
+==========
+Current Epoch 17/50
+Entry on Thu Mar 10 17:54:08 2022
+Currently used time: 1.0h 40.0m 16.12s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:10
+==========
+Current Epoch 18/50
+Entry on Thu Mar 10 18:00:18 2022
+Currently used time: 1.0h 46.0m 25.63s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:14
+==========
+Current Epoch 19/50
+Entry on Thu Mar 10 18:06:32 2022
+Currently used time: 1.0h 52.0m 39.78s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:24
+==========
+Current Epoch 20/50
+Entry on Thu Mar 10 18:12:56 2022
+Currently used time: 1.0h 59.0m 3.68s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:18
+==========
+Current Epoch 21/50
+Entry on Thu Mar 10 18:19:14 2022
+Currently used time: 2.0h 5.0m 21.54s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:10
+==========
+Current Epoch 22/50
+Entry on Thu Mar 10 18:25:24 2022
+Currently used time: 2.0h 11.0m 31.98s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:5
+==========
+Current Epoch 23/50
+Entry on Thu Mar 10 18:31:29 2022
+Currently used time: 2.0h 17.0m 36.66s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:17
+==========
+Current Epoch 24/50
+Entry on Thu Mar 10 18:37:46 2022
+Currently used time: 2.0h 23.0m 53.74s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:17
+==========
+Current Epoch 25/50
+Entry on Thu Mar 10 18:44:03 2022
+Currently used time: 2.0h 30.0m 10.38s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:7
+==========
+Current Epoch 26/50
+Entry on Thu Mar 10 18:50:10 2022
+Currently used time: 2.0h 36.0m 17.26s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:17
+==========
+Current Epoch 27/50
+Entry on Thu Mar 10 18:56:26 2022
+Currently used time: 2.0h 42.0m 33.96s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:19
+==========
+Current Epoch 28/50
+Entry on Thu Mar 10 19:02:46 2022
+Currently used time: 2.0h 48.0m 53.41s
+Epoch Loss: 0.0918, Epoch Accs: 0.8070
+Epoch Time: 6:8
+==========
+Current Epoch 29/50
+Entry on Thu Mar 10 19:08:54 2022
+Currently used time: 2.0h 55.0m 1.78s

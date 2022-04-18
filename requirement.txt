@@ -10,6 +10,10 @@ torchvision
 torchaudio
 torchsummary
 
+# positional encoding
+# positional-encodings ## stupid stuff, not even better than Muye's pos enc
+### hoards too much memory
+
 # for tracking progress
 tqdm
 

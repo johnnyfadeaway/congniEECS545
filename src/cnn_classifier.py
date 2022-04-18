@@ -128,6 +128,7 @@ class PianorollGenreClassifierCNN(nn.Module):
         self.feature = feature 
         self.avgpool = nn.AdaptiveAvgPool2d((5, 5))
         self.classifier = classifier
+        self.softmax = nn.Softmax(dim=1)
 
         if init_weight:
             self._initialize_weights()
@@ -140,6 +141,7 @@ class PianorollGenreClassifierCNN(nn.Module):
         x = self.avgpool(x)
         x = torch.flatten(x, 1)
         x = self.classifier(x)
+        x = self.softmax(x)
         return x
 
     def _initialize_weights(self):

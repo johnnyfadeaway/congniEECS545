@@ -469,6 +469,7 @@ class GANdataset(Dataset):
 
         # -- concatenate the three channels
         cat_htracks = torch.cat((htracks, genre_enlarged, htracks_pos_enc), dim=0)
+        cat_htracks = cat_htracks.unsqueeze(0)
         return cat_htracks, torch.unsqueeze(drum_track[chunk_start:chunk_end, :], 0)
 
 if __name__ == "__main__":

@@ -24,6 +24,31 @@ def discriminator_layer_forger(in_channels, out_channels, kernel_size=(4, 4), st
     layer.append(nn.LeakyReLU(0.2, inplace=True))
     return layer 
 
+def train_gan_with_classic_discriminator(generator, discriminator, gan_dataset, logger, only_l1, num_epoch=100):
+    hist_G_loss = []
+    hist_D_loss = []
+    hist_G_l1_loss = []
+
+    # optimizers
+    g_optimizer = optim.Adam(generator.parameters(), lr=0.0002, beta=(0.5, 0.999))
+    d_optimizer = optim.Adam(discriminator.parameters(), lr=0.0002, beta=(0.5, 0.999))
+
+    print("training start!")
+    for epoch in range(num_epoch):
+        print("epoch: {}/{}".format(epoch, num_epoch))
+        d_loss = []
+        g_loss = []
+
+        num_iter = 0
+        for x, y in tqdm(gan_dataset):
+            x, y = x.to(device), y.to(device)
+
+            d_optimizer.zero_grad()
+            d_result_real = y.clone()
+
+
+    return 
+
 class DiscriminatorClassic(nn.Module):
     def __init__(self, discriminator_config, ):
         super(DiscriminatorClassic, self).__init__()

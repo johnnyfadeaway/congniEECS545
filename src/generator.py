@@ -19,11 +19,11 @@ class generator(Module):
 
       def __init__(self):
             super().__init__()
-            self.convtrans0 = generator_block(3, 128, 2, 1)
-            self.convtrans1 = generator_block(128, 64, 2, 1)
-            self.convtrans2 = generator_block(64, 32, 2, 1)
-            self.convtrans3 = generator_block(32, 16, 2, 1)
-            self.convtrans4 = generator_block(16, 3, 2, 1)
+            self.convtrans0 = generator_block(3, 128, 2, 2)
+            self.convtrans1 = generator_block(128, 64, 2, 2)
+            self.convtrans2 = generator_block(64, 32, 2, 2)
+            self.convtrans3 = generator_block(32, 16, 2, 2)
+            self.convtrans4 = generator_block(16, 1, 2, 2)
 
       def generate(self, x):
             x = self.convtrans0(x)
@@ -34,7 +34,7 @@ class generator(Module):
 
             return x
 
-def training_loader(loader:TempoSet, M):
+def training_loader(loader:TempoSet):
             """
             Sample inter-track random vector z and intra-track
             random vector z_i
@@ -63,20 +63,25 @@ def training_loader(loader:TempoSet, M):
 
             ## zi: with positional encoding and genre added 
             # as a channel
-            zi_list = torch.zeros(M, 3, 50, 512)
+            start = 0
+            num_of_rows = 512
+            z_i = song
+            position = torch.zeros(num_of_rows, 512) + pos_code[start:start+num_of_rows ,:]
+            genre = torch.zeros(8, 512) + z.view(8,1)
+            zero_pad = torch.zeros(num_of_rows-8, 512)
+            genre = torch.cat([genre, zero_pad], dim=0)
+            z_i = torch.stack([z_i, genre, position], dim=2)
+            """
+            zi_list = torch.zeros(M, 3, 512, 512)
             for i in range(M):
                   start = np.random.randint(0, song_length - 60)
-                  num_of_rows = 50
+                  num_of_rows = 512
                   z_i = song[start:start + num_of_rows ,:]
                   
-                  position = torch.zeros(50, 512) + pos_code[start:start+50 ,:]
-                  genre = torch.zeros(8, 512) + z.view(8,1)
-                  zero_pad = torch.zeros(42, 512)
-                  genre = torch.cat([genre, zero_pad], dim=0)
-                  z_i = torch.stack([z_i, genre, position], dim=2)
-                  zi_list[i ,: ,: ,:] = z_i.view(3, 50, 512)
-
-            return z, zi_list 
+                  
+                  zi_list[i ,: ,: ,:] = z_i.view(3, num_of_rows, 512)
+            """
+            return z_i 
 
 
 class test_generator(Module):
@@ -90,10 +95,11 @@ class test_generator(Module):
             loader.load(data_dir)
 
             G = generator()
-            z, zi_list = G.sampling(loader, M=10)
+            zi = training_loader(loader)
 
+            print(zi.size())
             # generate pieces of songs:
-            pieces = G.generate(zi_list)
+            pieces = G.generate(zi)
 
             return pieces
 

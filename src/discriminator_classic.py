@@ -27,7 +27,7 @@ def discriminator_layer_forger(in_channels, out_channels, kernel_size=(4, 4), st
     layer.append(nn.LeakyReLU(0.2, inplace=True))
     return layer 
 
-def train_gan_with_classic_discriminator(generator, discriminator, gan_dataset, logger, device, num_epoch=100):
+def train_gan_with_classic_discriminator(generator, discriminator, gan_dataset, logger, device, num_epoch=25):
     hist_G_loss = []
     hist_D_loss = []
     hist_G_l1_loss = []
@@ -249,7 +249,7 @@ if __name__ == "__main__":
     print("attept training...")
     print("initalizing logger...")
     logger = Logger("../log/discriminator_classic/train_log_classic_{}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S")))
-    train_gan_with_classic_discriminator(generator, discriminator_classic, gan_set, logger, device=device, num_epoch=10)
+    train_gan_with_classic_discriminator(generator, discriminator_classic, gan_set, logger, device=device, num_epoch=25)
 
     print("training finished!")
     print("exiting...")

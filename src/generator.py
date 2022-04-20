@@ -41,7 +41,7 @@ class generator(Module):
             self.conv0 = conv_block(in_channels=3, out_channels=32, kernel_size=(4,4), stride=(2,2), padding=(1,1))
             self.conv1 = conv_block(in_channels=32, out_channels=64, kernel_size=(4,4), stride=(2,2), padding=(1,1))
             self.conv2 = conv_block(in_channels=64, out_channels=128, kernel_size=(4,4), stride=(2,2), padding=(1,1))
-            self.conv3 = conv_block(in_channels=128, out_channels=128, kernel_size=(2,2), stride=(2,2), padding=(1,1))
+            self.conv3 = conv_block(in_channels=128, out_channels=128, kernel_size=(2,2), stride=(2,2), padding=(0,0))
             self.conv4 = conv_block(in_channels=128, out_channels=128, kernel_size=(2,2), stride=(2,2), padding=(0,0))
             
             self.convtrans0 = generator_block(128, 128, kernel=(2,2), stride=(2,2), d=(1,1), p=(0,0))

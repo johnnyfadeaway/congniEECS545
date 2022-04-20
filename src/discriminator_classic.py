@@ -248,7 +248,7 @@ if __name__ == "__main__":
 
     print("attept training...")
     print("initalizing logger...")
-    logger = Logger("../log/discriminator_classic/train_log_classic_{}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S")))
+    logger = Logger("../log/discriminator_classic/".format(datetime.now().strftime("%Y%m%d_%H%M%S")))
     train_gan_with_classic_discriminator(generator, discriminator_classic, gan_set, logger, device=device, num_epoch=10)
 
     print("training finished!")

@@ -1,10 +1,10 @@
 import torch as torch
 from torch.nn import Conv2d, ConvTranspose2d, Module, BatchNorm2d, LeakyReLU, ReLU
+import torch.nn as nn
 import numpy as np
 from loader import GANdataset, TempoSet, ClassifierSet
 from torchsummary import summary
 
-from utils import normal_init
 
 class generator_block(Module):
       def __init__(self, in_dim, out_dim, kernel, stride, d, p):
@@ -49,7 +49,9 @@ class generator(Module):
             self.convtrans1 = generator_block(128, 64, kernel=(2,2), stride=(2,2), d=(1,1), p=(0,0))
             self.convtrans2 = generator_block(64, 32, kernel=(2,1), stride=(2,1), d=(1,1), p=(0,0))
             self.convtrans3 = generator_block(32, 16, kernel=(2,1), stride=(2,1), d=(1,1), p=(0,0))
-            self.convtrans4 = generator_block(16, 1, kernel=(2,2), stride=(2,2), d=(1,1), p=(0,0))
+            # self.convtrans4 = generator_block(16, 1, kernel=(2,2), stride=(2,2), d=(1,1), p=(0,0))
+            self.last_conv_trans = nn.ConvTranspose2d(16, 1, kernel_size=(2, 2), stride=(2, 2), dilation=(1, 1), padding=(0, 0))
+            self.last_active = nn.Sigmoid()
 
       def forward(self, x):
             x = self.conv0(x, batch=False)
@@ -62,13 +64,16 @@ class generator(Module):
             x = self.convtrans1(x)
             x = self.convtrans2(x)
             x = self.convtrans3(x)
-            x = self.convtrans4(x)
+            x = self.last_conv_trans(x)
+            x = self.last_active(x)
 
             return x
       
       def weight_init(self, mean, std):
             for m in self.modules():
-                  normal_init(m, mean=mean, std=std)
+                  if isinstance(m, Conv2d):
+                        torch.nn.init.kaiming_normal_(m.weight, mode='fan_in', nonlinearity='leaky_relu')
+                  
 
 def training_loader(loader:GANdataset, indx):
             """
@@ -100,6 +105,26 @@ class test_generator(Module):
             pieces = G.generate(zi)
 
             return pieces
+
+def generator_encode_forger(in_dim, out_dim, kernel, stride, p, batch=True):
+      layer = nn.ModuleList()
+      layer.append(nn.Conv2d(in_dim, out_dim, kernel, stride, padding=p))
+      if batch:
+            layer.append(nn.BatchNorm2d(out_dim))
+      layer.append(nn.LeakyReLU(0.2))
+      return layer
+
+
+class generator_unet(Module):
+      def __init__(self, generator_config):
+            super().__init__()
+            self.layers = nn.ModuleList()
+            for layer_info in generator_config["encoder"]:
+                  in_dim, out_dim, kernel, stride, _, p, batch = layer_info
+                  self.layers.append(generator_encode_forger(in_dim, out_dim, kernel, stride, p, batch))
+            
+            for layer_info in generator_config["decoder"]:
+                  in_dim, out_dim, kernel, stride, d, p, batch = layer_info
 
 if __name__ == "__main__":
       # a = test_generator()

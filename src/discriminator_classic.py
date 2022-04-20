@@ -27,7 +27,7 @@ def discriminator_layer_forger(in_channels, out_channels, kernel_size=(4, 4), st
     layer.append(nn.LeakyReLU(0.2, inplace=True))
     return layer 
 
-def train_gan_with_classic_discriminator(generator, discriminator, gan_dataset, logger, device, num_epoch=100):
+def train_gan_with_classic_discriminator(generator, discriminator, gan_loader, logger, device, num_epoch=100):
     hist_G_loss = []
     hist_D_loss = []
     hist_G_l1_loss = []
@@ -71,18 +71,16 @@ def train_gan_with_classic_discriminator(generator, discriminator, gan_dataset, 
         BCE_loss = nn.BCELoss().to(device)
         L1_loss = nn.L1Loss().to(device)
 
-        num_iter = 0
-        for x, y in tqdm(gan_dataset):
+        
+        for x, y in tqdm(gan_loader):
             x = x.type(torch.FloatTensor)
             x, y = x.to(device), y.to(device)
 
             pitch_height = x.shape[3]
             num_channels = x.shape[1]
-
             channelized_x = x.reshape(-1, num_channels*4, 512, int(pitch_height/4),)
 
             d_optimizer.zero_grad()
-
             cat_real_d_input = torch.cat([y, channelized_x], dim=1)
 
             d_result_real = discriminator(cat_real_d_input)
@@ -100,7 +98,7 @@ def train_gan_with_classic_discriminator(generator, discriminator, gan_dataset, 
             loss_discriminator = d_train_loss.detach().item()
 
             # train the generator
-            generator.zero_grad()
+            g_optimizer.zero_grad()
 
             generated_result = generator(x)
             d_input = torch.cat([generated_result, channelized_x], dim=1)
@@ -229,6 +227,8 @@ if __name__ == "__main__":
 
     classifier_set = ClassifierSet(all_data, chunk_size=(128*4))
     gan_set = GANdataset(classifier_set)
+
+    gan_loader = DataLoader(gan_set, batch_size=16, shuffle=True, num_workers=4)
     
     discriminator_classic = DiscriminatorClassic(discriminator_config)
     discriminator_classic.to(device)
@@ -248,8 +248,8 @@ if __name__ == "__main__":
 
     print("attept training...")
     print("initalizing logger...")
-    logger = Logger("../log/discriminator_classic/".format(datetime.now().strftime("%Y%m%d_%H%M%S")))
-    train_gan_with_classic_discriminator(generator, discriminator_classic, gan_set, logger, device=device, num_epoch=10)
+    logger = Logger("../log/discriminator_classic/train_log_classic_{}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S")))
+    train_gan_with_classic_discriminator(generator, discriminator_classic, gan_loader, logger, device=device, num_epoch=10)
 
     print("training finished!")
     print("exiting...")

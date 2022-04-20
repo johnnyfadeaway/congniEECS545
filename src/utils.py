@@ -2,6 +2,7 @@ from tqdm import tqdm
 import os
 from datetime import datetime
 import numpy as np
+from torch import nn
 
 def print_progress_bar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
     """
@@ -24,6 +25,14 @@ def print_progress_bar (iteration, total, prefix = '', suffix = '', decimals = 1
     if iteration == total: 
         print()
 
+
+def normal_init(m, mean, std):
+  """
+  Helper function. Initialize model parameter with given mean and std.
+  """
+  if isinstance(m, nn.ConvTranspose2d) or isinstance(m, nn.Conv2d):
+    m.weight.data.normal_(mean, std)
+    m.bias.data.zero_()
 
 def tqdm_wrapper(iter, desc="", total=None):
     return tqdm(iter, desc=desc, ncols=100, position=0, leave=False, total=total)

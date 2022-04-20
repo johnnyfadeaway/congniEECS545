@@ -24,7 +24,7 @@ from generator import generator
 from utils import Logger
 
 
-def train_l2(generator, gan_dataset, logger, device, num_epoch=100):
+def train_l2(generator, gan_loader, logger, device, num_epoch=100):
     hist_G_loss = []
     
     # optimizers
@@ -62,9 +62,7 @@ def train_l2(generator, gan_dataset, logger, device, num_epoch=100):
         g_running_loss = []
 
         L1_loss = nn.L1Loss().to(device)
-        gan_dataset_len = len(gan_dataset)
-        for i in tqdm(range(gan_dataset_len)):
-            x, y = gan_dataset[i]
+        for x, y in tqdm(gan_loader):
             x = x.type(torch.FloatTensor)
             x, y = x.to(device), y.to(device)
 
@@ -105,7 +103,7 @@ def train_l2(generator, gan_dataset, logger, device, num_epoch=100):
         
     print("training finished!")
     print("saving model...")
-    torch.save(generator.state_dict(), "../model/generator_classic_{}.pth".format(datetime.now().strftime("%Y%m%d_%H%M%S")))
+    torch.save(generator.state_dict(), "../model/generator_l2_{}.pth".format(datetime.now().strftime("%Y%m%d_%H%M%S")))
     
     print("saving history...")
     np.save("../history/hist_G_loss_classic_{}.npy".format(datetime.now().strftime("%Y%m%d_%H%M%S")), hist_G_loss)
@@ -137,6 +135,8 @@ if __name__ == "__main__":
     classifier_set = ClassifierSet(all_data, chunk_size=(128*4))
     gan_set = GANdataset(classifier_set)
 
+    gan_loader = DataLoader(gan_set, batch_size=64, shuffle=True, num_workers=1)
+
     print("initializing the generator model...")
     generator = generator()
     generator.to(device)
@@ -148,6 +148,6 @@ if __name__ == "__main__":
     print("initalizing logger...")
     logger = Logger("../log/l2_train/".format(datetime.now().strftime("%Y%m%d_%H%M%S")))
 
-    train_l2(generator, gan_set, logger, device, num_epoch=10)
+    train_l2(generator, gan_loader, logger, device, num_epoch=10)
 
     print("training finished!")

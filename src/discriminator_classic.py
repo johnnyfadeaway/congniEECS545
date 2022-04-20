@@ -4,6 +4,7 @@ from datetime import datetime
 import time
 import math
 import gc
+from pypianoroll import pitch_range
 
 import torch
 from torch import nn as nn
@@ -15,6 +16,7 @@ from tqdm import tqdm, trange
 
 from loader import ClassifierTrainTest, TempoSet, ClassifierSet, ClassifierTrainTest, GANdataset
 from utils import Logger, normal_init
+from generator import generator
 
 
 def discriminator_layer_forger(in_channels, out_channels, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), batch_norm=True):
@@ -25,14 +27,14 @@ def discriminator_layer_forger(in_channels, out_channels, kernel_size=(4, 4), st
     layer.append(nn.LeakyReLU(0.2, inplace=True))
     return layer 
 
-def train_gan_with_classic_discriminator(generator, discriminator, gan_dataset, logger, num_epoch=100):
+def train_gan_with_classic_discriminator(generator, discriminator, gan_dataset, logger, device, num_epoch=100):
     hist_G_loss = []
     hist_D_loss = []
     hist_G_l1_loss = []
     
     # optimizers
-    g_optimizer = optim.Adam(generator.parameters(), lr=0.0002, beta=(0.5, 0.999))
-    d_optimizer = optim.Adam(discriminator.parameters(), lr=0.0002, beta=(0.5, 0.999))
+    g_optimizer = optim.Adam(generator.parameters(), lr=0.0002, betas=(0.5, 0.999))
+    d_optimizer = optim.Adam(discriminator.parameters(), lr=0.0002, betas=(0.5, 0.999))
 
     print("training start!")
 
@@ -71,16 +73,18 @@ def train_gan_with_classic_discriminator(generator, discriminator, gan_dataset, 
 
         num_iter = 0
         for x, y in tqdm(gan_dataset):
+            x = x.type(torch.FloatTensor)
             x, y = x.to(device), y.to(device)
 
-            chunk_len = x.shape[2]
+            pitch_height = x.shape[3]
             num_channels = x.shape[1]
 
-            channelized_x = x.reshape(-1, num_channels*4, int(chunk_len/4), 512)
+            channelized_x = x.reshape(-1, num_channels*4, 512, int(pitch_height/4),)
 
             d_optimizer.zero_grad()
 
             cat_real_d_input = torch.cat([y, channelized_x], dim=1)
+
             d_result_real = discriminator(cat_real_d_input)
 
             g_result_temp = generator(x)
@@ -187,6 +191,7 @@ class DiscriminatorClassic(nn.Module):
     def forward(self, x):
         for layer in self.layers:
             x = layer(x)
+        return x
     
     def weight_init(self, mean, std):
         for m in self._modules:
@@ -217,6 +222,13 @@ if __name__ == "__main__":
         (128, 64, (2, 1), (1, 1), (0, 0), False), ## conv6, out size = 30 x 14
         
     ]
+
+    data_dir = "../data/lpd_5/lpd_5_cleansed"
+    all_data = TempoSet()
+    all_data.load(data_dir)
+
+    classifier_set = ClassifierSet(all_data, chunk_size=(128*4))
+    gan_set = GANdataset(classifier_set)
     
     discriminator_classic = DiscriminatorClassic(discriminator_config)
     discriminator_classic.to(device)
@@ -225,6 +237,24 @@ if __name__ == "__main__":
     print(discriminator_classic)
     print("summary of the model...")
     summary(discriminator_classic, (13, 512, 128))
+
+    print("initializing the generator model...")
+    generator = generator()
+    generator.to(device)
+
+    print("initializing the weights...")
+    discriminator_classic.weight_init(mean=0.5, std=0.02)
+    generator.weight_init(mean=0.5, std=0.02)
+
+    print("attept training...")
+    print("initalizing logger...")
+    logger = Logger("../log/discriminator_classic/train_log_classic_{}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S")))
+    train_gan_with_classic_discriminator(generator, discriminator_classic, gan_set, logger, device=device, num_epoch=10)
+
+    print("training finished!")
+    print("exiting...")
+
+
 
 
 

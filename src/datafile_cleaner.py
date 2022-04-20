@@ -5,4 +5,4 @@ if __name__ == "__main__":
         for file in files:
             if "pos_enc" in file:
                 os.remove(os.path.join(root_dir, file))
-                # print("Removed:", os.path.join(root_dir, file))
+                # print("Removed:", os.path.join(root_dir, file))w

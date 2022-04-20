@@ -1,9 +1,10 @@
-from turtle import forward
 import torch as torch
 from torch.nn import Conv2d, ConvTranspose2d, Module, BatchNorm2d, LeakyReLU, ReLU
 import numpy as np
 from loader import GANdataset, TempoSet, ClassifierSet
 from torchsummary import summary
+
+from utils import normal_init
 
 class generator_block(Module):
       def __init__(self, in_dim, out_dim, kernel, stride, d, p):
@@ -64,6 +65,10 @@ class generator(Module):
             x = self.convtrans4(x)
 
             return x
+      
+      def weight_init(self, mean, std):
+            for m in self.modules():
+                  normal_init(m, mean=mean, std=std)
 
 def training_loader(loader:GANdataset, indx):
             """

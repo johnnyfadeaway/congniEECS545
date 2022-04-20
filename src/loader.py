@@ -445,7 +445,7 @@ class GANdataset(Dataset):
 
         genre_enlarged = torch.tile(genre_perturbed, (h_num_tile, w_num_tile))
         genre_enlarged = genre_enlarged[:h, :w].unsqueeze(0)
-        print("DEBUG shape of genre_enlarged: {}".format(genre_enlarged.shape))
+        # print("DEBUG shape of genre_enlarged: {}".format(genre_enlarged.shape))
 
         # -- create positional encoding as channel 2
         pos_enc = torch.arange(0, song_len, dtype=torch.float32)
@@ -470,7 +470,10 @@ class GANdataset(Dataset):
         # -- concatenate the three channels
         cat_htracks = torch.cat((htracks, genre_enlarged, htracks_pos_enc), dim=0)
         cat_htracks = cat_htracks.unsqueeze(0)
-        return cat_htracks, torch.unsqueeze(drum_track[chunk_start:chunk_end, :], 0)
+        
+        drum_gt = drum_track[chunk_start:chunk_end, :].unsqueeze(0).unsqueeze(0)
+        
+        return cat_htracks, drum_gt
 
 if __name__ == "__main__":
     # testbench for the loader

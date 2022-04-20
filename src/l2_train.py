@@ -135,7 +135,7 @@ if __name__ == "__main__":
     classifier_set = ClassifierSet(all_data, chunk_size=(128*4))
     gan_set = GANdataset(classifier_set)
 
-    gan_loader = DataLoader(gan_set, batch_size=64, shuffle=True, num_workers=1)
+    gan_loader = DataLoader(gan_set, batch_size=32, shuffle=True, num_workers=4)
 
     print("initializing the generator model...")
     generator = generator()
@@ -148,6 +148,6 @@ if __name__ == "__main__":
     print("initalizing logger...")
     logger = Logger("../log/l2_train/".format(datetime.now().strftime("%Y%m%d_%H%M%S")))
 
-    train_l2(generator, gan_loader, logger, device, num_epoch=10)
+    train_l2(generator, gan_loader, logger, device, num_epoch=25)
 
     print("training finished!")

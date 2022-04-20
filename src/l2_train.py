@@ -62,8 +62,9 @@ def train_l2(generator, gan_dataset, logger, device, num_epoch=100):
         g_running_loss = []
 
         L1_loss = nn.L1Loss().to(device)
-
-        for x, y in tqdm(gan_dataset):
+        gan_dataset_len = len(gan_dataset)
+        for i in tqdm(range(gan_dataset_len)):
+            x, y = gan_dataset[i]
             x = x.type(torch.FloatTensor)
             x, y = x.to(device), y.to(device)
 

@@ -71,8 +71,8 @@ def train_gan_with_classic_discriminator(generator, discriminator, gan_dataset, 
         BCE_loss = nn.BCELoss().to(device)
         L1_loss = nn.L1Loss().to(device)
 
-        num_iter = 0
-        for x, y in tqdm(gan_dataset):
+        gan_dataset_len = len(gan_dataset)
+        for x, y in tqdm(gan_dataset, total=gan_dataset_len):
             x = x.type(torch.FloatTensor)
             x, y = x.to(device), y.to(device)
 

@@ -504,6 +504,7 @@ if __name__ == "__main__":
 
     print("DEBUG len of gan_dataset", len(gan_dataset))
     print("DEBUG len of classifier_loader", len(classifier_loader))
+    print("DEBUG loader first", gan_dataset[0][0].shape, gan_dataset[0][1].shape)
 
     """
     size_hist = np.zeros((len(loader), ))

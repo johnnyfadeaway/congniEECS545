@@ -78,12 +78,18 @@ def train_gan_with_classic_discriminator(generator, discriminator, gan_loader, l
 
             pitch_height = x.shape[3]
             num_channels = x.shape[1]
+<<<<<<< HEAD
             #print("DEBUG num_channel: {}".format(num_channels), x.shape)
 
             channelized_x = x.reshape(-1, num_channels*4, 512, int(pitch_height/4),)
 
             d_optimizer.zero_grad()
             #print("DEBUG shape of y and channelized_x: ", y.shape, channelized_x.shape)
+=======
+            channelized_x = x.reshape(-1, num_channels*4, 512, int(pitch_height/4),)
+
+            d_optimizer.zero_grad()
+>>>>>>> 3a8776a3f715aa46731c8919974db89c3971d210
             cat_real_d_input = torch.cat([y, channelized_x], dim=1)
 
             d_result_real = discriminator(cat_real_d_input)

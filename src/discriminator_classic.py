@@ -27,7 +27,7 @@ def discriminator_layer_forger(in_channels, out_channels, kernel_size=(4, 4), st
     layer.append(nn.LeakyReLU(0.2, inplace=True))
     return layer 
 
-def train_gan_with_classic_discriminator(generator, discriminator, gan_dataset, logger, device, num_epoch=100):
+def train_gan_with_classic_discriminator(generator, discriminator, gan_dataset, logger, device, num_epoch=25):
     hist_G_loss = []
     hist_D_loss = []
     hist_G_l1_loss = []
@@ -72,12 +72,9 @@ def train_gan_with_classic_discriminator(generator, discriminator, gan_dataset, 
         L1_loss = nn.L1Loss().to(device)
 
         gan_dataset_len = len(gan_dataset)
-        num_iter = 0
-        for x, y in gan_dataset:
-            
-
-            print("\rIter {}/{}".format(num_iter, gan_dataset_len), end="")
-
+        #for x, y in tqdm(gan_dataset, total=gan_dataset_len):
+        for i in tqdm(range(len(gan_dataset)), desc="{}/{}".format(epoch, num_epoch), total=gan_dataset_len):
+            x,y = gan_set[i]
             x = x.type(torch.FloatTensor)
             x, y = x.to(device), y.to(device)
 
@@ -255,7 +252,7 @@ if __name__ == "__main__":
     print("attept training...")
     print("initalizing logger...")
     logger = Logger("../log/discriminator_classic/train_log_classic_{}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S")))
-    train_gan_with_classic_discriminator(generator, discriminator_classic, gan_set, logger, device=device, num_epoch=10)
+    train_gan_with_classic_discriminator(generator, discriminator_classic, gan_set, logger, device=device, num_epoch=25)
 
     print("training finished!")
     print("exiting...")

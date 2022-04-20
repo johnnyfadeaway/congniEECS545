@@ -10,13 +10,17 @@ torchvision
 torchaudio
 torchsummary
 
+# positional encoding
+# positional-encodings ## stupid stuff, not even better than Muye's pos enc
+### hoards too much memory
+
 # for tracking progress
 tqdm
 
 # audio related
 mido
 midi2audio
-audio-to-midi2 ## seems working now, idk why tho
+# audio-to-midi2 ## seems working now, idk why tho
 
 # data loader
 pypianoroll

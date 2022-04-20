@@ -1,5 +1,8 @@
-import imp
 from tqdm import tqdm
+import os
+from datetime import datetime
+import numpy as np
+from torch import nn
 
 def print_progress_bar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
     """
@@ -23,5 +26,45 @@ def print_progress_bar (iteration, total, prefix = '', suffix = '', decimals = 1
         print()
 
 
+def normal_init(m, mean, std):
+  """
+  Helper function. Initialize model parameter with given mean and std.
+  """
+  if isinstance(m, nn.ConvTranspose2d) or isinstance(m, nn.Conv2d):
+    m.weight.data.normal_(mean, std)
+    m.bias.data.zero_()
+
 def tqdm_wrapper(iter, desc="", total=None):
     return tqdm(iter, desc=desc, ncols=100, position=0, leave=False, total=total)
+
+class Logger(object):
+    def __init__(self, log_files_dir):
+        self.log_files_dir = log_files_dir
+        self.init_date_hour_info = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        self.current_log_dir = os.path.join(self.log_files_dir, "train_log_{}.log".format(self.init_date_hour_info))
+
+        self._make_dir()
+
+        return 
+    
+    def _make_dir(self):
+        if not os.path.exists(self.log_files_dir):
+            os.makedirs(self.log_files_dir)
+        return
+
+    def write(self, msg):
+        with open(self.current_log_dir, 'a') as f:
+            f.write(msg)
+            f.close()
+        return
+
+    def save_hist(self, hist_loss, hist_acc):
+        histLoss_dir = os.path.join(self.log_files_dir, "hist_loss_{}.npz".format(self.init_date_hour_info))
+        histAcc_dir = os.path.join(self.log_files_dir, "hist_acc_{}.npz".format(self.init_date_hour_info))
+        
+        hist_loss = np.array(hist_loss)
+        hist_acc = np.array(hist_acc)
+
+        np.savez(histLoss_dir, hist_loss)
+        np.savez(histAcc_dir, hist_acc)
+        return 

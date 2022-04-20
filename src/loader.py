@@ -5,12 +5,14 @@ import numpy as np
 import os
 import json
 import time
+import math
 
 from pypianoroll import track
 from tqdm import tqdm
 
 from torch.utils.data import DataLoader, Dataset
 import torch
+# from positional_encodings import PositionalEncoding1D, PositionalEncoding2D, PositionalEncoding3D
 
 from utils import print_progress_bar, tqdm_wrapper
 
@@ -123,6 +125,26 @@ class TempoSet(Dataset):
                             continue
                         self.listing[str(counter)] = f_path, song_name
                         # listing_json[counter] = tmp_item.toJson() ## -- removed 
+
+                        # removed, intolerable loading time
+                        '''
+                        # generate positional encoding for the song
+                        track_len = multitrack.downbeat.shape[0]
+                        pos_enc = np.arange(track_len)
+                        
+                        sin_mask = (pos_enc % 2 == 0).astype(np.int8)
+                        cos_mask = (pos_enc % 2 == 1).astype(np.int8)
+
+                        pos_enc_1d = np.sin(1/np.power(10000, 2 * (pos_enc * sin_mask) /track_len))  + \
+                                    np.cos(1/np.power(10000, 2 * (pos_enc * cos_mask) /track_len))
+                        
+                        pos_enc = np.zeros((track_len, 512)) + pos_enc_1d.reshape(-1, 1)
+
+                        # save the positional encoding information
+                        pos_enc_name = os.path.join(root_dir, "{}_pos_enc.npz".format(song_name))
+                        np.savez_compressed(pos_enc_name, pos_enc)
+                        '''
+                        
                         counter += 1
                         
             # save the listing file
@@ -215,8 +237,11 @@ class TempoSet(Dataset):
         # construct ground truth dict
         gt_dict = { # "track_name": track_name, ## TODO: do we actually need this?
                     "genre": genre_one_hot,
-                    "drum_track": drum_track 
+                    "drum_track": drum_track,
+                    "track_len": track_len,
                     }
+
+        htracks = htracks * 20 + 1 # eliminating zeros to prevent deprecating gradient
 
         return htracks, gt_dict
 
@@ -224,10 +249,10 @@ class TempoSet(Dataset):
 class ClassifierSet(Dataset):
     """
     torch Dataset class for Classification tasks
-    breaks each track into chunks of (600, 128*4) for training
+    breaks each track into chunks of (512, 128*4) for training
     since most tracks have a resolution of 24, this is 30 seconds
     """
-    def __init__(self, in_set, chunk_size=600):
+    def __init__(self, in_set, chunk_size=512):
         """
         Args:
             in_set (Dataset, ): the dataset to be broken into chunks
@@ -241,7 +266,7 @@ class ClassifierSet(Dataset):
         data_dir = self.loader.data_dir
 
         # check if classification listing directory exist
-        classification_listing_dir = os.path.join(data_dir, "{}_classification_listing.json".format(os.path.basename(data_dir)))
+        classification_listing_dir = os.path.join(data_dir, "{}_classification_listing_{}.json".format(os.path.basename(data_dir), chunk_size))
         if os.path.exists(classification_listing_dir):
             self.parsed_listing = json.load(open(classification_listing_dir, "r"))
             
@@ -332,9 +357,9 @@ class ClassifierSet(Dataset):
             total_len = num_data_entries * self.loader.num_unique_genre
             print("Total number of chunks to be created: {}".format(total_len))
             with tqdm(total=num_data_entries*self.loader.num_unique_genre, desc="Saving listing") as pbar:
-                for i in range(self.loader.num_unique_genre):
-                    for j in idx_genre[i]:
-                        self.parsed_listing[str(counter)] = chunk_info_dict[j]
+                for i in range(idx_genre[0].shape[0]):
+                    for j in range(len(idx_genre)):
+                        self.parsed_listing[str(counter)] = chunk_info_dict[idx_genre[j][i]]
                         counter += 1
                         pbar.update(1)
             pbar.close()
@@ -355,9 +380,100 @@ class ClassifierSet(Dataset):
         chunk = htracks[chunk_start:chunk_end, :]
         return chunk, gt_dict["genre"]
 
+class ClassifierTrainTest(Dataset):
+    def __init__(self, classifier_set, idx_list):
+        super().__init__()
+        self.classifier_set = classifier_set
+        self.idx_list = idx_list
+    
+    def __getitem__(self, index):
+        htracks, genre_one_hot = self.classifier_set[self.idx_list[index]]
+        htracks = torch.unsqueeze(htracks, 0)
+        return htracks, genre_one_hot
+    
+    def __len__(self):
+        return len(self.idx_list)
+
         
+class GANdataset(Dataset):
+    def __init__(self, classifier_set):
+        self.classifier_set = classifier_set
+        
+    def __len__(self):
+        return len(self.classifier_set)
 
+    def __getitem__(self, index):
+        """
+        Return a 3-channel image-like tensor. 
+        0th channel being the htracks of other instruments
+        1st channel being the enlarged, repeated, pertrubed genre of the music
+        2nd channel being the positional encoding of the htracks
 
+        Args:
+            index (int): Index
+        Returns:
+            cat_htracks (Torch.Tensor): 3-channel image-like tensor
+                - 0th channel being the htracks of other instruments
+                - 1st channel being the enlarged, repeated, pertrubed genre of the music
+                - 2nd channel being the positional encoding of the htracks
+            drum_track (Torch.Tensor): 1-channel drum track pianoroll tensor
+        """
+        # -- htracks as channel 0
+        htracks, genre_one_hot = self.classifier_set[index]
+        htracks = torch.unsqueeze(htracks, 0)
+        loader_idx, chunk_start, chunk_end = self.classifier_set.parsed_listing[str(index)]
+        gt_dict = self.classifier_set.loader[loader_idx][1]
+        # song_path, song_name = self.classifier_set.loader.listing[str(loader_idx)]
+
+        drum_track, song_len = gt_dict["drum_track"], gt_dict["track_len"]
+
+        # -- create enlarged genre as channle 1
+        # generate perturbed genre to mimic classifier last layer
+        genre_noise = torch.rand(self.classifier_set.loader.num_unique_genre) * 0.5
+        genre_perturbed = torch.abs(genre_one_hot - genre_noise).reshape(-1, 1)
+        
+        
+        ## remove the zeroth genre (it was UNDEFINED)
+        genre_perturbed = genre_perturbed[1:]
+        h_genre, w_genre = genre_perturbed.shape
+        
+        # compute the size needed for tiling the genre
+        # genre_size = self.classifier_set.loader.num_unique_genre - 1
+        _, h, w = htracks.shape
+        h_num_tile = math.ceil(h / h_genre)
+        w_num_tile = math.ceil(w / w_genre)
+
+        genre_enlarged = torch.tile(genre_perturbed, (h_num_tile, w_num_tile))
+        genre_enlarged = genre_enlarged[:h, :w].unsqueeze(0)
+        # print("DEBUG shape of genre_enlarged: {}".format(genre_enlarged.shape))
+
+        # -- create positional encoding as channel 2
+        pos_enc = torch.arange(0, song_len, dtype=torch.float32)
+        sin_mask = (pos_enc % 2 == 0).to(torch.int8)
+        cos_mask = (pos_enc % 2 == 1).to(torch.int8)
+        
+        pos_enc = torch.sin(1/torch.float_power(10000, 2 * (pos_enc * sin_mask) /song_len))  + \
+                                    torch.cos(1/torch.float_power(10000, 2 * (pos_enc * cos_mask) /song_len))
+        
+        pos_enc_enlarged = torch.zeros(song_len, 512) + pos_enc.reshape(-1, 1)
+        htracks_pos_enc = pos_enc_enlarged[chunk_start:chunk_end, :].unsqueeze(0)
+
+        ''' # correlated to the pre-saved positional encoding method
+        pos_enc_fname = "{}_pos_enc.npz".format(song_name)
+        song_path_base = os.path.dirname(song_path)
+        pos_enc_path = os.path.join(song_path_base, pos_enc_fname)
+        song_pos_enc = np.load(pos_enc_path)
+
+        htracks_pos_enc = torch.from_numpy(song_pos_enc[:, chunk_start:chunk_end, :])
+        '''
+
+        # -- concatenate the three channels
+        cat_htracks = torch.cat((htracks, genre_enlarged, htracks_pos_enc), dim=0)
+        cat_htracks = cat_htracks.unsqueeze(0)
+        
+        drum_gt = drum_track[chunk_start:chunk_end, :].unsqueeze(0).unsqueeze(0)
+        
+        return cat_htracks, drum_gt
 
 if __name__ == "__main__":
     # testbench for the loader
@@ -380,6 +496,11 @@ if __name__ == "__main__":
     classifier_loader = ClassifierSet(loader)
     print("DEBUG length of classifier loader", len(classifier_loader))
     print("DEBUG first chunk", classifier_loader[11][0].shape, classifier_loader[11][1])
+
+    # testbench for GAN dataset
+    gan_dataset = GANdataset(classifier_loader)
+    print("DEBUG length of gan_dataset", len(gan_dataset))
+    print("DEBUG first chunk", gan_dataset[0][0].shape, gan_dataset[0][1].shape)
 
     """
     size_hist = np.zeros((len(loader), ))
@@ -424,4 +545,3 @@ if __name__ == "__main__":
     '''
     # print("DEBUG piano_track shape", piano_track)
         
-

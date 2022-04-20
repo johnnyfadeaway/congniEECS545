@@ -6,3 +6,9 @@ data/*
 
 # IDE, text editor files, if any
 .vscode/
+
+# pycache
+src/__pycache__/*
+
+# for greatlakes submissions
+*.sbat

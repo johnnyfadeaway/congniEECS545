@@ -1,6 +1,6 @@
 from turtle import forward
 import torch as torch
-from torch.nn import Conv2d, ConvTranspose2d, Module, BatchNorm2d, LeakyReLU
+from torch.nn import Conv2d, ConvTranspose2d, Module, BatchNorm2d, LeakyReLU, ReLU
 import numpy as np
 from loader import GANdataset, TempoSet, ClassifierSet
 from torchsummary import summary
@@ -10,26 +10,29 @@ class generator_block(Module):
           super().__init__()
           self.deconv = ConvTranspose2d(in_dim, out_dim, kernel, stride, dilation=d, padding=p)
           self.batchnorm = BatchNorm2d(out_dim)
+          self.relu = ReLU()
 
       def forward(self, input):
             input = self.deconv(input)
             input = self.batchnorm(input)
-            return torch.nn.functional.relu(input)
+            input = self.relu(input)
+            return input
 
 class conv_block(Module):
       def __init__(self, in_channels, out_channels, kernel_size, stride, padding):
           super().__init__()
           self.conv2d = Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, stride=stride, padding=padding)
           self.batchnorm = BatchNorm2d(out_channels)
+          self.leaky_relu = LeakyReLU(0.1)
       
       def forward(self, input, batch=True):
             input = self.conv2d(input)
 
             if batch == True:
                   input = self.batchnorm(input)
-            m = LeakyReLU(0.1)
+            input = self.leaky_relu(input)
             
-            return m(input)
+            return input
 
 class generator(Module):
 

@@ -1,0 +1,1271 @@
+
+======
+General Training info:
+device: cuda
+device name: Tesla T4
+model save dir: ../model/pianoroll_classifier_cnn_google_cloud
+log dir: ../log/pianoroll_classifier_cnn
+total num of epochs: 200
+batch size: 32
+num of workers: 4
+feature conv size: 4
+==========
+
+======
+Model info:
+model structure:
+PianorollGenreClassifierCNN(
+  (feature): Sequential(
+    (0): Conv2d(1, 64, kernel_size=(4, 4), stride=(1, 1), padding=(1, 1))
+    (1): ReLU(inplace=True)
+    (2): AvgPool2d(kernel_size=2, stride=2, padding=0)
+    (3): Conv2d(64, 128, kernel_size=(4, 4), stride=(1, 1), padding=(1, 1))
+    (4): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU(inplace=True)
+    (6): AvgPool2d(kernel_size=2, stride=2, padding=0)
+    (7): Conv2d(128, 128, kernel_size=(4, 4), stride=(1, 1), padding=(1, 1))
+    (8): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (9): ReLU(inplace=True)
+    (10): Conv2d(128, 128, kernel_size=(4, 4), stride=(1, 1), padding=(1, 1))
+    (11): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (12): ReLU(inplace=True)
+    (13): AvgPool2d(kernel_size=2, stride=2, padding=0)
+  )
+  (avgpool): AdaptiveAvgPool2d(output_size=(5, 5))
+  (classifier): Sequential(
+    (0): Linear(in_features=3200, out_features=512, bias=True)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.3, inplace=False)
+    (3): Linear(in_features=512, out_features=256, bias=True)
+    (4): ReLU(inplace=True)
+    (5): Dropout(p=0.3, inplace=False)
+    (6): Linear(in_features=256, out_features=128, bias=True)
+    (7): ReLU(inplace=True)
+    (8): Dropout(p=0.3, inplace=False)
+    (9): Linear(in_features=128, out_features=64, bias=True)
+    (10): ReLU(inplace=True)
+    (11): Dropout(p=0.3, inplace=False)
+    (12): Linear(in_features=64, out_features=32, bias=True)
+    (13): ReLU(inplace=True)
+    (14): Dropout(p=0.3, inplace=False)
+    (15): Linear(in_features=32, out_features=8, bias=True)
+  )
+)
+model summary:
+None==========
+training started on 2022-03-10 16:03:34.410044
+==========
+Current Epoch 1/200
+Entry on Thu Mar 10 16:03:34 2022
+Currently used time: 0.0h 0.0m 0.00s
+Epoch Loss: 0.0285, Epoch Accs: 0.7823
+Epoch Time: 7:12
+==========
+Current Epoch 2/200
+Entry on Thu Mar 10 16:10:46 2022
+Currently used time: 0.0h 7.0m 11.84s
+Epoch Loss: 0.0260, Epoch Accs: 0.7943
+Epoch Time: 7:21
+==========
+Current Epoch 3/200
+Entry on Thu Mar 10 16:18:07 2022
+Currently used time: 0.0h 14.0m 32.70s
+Epoch Loss: 0.0258, Epoch Accs: 0.7943
+Epoch Time: 7:19
+==========
+Current Epoch 4/200
+Entry on Thu Mar 10 16:25:26 2022
+Currently used time: 0.0h 21.0m 51.72s
+Epoch Loss: 0.0257, Epoch Accs: 0.7943
+Epoch Time: 7:16
+==========
+Current Epoch 5/200
+Entry on Thu Mar 10 16:32:42 2022
+Currently used time: 0.0h 29.0m 7.71s
+Epoch Loss: 0.0257, Epoch Accs: 0.7943
+Epoch Time: 7:20
+==========
+Current Epoch 6/200
+Entry on Thu Mar 10 16:40:02 2022
+Currently used time: 0.0h 36.0m 27.95s
+Epoch Loss: 0.0257, Epoch Accs: 0.7943
+Epoch Time: 7:27
+==========
+Current Epoch 7/200
+Entry on Thu Mar 10 16:47:28 2022
+Currently used time: 0.0h 43.0m 54.49s
+Epoch Loss: 0.0254, Epoch Accs: 0.7943
+Epoch Time: 6:59
+==========
+Current Epoch 8/200
+Entry on Thu Mar 10 16:54:28 2022
+Currently used time: 0.0h 50.0m 53.72s
+Epoch Loss: 0.0255, Epoch Accs: 0.7943
+Epoch Time: 7:20
+==========
+Current Epoch 9/200
+Entry on Thu Mar 10 17:01:48 2022
+Currently used time: 0.0h 58.0m 14.12s
+Epoch Loss: 0.0254, Epoch Accs: 0.7943
+Epoch Time: 7:16
+==========
+Current Epoch 10/200
+Entry on Thu Mar 10 17:09:04 2022
+Currently used time: 1.0h 5.0m 30.54s
+Epoch Loss: 0.0253, Epoch Accs: 0.7943
+Epoch Time: 6:54
+==========
+Current Epoch 11/200
+Entry on Thu Mar 10 17:15:58 2022
+Currently used time: 1.0h 12.0m 24.37s
+Epoch Loss: 0.0253, Epoch Accs: 0.7943
+Epoch Time: 7:21
+==========
+Current Epoch 12/200
+Entry on Thu Mar 10 17:23:20 2022
+Currently used time: 1.0h 19.0m 45.62s
+Epoch Loss: 0.0252, Epoch Accs: 0.7943
+Epoch Time: 7:6
+==========
+Current Epoch 13/200
+Entry on Thu Mar 10 17:30:26 2022
+Currently used time: 1.0h 26.0m 51.89s
+Epoch Loss: 0.0251, Epoch Accs: 0.7942
+Epoch Time: 7:8
+==========
+Current Epoch 14/200
+Entry on Thu Mar 10 17:37:34 2022
+Currently used time: 1.0h 34.0m 0.09s
+Epoch Loss: 0.0251, Epoch Accs: 0.7943
+Epoch Time: 7:49
+==========
+Current Epoch 15/200
+Entry on Thu Mar 10 17:45:23 2022
+Currently used time: 1.0h 41.0m 49.25s
+Epoch Loss: 0.0250, Epoch Accs: 0.7943
+Epoch Time: 7:44
+==========
+Current Epoch 16/200
+Entry on Thu Mar 10 17:53:07 2022
+Currently used time: 1.0h 49.0m 33.53s
+Epoch Loss: 0.0251, Epoch Accs: 0.7945
+Epoch Time: 7:24
+==========
+Current Epoch 17/200
+Entry on Thu Mar 10 18:00:32 2022
+Currently used time: 1.0h 56.0m 57.98s
+Epoch Loss: 0.0250, Epoch Accs: 0.7941
+Epoch Time: 7:17
+==========
+Current Epoch 18/200
+Entry on Thu Mar 10 18:07:49 2022
+Currently used time: 2.0h 4.0m 15.38s
+Epoch Loss: 0.0250, Epoch Accs: 0.7941
+Epoch Time: 6:38
+==========
+Current Epoch 19/200
+Entry on Thu Mar 10 18:14:28 2022
+Currently used time: 2.0h 10.0m 53.60s
+Epoch Loss: 0.0249, Epoch Accs: 0.7944
+Epoch Time: 7:0
+==========
+Current Epoch 20/200
+Entry on Thu Mar 10 18:21:28 2022
+Currently used time: 2.0h 17.0m 53.93s
+Epoch Loss: 0.0250, Epoch Accs: 0.7938
+Epoch Time: 7:36
+==========
+Current Epoch 21/200
+Entry on Thu Mar 10 18:29:03 2022
+Currently used time: 2.0h 25.0m 29.53s
+Epoch Loss: 0.0249, Epoch Accs: 0.7944
+Epoch Time: 7:19
+==========
+Current Epoch 22/200
+Entry on Thu Mar 10 18:36:22 2022
+Currently used time: 2.0h 32.0m 48.10s
+Epoch Loss: 0.0248, Epoch Accs: 0.7941
+Epoch Time: 7:9
+==========
+Current Epoch 23/200
+Entry on Thu Mar 10 18:43:31 2022
+Currently used time: 2.0h 39.0m 57.43s
+Epoch Loss: 0.0248, Epoch Accs: 0.7942
+Epoch Time: 7:22
+==========
+Current Epoch 24/200
+Entry on Thu Mar 10 18:50:54 2022
+Currently used time: 2.0h 47.0m 19.70s
+Epoch Loss: 0.0249, Epoch Accs: 0.7942
+Epoch Time: 7:5
+==========
+Current Epoch 25/200
+Entry on Thu Mar 10 18:57:59 2022
+Currently used time: 2.0h 54.0m 25.05s
+Epoch Loss: 0.0248, Epoch Accs: 0.7942
+Epoch Time: 7:15
+==========
+Current Epoch 26/200
+Entry on Thu Mar 10 19:05:14 2022
+Currently used time: 3.0h 1.0m 40.44s
+Epoch Loss: 0.0247, Epoch Accs: 0.7942
+Epoch Time: 6:46
+==========
+Current Epoch 27/200
+Entry on Thu Mar 10 19:12:00 2022
+Currently used time: 3.0h 8.0m 26.33s
+Epoch Loss: 0.0246, Epoch Accs: 0.7942
+Epoch Time: 7:33
+==========
+Current Epoch 28/200
+Entry on Thu Mar 10 19:19:33 2022
+Currently used time: 3.0h 15.0m 59.46s
+Epoch Loss: 0.0247, Epoch Accs: 0.7941
+Epoch Time: 7:19
+==========
+Current Epoch 29/200
+Entry on Thu Mar 10 19:26:53 2022
+Currently used time: 3.0h 23.0m 18.67s
+Epoch Loss: 0.0246, Epoch Accs: 0.7941
+Epoch Time: 7:24
+==========
+Current Epoch 30/200
+Entry on Thu Mar 10 19:34:16 2022
+Currently used time: 3.0h 30.0m 42.21s
+Epoch Loss: 0.0245, Epoch Accs: 0.7942
+Epoch Time: 7:2
+==========
+Current Epoch 31/200
+Entry on Thu Mar 10 19:41:18 2022
+Currently used time: 3.0h 37.0m 44.09s
+Epoch Loss: 0.0246, Epoch Accs: 0.7939
+Epoch Time: 7:7
+==========
+Current Epoch 32/200
+Entry on Thu Mar 10 19:48:25 2022
+Currently used time: 3.0h 44.0m 51.54s
+Epoch Loss: 0.0245, Epoch Accs: 0.7940
+Epoch Time: 7:13
+==========
+Current Epoch 33/200
+Entry on Thu Mar 10 19:55:38 2022
+Currently used time: 3.0h 52.0m 4.08s
+Epoch Loss: 0.0243, Epoch Accs: 0.7942
+Epoch Time: 7:1
+==========
+Current Epoch 34/200
+Entry on Thu Mar 10 20:02:39 2022
+Currently used time: 3.0h 59.0m 4.98s
+Epoch Loss: 0.0243, Epoch Accs: 0.7937
+Epoch Time: 7:22
+==========
+Current Epoch 35/200
+Entry on Thu Mar 10 20:10:01 2022
+Currently used time: 4.0h 6.0m 27.07s
+Epoch Loss: 0.0244, Epoch Accs: 0.7936
+Epoch Time: 7:11
+==========
+Current Epoch 36/200
+Entry on Thu Mar 10 20:17:12 2022
+Currently used time: 4.0h 13.0m 37.94s
+Epoch Loss: 0.0243, Epoch Accs: 0.7947
+Epoch Time: 7:29
+==========
+Current Epoch 37/200
+Entry on Thu Mar 10 20:24:41 2022
+Currently used time: 4.0h 21.0m 6.73s
+Epoch Loss: 0.0241, Epoch Accs: 0.7943
+Epoch Time: 6:57
+==========
+Current Epoch 38/200
+Entry on Thu Mar 10 20:31:38 2022
+Currently used time: 4.0h 28.0m 3.81s
+Epoch Loss: 0.0241, Epoch Accs: 0.7942
+Epoch Time: 7:14
+==========
+Current Epoch 39/200
+Entry on Thu Mar 10 20:38:52 2022
+Currently used time: 4.0h 35.0m 17.61s
+Epoch Loss: 0.0241, Epoch Accs: 0.7947
+Epoch Time: 7:10
+==========
+Current Epoch 40/200
+Entry on Thu Mar 10 20:46:02 2022
+Currently used time: 4.0h 42.0m 28.05s
+Epoch Loss: 0.0241, Epoch Accs: 0.7942
+Epoch Time: 7:24
+==========
+Current Epoch 41/200
+Entry on Thu Mar 10 20:53:26 2022
+Currently used time: 4.0h 49.0m 51.86s
+Epoch Loss: 0.0240, Epoch Accs: 0.7948
+Epoch Time: 6:52
+==========
+Current Epoch 42/200
+Entry on Thu Mar 10 21:00:18 2022
+Currently used time: 4.0h 56.0m 43.66s
+Epoch Loss: 0.0239, Epoch Accs: 0.7949
+Epoch Time: 7:17
+==========
+Current Epoch 43/200
+Entry on Thu Mar 10 21:07:34 2022
+Currently used time: 5.0h 4.0m 0.26s
+Epoch Loss: 0.0239, Epoch Accs: 0.7942
+Epoch Time: 6:40
+==========
+Current Epoch 44/200
+Entry on Thu Mar 10 21:14:15 2022
+Currently used time: 5.0h 10.0m 40.72s
+Epoch Loss: 0.0239, Epoch Accs: 0.7936
+Epoch Time: 7:2
+==========
+Current Epoch 45/200
+Entry on Thu Mar 10 21:21:17 2022
+Currently used time: 5.0h 17.0m 43.05s
+Epoch Loss: 0.0238, Epoch Accs: 0.7948
+Epoch Time: 7:17
+==========
+Current Epoch 46/200
+Entry on Thu Mar 10 21:28:34 2022
+Currently used time: 5.0h 24.0m 59.81s
+Epoch Loss: 0.0236, Epoch Accs: 0.7948
+Epoch Time: 7:35
+==========
+Current Epoch 47/200
+Entry on Thu Mar 10 21:36:09 2022
+Currently used time: 5.0h 32.0m 34.74s
+Epoch Loss: 0.0237, Epoch Accs: 0.7943
+Epoch Time: 6:55
+==========
+Current Epoch 48/200
+Entry on Thu Mar 10 21:43:03 2022
+Currently used time: 5.0h 39.0m 29.45s
+Epoch Loss: 0.0234, Epoch Accs: 0.7953
+Epoch Time: 7:7
+==========
+Current Epoch 49/200
+Entry on Thu Mar 10 21:50:10 2022
+Currently used time: 5.0h 46.0m 36.14s
+Epoch Loss: 0.0234, Epoch Accs: 0.7944
+Epoch Time: 7:2
+==========
+Current Epoch 50/200
+Entry on Thu Mar 10 21:57:12 2022
+Currently used time: 5.0h 53.0m 37.66s
+Epoch Loss: 0.0232, Epoch Accs: 0.7948
+Epoch Time: 6:47
+==========
+Current Epoch 51/200
+Entry on Thu Mar 10 22:03:59 2022
+Currently used time: 6.0h 0.0m 24.59s
+Epoch Loss: 0.0233, Epoch Accs: 0.7948
+Epoch Time: 7:5
+==========
+Current Epoch 52/200
+Entry on Thu Mar 10 22:11:03 2022
+Currently used time: 6.0h 7.0m 29.44s
+Epoch Loss: 0.0233, Epoch Accs: 0.7942
+Epoch Time: 7:11
+==========
+Current Epoch 53/200
+Entry on Thu Mar 10 22:18:15 2022
+Currently used time: 6.0h 14.0m 40.72s
+Epoch Loss: 0.0231, Epoch Accs: 0.7944
+Epoch Time: 7:18
+==========
+Current Epoch 54/200
+Entry on Thu Mar 10 22:25:32 2022
+Currently used time: 6.0h 21.0m 58.27s
+Epoch Loss: 0.0229, Epoch Accs: 0.7942
+Epoch Time: 7:10
+==========
+Current Epoch 55/200
+Entry on Thu Mar 10 22:32:42 2022
+Currently used time: 6.0h 29.0m 8.57s
+Epoch Loss: 0.0228, Epoch Accs: 0.7949
+Epoch Time: 7:5
+==========
+Current Epoch 56/200
+Entry on Thu Mar 10 22:39:48 2022
+Currently used time: 6.0h 36.0m 13.63s
+Epoch Loss: 0.0228, Epoch Accs: 0.7948
+Epoch Time: 7:10
+==========
+Current Epoch 57/200
+Entry on Thu Mar 10 22:46:57 2022
+Currently used time: 6.0h 43.0m 23.19s
+Epoch Loss: 0.0225, Epoch Accs: 0.7959
+Epoch Time: 7:12
+==========
+Current Epoch 58/200
+Entry on Thu Mar 10 22:54:10 2022
+Currently used time: 6.0h 50.0m 35.60s
+Epoch Loss: 0.0223, Epoch Accs: 0.7938
+Epoch Time: 7:10
+==========
+Current Epoch 59/200
+Entry on Thu Mar 10 23:01:19 2022
+Currently used time: 6.0h 57.0m 45.56s
+Epoch Loss: 0.0224, Epoch Accs: 0.7951
+Epoch Time: 7:20
+==========
+Current Epoch 60/200
+Entry on Thu Mar 10 23:08:39 2022
+Currently used time: 7.0h 5.0m 5.25s
+Epoch Loss: 0.0225, Epoch Accs: 0.7950
+Epoch Time: 7:1
+==========
+Current Epoch 61/200
+Entry on Thu Mar 10 23:15:40 2022
+Currently used time: 7.0h 12.0m 6.39s
+Epoch Loss: 0.0219, Epoch Accs: 0.7951
+Epoch Time: 7:16
+==========
+Current Epoch 62/200
+Entry on Thu Mar 10 23:22:56 2022
+Currently used time: 7.0h 19.0m 22.33s
+Epoch Loss: 0.0217, Epoch Accs: 0.7956
+Epoch Time: 7:3
+==========
+Current Epoch 63/200
+Entry on Thu Mar 10 23:29:59 2022
+Currently used time: 7.0h 26.0m 25.36s
+Epoch Loss: 0.0214, Epoch Accs: 0.7967
+Epoch Time: 7:10
+==========
+Current Epoch 64/200
+Entry on Thu Mar 10 23:37:09 2022
+Currently used time: 7.0h 33.0m 35.53s
+Epoch Loss: 0.0218, Epoch Accs: 0.7963
+Epoch Time: 6:51
+==========
+Current Epoch 65/200
+Entry on Thu Mar 10 23:44:01 2022
+Currently used time: 7.0h 40.0m 26.62s
+Epoch Loss: 0.0212, Epoch Accs: 0.7971
+Epoch Time: 7:1
+==========
+Current Epoch 66/200
+Entry on Thu Mar 10 23:51:02 2022
+Currently used time: 7.0h 47.0m 27.70s
+Epoch Loss: 0.0209, Epoch Accs: 0.7990
+Epoch Time: 7:8
+==========
+Current Epoch 67/200
+Entry on Thu Mar 10 23:58:10 2022
+Currently used time: 7.0h 54.0m 36.17s
+Epoch Loss: 0.0205, Epoch Accs: 0.8020
+Epoch Time: 7:14
+==========
+Current Epoch 68/200
+Entry on Fri Mar 11 00:05:24 2022
+Currently used time: 8.0h 1.0m 50.48s
+Epoch Loss: 0.0203, Epoch Accs: 0.8017
+Epoch Time: 7:13
+==========
+Current Epoch 69/200
+Entry on Fri Mar 11 00:12:37 2022
+Currently used time: 8.0h 9.0m 3.29s
+Epoch Loss: 0.0201, Epoch Accs: 0.8008
+Epoch Time: 7:6
+==========
+Current Epoch 70/200
+Entry on Fri Mar 11 00:19:43 2022
+Currently used time: 8.0h 16.0m 9.53s
+Epoch Loss: 0.0198, Epoch Accs: 0.8014
+Epoch Time: 7:13
+==========
+Current Epoch 71/200
+Entry on Fri Mar 11 00:26:56 2022
+Currently used time: 8.0h 23.0m 22.20s
+Epoch Loss: 0.0200, Epoch Accs: 0.8021
+Epoch Time: 7:32
+==========
+Current Epoch 72/200
+Entry on Fri Mar 11 00:34:28 2022
+Currently used time: 8.0h 30.0m 53.90s
+Epoch Loss: 0.0192, Epoch Accs: 0.8122
+Epoch Time: 7:9
+==========
+Current Epoch 73/200
+Entry on Fri Mar 11 00:41:37 2022
+Currently used time: 8.0h 38.0m 2.76s
+Epoch Loss: 0.0190, Epoch Accs: 0.8126
+Epoch Time: 7:26
+==========
+Current Epoch 74/200
+Entry on Fri Mar 11 00:49:02 2022
+Currently used time: 8.0h 45.0m 28.58s
+Epoch Loss: 0.0183, Epoch Accs: 0.8192
+Epoch Time: 7:17
+==========
+Current Epoch 75/200
+Entry on Fri Mar 11 00:56:19 2022
+Currently used time: 8.0h 52.0m 45.38s
+Epoch Loss: 0.0182, Epoch Accs: 0.8223
+Epoch Time: 7:10
+==========
+Current Epoch 76/200
+Entry on Fri Mar 11 01:03:29 2022
+Currently used time: 8.0h 59.0m 54.95s
+Epoch Loss: 0.0178, Epoch Accs: 0.8266
+Epoch Time: 7:11
+==========
+Current Epoch 77/200
+Entry on Fri Mar 11 01:10:40 2022
+Currently used time: 9.0h 7.0m 5.81s
+Epoch Loss: 0.0172, Epoch Accs: 0.8311
+Epoch Time: 7:5
+==========
+Current Epoch 78/200
+Entry on Fri Mar 11 01:17:44 2022
+Currently used time: 9.0h 14.0m 10.37s
+Epoch Loss: 0.0166, Epoch Accs: 0.8330
+Epoch Time: 7:5
+==========
+Current Epoch 79/200
+Entry on Fri Mar 11 01:24:49 2022
+Currently used time: 9.0h 21.0m 15.38s
+Epoch Loss: 0.0162, Epoch Accs: 0.8429
+Epoch Time: 7:28
+==========
+Current Epoch 80/200
+Entry on Fri Mar 11 01:32:17 2022
+Currently used time: 9.0h 28.0m 42.99s
+Epoch Loss: 0.0158, Epoch Accs: 0.8433
+Epoch Time: 7:8
+==========
+Current Epoch 81/200
+Entry on Fri Mar 11 01:39:25 2022
+Currently used time: 9.0h 35.0m 51.26s
+Epoch Loss: 0.0160, Epoch Accs: 0.8461
+Epoch Time: 7:31
+==========
+Current Epoch 82/200
+Entry on Fri Mar 11 01:46:56 2022
+Currently used time: 9.0h 43.0m 21.79s
+Epoch Loss: 0.0155, Epoch Accs: 0.8505
+Epoch Time: 7:6
+==========
+Current Epoch 83/200
+Entry on Fri Mar 11 01:54:02 2022
+Currently used time: 9.0h 50.0m 27.85s
+Epoch Loss: 0.0147, Epoch Accs: 0.8584
+Epoch Time: 7:55
+==========
+Current Epoch 84/200
+Entry on Fri Mar 11 02:01:57 2022
+Currently used time: 9.0h 58.0m 22.60s
+Epoch Loss: 0.0146, Epoch Accs: 0.8577
+Epoch Time: 6:52
+==========
+Current Epoch 85/200
+Entry on Fri Mar 11 02:08:48 2022
+Currently used time: 10.0h 5.0m 14.21s
+Epoch Loss: 0.0141, Epoch Accs: 0.8622
+Epoch Time: 7:14
+==========
+Current Epoch 86/200
+Entry on Fri Mar 11 02:16:02 2022
+Currently used time: 10.0h 12.0m 27.85s
+Epoch Loss: 0.0135, Epoch Accs: 0.8677
+Epoch Time: 6:58
+==========
+Current Epoch 87/200
+Entry on Fri Mar 11 02:23:00 2022
+Currently used time: 10.0h 19.0m 26.04s
+Epoch Loss: 0.0134, Epoch Accs: 0.8710
+Epoch Time: 7:32
+==========
+Current Epoch 88/200
+Entry on Fri Mar 11 02:30:32 2022
+Currently used time: 10.0h 26.0m 57.78s
+Epoch Loss: 0.0135, Epoch Accs: 0.8701
+Epoch Time: 7:19
+==========
+Current Epoch 89/200
+Entry on Fri Mar 11 02:37:51 2022
+Currently used time: 10.0h 34.0m 16.81s
+Epoch Loss: 0.0125, Epoch Accs: 0.8749
+Epoch Time: 6:55
+==========
+Current Epoch 90/200
+Entry on Fri Mar 11 02:44:45 2022
+Currently used time: 10.0h 41.0m 11.55s
+Epoch Loss: 0.0119, Epoch Accs: 0.8855
+Epoch Time: 6:51
+==========
+Current Epoch 91/200
+Entry on Fri Mar 11 02:51:36 2022
+Currently used time: 10.0h 48.0m 2.07s
+Epoch Loss: 0.0117, Epoch Accs: 0.8912
+Epoch Time: 7:16
+==========
+Current Epoch 92/200
+Entry on Fri Mar 11 02:58:52 2022
+Currently used time: 10.0h 55.0m 17.90s
+Epoch Loss: 0.0114, Epoch Accs: 0.8902
+Epoch Time: 7:9
+==========
+Current Epoch 93/200
+Entry on Fri Mar 11 03:06:01 2022
+Currently used time: 11.0h 2.0m 26.70s
+Epoch Loss: 0.0113, Epoch Accs: 0.8890
+Epoch Time: 7:22
+==========
+Current Epoch 94/200
+Entry on Fri Mar 11 03:13:22 2022
+Currently used time: 11.0h 9.0m 48.54s
+Epoch Loss: 0.0103, Epoch Accs: 0.9000
+Epoch Time: 7:13
+==========
+Current Epoch 95/200
+Entry on Fri Mar 11 03:20:35 2022
+Currently used time: 11.0h 17.0m 1.48s
+Epoch Loss: 0.0100, Epoch Accs: 0.9032
+Epoch Time: 7:7
+==========
+Current Epoch 96/200
+Entry on Fri Mar 11 03:27:43 2022
+Currently used time: 11.0h 24.0m 8.73s
+Epoch Loss: 0.0096, Epoch Accs: 0.9033
+Epoch Time: 6:57
+==========
+Current Epoch 97/200
+Entry on Fri Mar 11 03:34:40 2022
+Currently used time: 11.0h 31.0m 5.94s
+Epoch Loss: 0.0101, Epoch Accs: 0.9036
+Epoch Time: 7:13
+==========
+Current Epoch 98/200
+Entry on Fri Mar 11 03:41:52 2022
+Currently used time: 11.0h 38.0m 18.53s
+Epoch Loss: 0.0096, Epoch Accs: 0.9110
+Epoch Time: 7:29
+==========
+Current Epoch 99/200
+Entry on Fri Mar 11 03:49:21 2022
+Currently used time: 11.0h 45.0m 47.15s
+Epoch Loss: 0.0116, Epoch Accs: 0.8923
+Epoch Time: 7:8
+==========
+Current Epoch 100/200
+Entry on Fri Mar 11 03:56:30 2022
+Currently used time: 11.0h 52.0m 55.64s
+Epoch Loss: 0.0091, Epoch Accs: 0.9099
+Epoch Time: 7:4
+==========
+Current Epoch 101/200
+Entry on Fri Mar 11 04:03:34 2022
+Currently used time: 11.0h 59.0m 59.60s
+Epoch Loss: 0.0085, Epoch Accs: 0.9196
+Epoch Time: 6:56
+==========
+Current Epoch 102/200
+Entry on Fri Mar 11 04:10:30 2022
+Currently used time: 12.0h 6.0m 56.05s
+Epoch Loss: 0.0078, Epoch Accs: 0.9260
+Epoch Time: 7:8
+==========
+Current Epoch 103/200
+Entry on Fri Mar 11 04:17:38 2022
+Currently used time: 12.0h 14.0m 4.50s
+Epoch Loss: 0.0081, Epoch Accs: 0.9224
+Epoch Time: 7:12
+==========
+Current Epoch 104/200
+Entry on Fri Mar 11 04:24:50 2022
+Currently used time: 12.0h 21.0m 16.57s
+Epoch Loss: 0.0075, Epoch Accs: 0.9268
+Epoch Time: 6:55
+==========
+Current Epoch 105/200
+Entry on Fri Mar 11 04:31:45 2022
+Currently used time: 12.0h 28.0m 11.35s
+Epoch Loss: 0.0074, Epoch Accs: 0.9296
+Epoch Time: 7:16
+==========
+Current Epoch 106/200
+Entry on Fri Mar 11 04:39:01 2022
+Currently used time: 12.0h 35.0m 27.13s
+Epoch Loss: 0.0073, Epoch Accs: 0.9287
+Epoch Time: 7:20
+==========
+Current Epoch 107/200
+Entry on Fri Mar 11 04:46:21 2022
+Currently used time: 12.0h 42.0m 46.99s
+Epoch Loss: 0.0066, Epoch Accs: 0.9339
+Epoch Time: 6:59
+==========
+Current Epoch 108/200
+Entry on Fri Mar 11 04:53:20 2022
+Currently used time: 12.0h 49.0m 45.90s
+Epoch Loss: 0.0070, Epoch Accs: 0.9325
+Epoch Time: 7:31
+==========
+Current Epoch 109/200
+Entry on Fri Mar 11 05:00:51 2022
+Currently used time: 12.0h 57.0m 16.69s
+Epoch Loss: 0.0088, Epoch Accs: 0.9156
+Epoch Time: 7:12
+==========
+Current Epoch 110/200
+Entry on Fri Mar 11 05:08:03 2022
+Currently used time: 13.0h 4.0m 29.08s
+Epoch Loss: 0.0065, Epoch Accs: 0.9366
+Epoch Time: 7:5
+==========
+Current Epoch 111/200
+Entry on Fri Mar 11 05:15:08 2022
+Currently used time: 13.0h 11.0m 33.87s
+Epoch Loss: 0.0062, Epoch Accs: 0.9386
+Epoch Time: 7:3
+==========
+Current Epoch 112/200
+Entry on Fri Mar 11 05:22:11 2022
+Currently used time: 13.0h 18.0m 36.78s
+Epoch Loss: 0.0064, Epoch Accs: 0.9363
+Epoch Time: 7:29
+==========
+Current Epoch 113/200
+Entry on Fri Mar 11 05:29:40 2022
+Currently used time: 13.0h 26.0m 5.63s
+Epoch Loss: 0.0061, Epoch Accs: 0.9404
+Epoch Time: 7:5
+==========
+Current Epoch 114/200
+Entry on Fri Mar 11 05:36:44 2022
+Currently used time: 13.0h 33.0m 10.41s
+Epoch Loss: 0.0060, Epoch Accs: 0.9412
+Epoch Time: 7:24
+==========
+Current Epoch 115/200
+Entry on Fri Mar 11 05:44:09 2022
+Currently used time: 13.0h 40.0m 34.72s
+Epoch Loss: 0.0058, Epoch Accs: 0.9446
+Epoch Time: 7:30
+==========
+Current Epoch 116/200
+Entry on Fri Mar 11 05:51:39 2022
+Currently used time: 13.0h 48.0m 5.05s
+Epoch Loss: 0.0057, Epoch Accs: 0.9423
+Epoch Time: 6:55
+==========
+Current Epoch 117/200
+Entry on Fri Mar 11 05:58:34 2022
+Currently used time: 13.0h 55.0m 0.34s
+Epoch Loss: 0.0055, Epoch Accs: 0.9476
+Epoch Time: 7:15
+==========
+Current Epoch 118/200
+Entry on Fri Mar 11 06:05:49 2022
+Currently used time: 14.0h 2.0m 15.15s
+Epoch Loss: 0.0055, Epoch Accs: 0.9488
+Epoch Time: 7:40
+==========
+Current Epoch 119/200
+Entry on Fri Mar 11 06:13:29 2022
+Currently used time: 14.0h 9.0m 54.66s
+Epoch Loss: 0.0053, Epoch Accs: 0.9485
+Epoch Time: 7:5
+==========
+Current Epoch 120/200
+Entry on Fri Mar 11 06:20:33 2022
+Currently used time: 14.0h 16.0m 59.40s
+Epoch Loss: 0.0053, Epoch Accs: 0.9490
+Epoch Time: 7:1
+==========
+Current Epoch 121/200
+Entry on Fri Mar 11 06:27:34 2022
+Currently used time: 14.0h 24.0m 0.50s
+Epoch Loss: 0.0095, Epoch Accs: 0.9094
+Epoch Time: 7:19
+==========
+Current Epoch 122/200
+Entry on Fri Mar 11 06:34:54 2022
+Currently used time: 14.0h 31.0m 19.82s
+Epoch Loss: 0.0055, Epoch Accs: 0.9446
+Epoch Time: 7:11
+==========
+Current Epoch 123/200
+Entry on Fri Mar 11 06:42:04 2022
+Currently used time: 14.0h 38.0m 30.39s
+Epoch Loss: 0.0048, Epoch Accs: 0.9520
+Epoch Time: 7:36
+==========
+Current Epoch 124/200
+Entry on Fri Mar 11 06:49:41 2022
+Currently used time: 14.0h 46.0m 6.66s
+Epoch Loss: 0.0048, Epoch Accs: 0.9529
+Epoch Time: 7:9
+==========
+Current Epoch 125/200
+Entry on Fri Mar 11 06:56:50 2022
+Currently used time: 14.0h 53.0m 15.68s
+Epoch Loss: 0.0049, Epoch Accs: 0.9541
+Epoch Time: 7:21
+==========
+Current Epoch 126/200
+Entry on Fri Mar 11 07:04:11 2022
+Currently used time: 15.0h 0.0m 37.01s
+Epoch Loss: 0.0054, Epoch Accs: 0.9467
+Epoch Time: 7:10
+==========
+Current Epoch 127/200
+Entry on Fri Mar 11 07:11:21 2022
+Currently used time: 15.0h 7.0m 46.99s
+Epoch Loss: 0.0051, Epoch Accs: 0.9511
+Epoch Time: 7:16
+==========
+Current Epoch 128/200
+Entry on Fri Mar 11 07:18:37 2022
+Currently used time: 15.0h 15.0m 3.20s
+Epoch Loss: 0.0050, Epoch Accs: 0.9537
+Epoch Time: 6:59
+==========
+Current Epoch 129/200
+Entry on Fri Mar 11 07:25:36 2022
+Currently used time: 15.0h 22.0m 2.44s
+Epoch Loss: 0.0046, Epoch Accs: 0.9551
+Epoch Time: 7:37
+==========
+Current Epoch 130/200
+Entry on Fri Mar 11 07:33:13 2022
+Currently used time: 15.0h 29.0m 39.01s
+Epoch Loss: 0.0052, Epoch Accs: 0.9507
+Epoch Time: 7:6
+==========
+Current Epoch 131/200
+Entry on Fri Mar 11 07:40:19 2022
+Currently used time: 15.0h 36.0m 44.83s
+Epoch Loss: 0.0042, Epoch Accs: 0.9577
+Epoch Time: 7:26
+==========
+Current Epoch 132/200
+Entry on Fri Mar 11 07:47:45 2022
+Currently used time: 15.0h 44.0m 11.04s
+Epoch Loss: 0.0039, Epoch Accs: 0.9633
+Epoch Time: 7:12
+==========
+Current Epoch 133/200
+Entry on Fri Mar 11 07:54:57 2022
+Currently used time: 15.0h 51.0m 23.05s
+Epoch Loss: 0.0041, Epoch Accs: 0.9593
+Epoch Time: 7:17
+==========
+Current Epoch 134/200
+Entry on Fri Mar 11 08:02:14 2022
+Currently used time: 15.0h 58.0m 40.54s
+Epoch Loss: 0.0038, Epoch Accs: 0.9649
+Epoch Time: 7:11
+==========
+Current Epoch 135/200
+Entry on Fri Mar 11 08:09:25 2022
+Currently used time: 16.0h 5.0m 51.41s
+Epoch Loss: 0.0033, Epoch Accs: 0.9696
+Epoch Time: 7:43
+==========
+Current Epoch 136/200
+Entry on Fri Mar 11 08:17:09 2022
+Currently used time: 16.0h 13.0m 34.78s
+Epoch Loss: 0.0037, Epoch Accs: 0.9647
+Epoch Time: 7:16
+==========
+Current Epoch 137/200
+Entry on Fri Mar 11 08:24:25 2022
+Currently used time: 16.0h 20.0m 50.92s
+Epoch Loss: 0.0036, Epoch Accs: 0.9655
+Epoch Time: 7:12
+==========
+Current Epoch 138/200
+Entry on Fri Mar 11 08:31:37 2022
+Currently used time: 16.0h 28.0m 2.91s
+Epoch Loss: 0.0037, Epoch Accs: 0.9655
+Epoch Time: 6:49
+==========
+Current Epoch 139/200
+Entry on Fri Mar 11 08:38:26 2022
+Currently used time: 16.0h 34.0m 52.02s
+Epoch Loss: 0.0034, Epoch Accs: 0.9664
+Epoch Time: 7:10
+==========
+Current Epoch 140/200
+Entry on Fri Mar 11 08:45:36 2022
+Currently used time: 16.0h 42.0m 1.83s
+Epoch Loss: 0.0036, Epoch Accs: 0.9652
+Epoch Time: 7:11
+==========
+Current Epoch 141/200
+Entry on Fri Mar 11 08:52:47 2022
+Currently used time: 16.0h 49.0m 13.14s
+Epoch Loss: 0.0036, Epoch Accs: 0.9689
+Epoch Time: 7:41
+==========
+Current Epoch 142/200
+Entry on Fri Mar 11 09:00:28 2022
+Currently used time: 16.0h 56.0m 53.85s
+Epoch Loss: 0.0043, Epoch Accs: 0.9581
+Epoch Time: 7:5
+==========
+Current Epoch 143/200
+Entry on Fri Mar 11 09:07:32 2022
+Currently used time: 17.0h 3.0m 58.38s
+Epoch Loss: 0.0034, Epoch Accs: 0.9668
+Epoch Time: 7:7
+==========
+Current Epoch 144/200
+Entry on Fri Mar 11 09:14:40 2022
+Currently used time: 17.0h 11.0m 5.85s
+Epoch Loss: 0.0034, Epoch Accs: 0.9656
+Epoch Time: 7:21
+==========
+Current Epoch 145/200
+Entry on Fri Mar 11 09:22:00 2022
+Currently used time: 17.0h 18.0m 26.45s
+Epoch Loss: 0.0031, Epoch Accs: 0.9702
+Epoch Time: 7:13
+==========
+Current Epoch 146/200
+Entry on Fri Mar 11 09:29:14 2022
+Currently used time: 17.0h 25.0m 39.77s
+Epoch Loss: 0.0029, Epoch Accs: 0.9710
+Epoch Time: 6:53
+==========
+Current Epoch 147/200
+Entry on Fri Mar 11 09:36:07 2022
+Currently used time: 17.0h 32.0m 33.14s
+Epoch Loss: 0.0029, Epoch Accs: 0.9723
+Epoch Time: 6:49
+==========
+Current Epoch 148/200
+Entry on Fri Mar 11 09:42:57 2022
+Currently used time: 17.0h 39.0m 22.61s
+Epoch Loss: 0.0033, Epoch Accs: 0.9711
+Epoch Time: 6:46
+==========
+Current Epoch 149/200
+Entry on Fri Mar 11 09:49:42 2022
+Currently used time: 17.0h 46.0m 8.56s
+Epoch Loss: 0.0030, Epoch Accs: 0.9717
+Epoch Time: 7:15
+==========
+Current Epoch 150/200
+Entry on Fri Mar 11 09:56:58 2022
+Currently used time: 17.0h 53.0m 23.94s
+Epoch Loss: 0.0026, Epoch Accs: 0.9732
+Epoch Time: 7:8
+==========
+Current Epoch 151/200
+Entry on Fri Mar 11 10:04:05 2022
+Currently used time: 18.0h 0.0m 31.54s
+Epoch Loss: 0.0030, Epoch Accs: 0.9716
+Epoch Time: 6:50
+==========
+Current Epoch 152/200
+Entry on Fri Mar 11 10:10:56 2022
+Currently used time: 18.0h 7.0m 21.99s
+Epoch Loss: 0.0029, Epoch Accs: 0.9733
+Epoch Time: 6:59
+==========
+Current Epoch 153/200
+Entry on Fri Mar 11 10:17:55 2022
+Currently used time: 18.0h 14.0m 21.36s
+Epoch Loss: 0.0025, Epoch Accs: 0.9782
+Epoch Time: 6:57
+==========
+Current Epoch 154/200
+Entry on Fri Mar 11 10:24:52 2022
+Currently used time: 18.0h 21.0m 18.24s
+Epoch Loss: 0.0030, Epoch Accs: 0.9752
+Epoch Time: 7:9
+==========
+Current Epoch 155/200
+Entry on Fri Mar 11 10:32:01 2022
+Currently used time: 18.0h 28.0m 26.92s
+Epoch Loss: 0.0030, Epoch Accs: 0.9704
+Epoch Time: 7:25
+==========
+Current Epoch 156/200
+Entry on Fri Mar 11 10:39:25 2022
+Currently used time: 18.0h 35.0m 51.54s
+Epoch Loss: 0.0029, Epoch Accs: 0.9746
+Epoch Time: 7:17
+==========
+Current Epoch 157/200
+Entry on Fri Mar 11 10:46:42 2022
+Currently used time: 18.0h 43.0m 8.55s
+Epoch Loss: 0.0026, Epoch Accs: 0.9764
+Epoch Time: 7:31
+==========
+Current Epoch 158/200
+Entry on Fri Mar 11 10:54:13 2022
+Currently used time: 18.0h 50.0m 39.35s
+Epoch Loss: 0.0028, Epoch Accs: 0.9725
+Epoch Time: 7:17
+==========
+Current Epoch 159/200
+Entry on Fri Mar 11 11:01:31 2022
+Currently used time: 18.0h 57.0m 56.67s
+Epoch Loss: 0.0027, Epoch Accs: 0.9737
+Epoch Time: 7:12
+==========
+Current Epoch 160/200
+Entry on Fri Mar 11 11:08:42 2022
+Currently used time: 19.0h 5.0m 8.55s
+Epoch Loss: 0.0023, Epoch Accs: 0.9775
+Epoch Time: 7:0
+==========
+Current Epoch 161/200
+Entry on Fri Mar 11 11:15:43 2022
+Currently used time: 19.0h 12.0m 8.66s
+Epoch Loss: 0.0023, Epoch Accs: 0.9779
+Epoch Time: 7:7
+==========
+Current Epoch 162/200
+Entry on Fri Mar 11 11:22:49 2022
+Currently used time: 19.0h 19.0m 15.28s
+Epoch Loss: 0.0030, Epoch Accs: 0.9740
+Epoch Time: 6:53
+==========
+Current Epoch 163/200
+Entry on Fri Mar 11 11:29:42 2022
+Currently used time: 19.0h 26.0m 8.27s
+Epoch Loss: 0.0023, Epoch Accs: 0.9805
+Epoch Time: 7:11
+==========
+Current Epoch 164/200
+Entry on Fri Mar 11 11:36:54 2022
+Currently used time: 19.0h 33.0m 19.63s
+Epoch Loss: 0.0028, Epoch Accs: 0.9768
+Epoch Time: 7:14
+==========
+Current Epoch 165/200
+Entry on Fri Mar 11 11:44:08 2022
+Currently used time: 19.0h 40.0m 33.68s
+Epoch Loss: 0.0028, Epoch Accs: 0.9744
+Epoch Time: 7:9
+==========
+Current Epoch 166/200
+Entry on Fri Mar 11 11:51:17 2022
+Currently used time: 19.0h 47.0m 43.03s
+Epoch Loss: 0.0025, Epoch Accs: 0.9782
+Epoch Time: 7:12
+==========
+Current Epoch 167/200
+Entry on Fri Mar 11 11:58:29 2022
+Currently used time: 19.0h 54.0m 54.64s
+Epoch Loss: 0.0025, Epoch Accs: 0.9771
+Epoch Time: 7:3
+==========
+Current Epoch 168/200
+Entry on Fri Mar 11 12:05:32 2022
+Currently used time: 20.0h 1.0m 57.80s
+Epoch Loss: 0.0021, Epoch Accs: 0.9807
+Epoch Time: 7:11
+==========
+Current Epoch 169/200
+Entry on Fri Mar 11 12:12:43 2022
+Currently used time: 20.0h 9.0m 9.23s
+Epoch Loss: 0.0024, Epoch Accs: 0.9786
+Epoch Time: 7:27
+==========
+Current Epoch 170/200
+Entry on Fri Mar 11 12:20:10 2022
+Currently used time: 20.0h 16.0m 36.17s
+Epoch Loss: 0.0024, Epoch Accs: 0.9787
+Epoch Time: 7:19
+==========
+Current Epoch 171/200
+Entry on Fri Mar 11 12:27:29 2022
+Currently used time: 20.0h 23.0m 55.25s
+Epoch Loss: 0.0026, Epoch Accs: 0.9771
+Epoch Time: 6:50
+==========
+Current Epoch 172/200
+Entry on Fri Mar 11 12:34:19 2022
+Currently used time: 20.0h 30.0m 44.89s
+Epoch Loss: 0.0024, Epoch Accs: 0.9779
+Epoch Time: 7:10
+==========
+Current Epoch 173/200
+Entry on Fri Mar 11 12:41:29 2022
+Currently used time: 20.0h 37.0m 54.67s
+Epoch Loss: 0.0022, Epoch Accs: 0.9812
+Epoch Time: 7:8
+==========
+Current Epoch 174/200
+Entry on Fri Mar 11 12:48:36 2022
+Currently used time: 20.0h 45.0m 2.34s
+Epoch Loss: 0.0020, Epoch Accs: 0.9826
+Epoch Time: 7:18
+==========
+Current Epoch 175/200
+Entry on Fri Mar 11 12:55:54 2022
+Currently used time: 20.0h 52.0m 20.05s
+Epoch Loss: 0.0022, Epoch Accs: 0.9791
+Epoch Time: 7:18
+==========
+Current Epoch 176/200
+Entry on Fri Mar 11 13:03:12 2022
+Currently used time: 20.0h 59.0m 37.69s
+Epoch Loss: 0.0024, Epoch Accs: 0.9790
+Epoch Time: 7:3
+==========
+Current Epoch 177/200
+Entry on Fri Mar 11 13:10:14 2022
+Currently used time: 21.0h 6.0m 40.36s
+Epoch Loss: 0.0021, Epoch Accs: 0.9810
+Epoch Time: 7:20
+==========
+Current Epoch 178/200
+Entry on Fri Mar 11 13:17:34 2022
+Currently used time: 21.0h 14.0m 0.42s
+Epoch Loss: 0.0019, Epoch Accs: 0.9820
+Epoch Time: 6:51
+==========
+Current Epoch 179/200
+Entry on Fri Mar 11 13:24:26 2022
+Currently used time: 21.0h 20.0m 51.80s
+Epoch Loss: 0.0020, Epoch Accs: 0.9826
+Epoch Time: 7:8
+==========
+Current Epoch 180/200
+Entry on Fri Mar 11 13:31:33 2022
+Currently used time: 21.0h 27.0m 59.53s
+Epoch Loss: 0.0028, Epoch Accs: 0.9751
+Epoch Time: 7:21
+==========
+Current Epoch 181/200
+Entry on Fri Mar 11 13:38:55 2022
+Currently used time: 21.0h 35.0m 20.88s
+Epoch Loss: 0.0020, Epoch Accs: 0.9838
+Epoch Time: 7:14
+==========
+Current Epoch 182/200
+Entry on Fri Mar 11 13:46:09 2022
+Currently used time: 21.0h 42.0m 35.18s
+Epoch Loss: 0.0018, Epoch Accs: 0.9833
+Epoch Time: 7:1
+==========
+Current Epoch 183/200
+Entry on Fri Mar 11 13:53:10 2022
+Currently used time: 21.0h 49.0m 36.13s
+Epoch Loss: 0.0018, Epoch Accs: 0.9833
+Epoch Time: 7:7
+==========
+Current Epoch 184/200
+Entry on Fri Mar 11 14:00:17 2022
+Currently used time: 21.0h 56.0m 43.49s
+Epoch Loss: 0.0019, Epoch Accs: 0.9848
+Epoch Time: 6:58
+==========
+Current Epoch 185/200
+Entry on Fri Mar 11 14:07:15 2022
+Currently used time: 22.0h 3.0m 41.15s
+Epoch Loss: 0.0016, Epoch Accs: 0.9848
+Epoch Time: 7:11
+==========
+Current Epoch 186/200
+Entry on Fri Mar 11 14:14:26 2022
+Currently used time: 22.0h 10.0m 51.67s
+Epoch Loss: 0.0015, Epoch Accs: 0.9870
+Epoch Time: 7:27
+==========
+Current Epoch 187/200
+Entry on Fri Mar 11 14:21:53 2022
+Currently used time: 22.0h 18.0m 18.66s
+Epoch Loss: 0.0017, Epoch Accs: 0.9837
+Epoch Time: 7:13
+==========
+Current Epoch 188/200
+Entry on Fri Mar 11 14:29:05 2022
+Currently used time: 22.0h 25.0m 31.27s
+Epoch Loss: 0.0021, Epoch Accs: 0.9821
+Epoch Time: 7:7
+==========
+Current Epoch 189/200
+Entry on Fri Mar 11 14:36:12 2022
+Currently used time: 22.0h 32.0m 37.91s
+Epoch Loss: 0.0017, Epoch Accs: 0.9844
+Epoch Time: 6:59
+==========
+Current Epoch 190/200
+Entry on Fri Mar 11 14:43:11 2022
+Currently used time: 22.0h 39.0m 36.97s
+Epoch Loss: 0.0022, Epoch Accs: 0.9809
+Epoch Time: 7:13
+==========
+Current Epoch 191/200
+Entry on Fri Mar 11 14:50:24 2022
+Currently used time: 22.0h 46.0m 49.62s
+Epoch Loss: 0.0014, Epoch Accs: 0.9870
+Epoch Time: 6:57
+==========
+Current Epoch 192/200
+Entry on Fri Mar 11 14:57:21 2022
+Currently used time: 22.0h 53.0m 46.64s
+Epoch Loss: 0.0017, Epoch Accs: 0.9840
+Epoch Time: 7:6
+==========
+Current Epoch 193/200
+Entry on Fri Mar 11 15:04:27 2022
+Currently used time: 23.0h 0.0m 52.88s
+Epoch Loss: 0.0017, Epoch Accs: 0.9843
+Epoch Time: 7:5
+==========
+Current Epoch 194/200
+Entry on Fri Mar 11 15:11:32 2022
+Currently used time: 23.0h 7.0m 58.00s
+Epoch Loss: 0.0018, Epoch Accs: 0.9837
+Epoch Time: 7:11
+==========
+Current Epoch 195/200
+Entry on Fri Mar 11 15:18:43 2022
+Currently used time: 23.0h 15.0m 9.36s
+Epoch Loss: 0.0017, Epoch Accs: 0.9837
+Epoch Time: 7:26
+==========
+Current Epoch 196/200
+Entry on Fri Mar 11 15:26:10 2022
+Currently used time: 23.0h 22.0m 35.61s
+Epoch Loss: 0.0015, Epoch Accs: 0.9875
+Epoch Time: 7:7
+==========
+Current Epoch 197/200
+Entry on Fri Mar 11 15:33:17 2022
+Currently used time: 23.0h 29.0m 42.96s
+Epoch Loss: 0.0018, Epoch Accs: 0.9859
+Epoch Time: 7:3
+==========
+Current Epoch 198/200
+Entry on Fri Mar 11 15:40:20 2022
+Currently used time: 23.0h 36.0m 46.01s
+Epoch Loss: 0.0017, Epoch Accs: 0.9851
+Epoch Time: 7:11
+==========
+Current Epoch 199/200
+Entry on Fri Mar 11 15:47:31 2022
+Currently used time: 23.0h 43.0m 57.02s
+Epoch Loss: 0.0015, Epoch Accs: 0.9867
+Epoch Time: 7:15
+==========
+Current Epoch 200/200
+Entry on Fri Mar 11 15:54:46 2022
+Currently used time: 23.0h 51.0m 11.83s
+Epoch Loss: 0.0015, Epoch Accs: 0.9861
+Epoch Time: 7:30
+
+Training Finished
+Training Summary:
+Final Loss: 0.0015, 
+Final Acc: 0.9861
+
+training ended on 2022-03-11 16:02:16.057759
+training total time: 23 hours 58 minutes 42 seconds
+with average time of 7 min 12 sec per epoch
+==========
+Model saved
+model saved at ../model/pianoroll_classifier_cnn_google_cloud/pianoroll_classifier_2022-03-10_16.pth
+
+======
+Test info:

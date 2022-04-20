@@ -8,7 +8,7 @@ if __name__ == "__main__":
     hist_loss = []
     hist_acc = []
 
-    log_dir = "pianoroll_classifier_cnn/train_log_2022-03-09_23-05-36.log/train_log_2022-03-09_23-05-36"
+    log_dir = "good_stuff/train_log_2022-03-10_16-03-34.log"
 
     with open(log_dir, 'r') as f:
         for line in f:
@@ -37,6 +37,7 @@ if __name__ == "__main__":
     ax.grid(True)
 
     log_name = path.basename(log_dir)
+    plt.show()
 
     plt.savefig("loss_vs_epoch_{}.png".format(log_name))
 

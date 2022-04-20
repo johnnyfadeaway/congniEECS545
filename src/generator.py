@@ -1,5 +1,6 @@
 import torch as torch
 from torch.nn import Conv2d, ConvTranspose2d, Module, BatchNorm2d, LeakyReLU, ReLU
+import torch.nn as nn
 import numpy as np
 from loader import GANdataset, TempoSet, ClassifierSet
 from torchsummary import summary
@@ -101,6 +102,26 @@ class test_generator(Module):
             pieces = G.generate(zi)
 
             return pieces
+
+def generator_encode_forger(in_dim, out_dim, kernel, stride, p, batch=True):
+      layer = nn.ModuleList()
+      layer.append(nn.Conv2d(in_dim, out_dim, kernel, stride, padding=p))
+      if batch:
+            layer.append(nn.BatchNorm2d(out_dim))
+      layer.append(nn.LeakyReLU(0.2))
+      return layer
+
+
+class generator_unet(Module):
+      def __init__(self, generator_config):
+            super().__init__()
+            self.layers = nn.ModuleList()
+            for layer_info in generator_config["encoder"]:
+                  in_dim, out_dim, kernel, stride, _, p, batch = layer_info
+                  self.layers.append(generator_encode_forger(in_dim, out_dim, kernel, stride, p, batch))
+            
+            for layer_info in generator_config["decoder"]:
+                  in_dim, out_dim, kernel, stride, d, p, batch = layer_info
 
 if __name__ == "__main__":
       # a = test_generator()

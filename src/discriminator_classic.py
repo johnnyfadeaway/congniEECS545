@@ -78,12 +78,12 @@ def train_gan_with_classic_discriminator(generator, discriminator, gan_loader, l
 
             pitch_height = x.shape[3]
             num_channels = x.shape[1]
-            print("DEBUG num_channel: {}".format(num_channels), x.shape)
+            #print("DEBUG num_channel: {}".format(num_channels), x.shape)
 
             channelized_x = x.reshape(-1, num_channels*4, 512, int(pitch_height/4),)
 
             d_optimizer.zero_grad()
-            print("DEBUG shape of y and channelized_x: ", y.shape, channelized_x.shape)
+            #print("DEBUG shape of y and channelized_x: ", y.shape, channelized_x.shape)
             cat_real_d_input = torch.cat([y, channelized_x], dim=1)
 
             d_result_real = discriminator(cat_real_d_input)
@@ -107,7 +107,7 @@ def train_gan_with_classic_discriminator(generator, discriminator, gan_loader, l
             d_input = torch.cat([generated_result, channelized_x], dim=1)
             d_result = discriminator(d_input)
 
-            g_train_loss = BCE_loss(d_result, torch.ones_like(d_result).to(device)) + 100 * L1_loss(generated_result, y)
+            g_train_loss = BCE_loss(d_result, torch.ones_like(d_result).to(device)) + 50 * L1_loss(generated_result, y)
 
             # record loss
             hist_G_loss.append(g_train_loss.detach().item())
@@ -231,7 +231,7 @@ if __name__ == "__main__":
     classifier_set = ClassifierSet(all_data, chunk_size=(128*4))
     gan_set = GANdataset(classifier_set)
 
-    gan_loader = DataLoader(gan_set, batch_size=16, shuffle=True, num_workers=4)
+    gan_loader = DataLoader(gan_set, batch_size=16, shuffle=True, num_workers=1)
     
     discriminator_classic = DiscriminatorClassic(discriminator_config)
     discriminator_classic.to(device)

@@ -105,7 +105,7 @@ def train_gan_with_classic_discriminator(generator, discriminator, gan_dataset, 
             loss_discriminator = d_train_loss.detach().item()
 
             # train the generator
-            generator.zero_grad()
+            g_optimizer.zero_grad()
 
             generated_result = generator(x)
             d_input = torch.cat([generated_result, channelized_x], dim=1)

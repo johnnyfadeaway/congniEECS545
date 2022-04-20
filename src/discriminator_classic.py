@@ -125,7 +125,6 @@ def train_gan_with_classic_discriminator(generator, discriminator, gan_dataset, 
             
             d_running_loss.append(loss_discriminator)
             g_running_loss.append(loss_generator)
-            num_iter += 1
             
         epoch_end_time = time.time()
 

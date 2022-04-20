@@ -4,7 +4,6 @@ import numpy as np
 from loader import GANdataset, TempoSet, ClassifierSet
 from torchsummary import summary
 
-from utils import normal_init
 
 class generator_block(Module):
       def __init__(self, in_dim, out_dim, kernel, stride, d, p):
@@ -68,7 +67,9 @@ class generator(Module):
       
       def weight_init(self, mean, std):
             for m in self.modules():
-                  normal_init(m, mean=mean, std=std)
+                  if isinstance(m, Conv2d):
+                        torch.nn.init.kaiming_normal_(m.weight, mode='fan_in', nonlinearity='leaky_relu')
+                  
 
 def training_loader(loader:GANdataset, indx):
             """

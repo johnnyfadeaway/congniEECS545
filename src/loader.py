@@ -189,7 +189,7 @@ class TempoSet(Dataset):
         multitrack = ppr.load(f_path)
         return multitrack
     
-    def get_song_chunks(self, idx, chunk_size=512):
+    def get_chunks_from_song(self, idx, chunk_size=512):
 
         chunks = []
         drum_chunks = []

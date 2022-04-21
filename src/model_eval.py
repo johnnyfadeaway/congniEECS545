@@ -2,7 +2,7 @@ from re import TEMPLATE
 from generator import generator as ge
 from loader import TempoSet
 import torch 
-import numpy
+import numpy as np
 import pypianoroll as ppr
 from pypianoroll import track
 
@@ -12,7 +12,8 @@ def main():
     loader = TempoSet()
     data_dir = "../data/lpd_5/lpd_5_cleansed"
     loader.load(data_dir)
-    chucks,drum_chucks = loader.get_chunks_from_song(1)
+    index = 515
+    chucks,drum_chucks = loader.get_chunks_from_song(index)
     num_of_chucks = len(chucks)
     #print("DEBUG num_of_chucks: ",num_of_chucks)
     #print("DEBUG shape of chuck: ",chucks[0].shape)
@@ -46,14 +47,28 @@ def main():
     max0 = torch.max(output_drumbeats)
     min0 = torch.min(output_drumbeats)
     mean0 = output_drumbeats.mean()
-    mask = (output_drumbeats >= output_drumbeats.mean()).type(torch.uint8)
+    thres = mean0 + 0.45 * (max0 - mean0)
+    mask = (output_drumbeats >= thres).type(torch.uint8)
+
+    print("DEBUG sum of mask: ", mask.sum())
+    print("ratio of mask: ", mask.sum()/512/128)
+
+    
     output_drumbeats = mask*output_drumbeats
     output_drumbeats = (output_drumbeats - mean0) / (max0 - mean0)
-    output_drumbeats = output_drumbeats * 127
+
+    positive_mask = (output_drumbeats > 0).type(torch.uint8)
+    output_drumbeats = positive_mask*output_drumbeats
+
+    print("DEBUG min max of output_drumbeats: ", torch.min(output_drumbeats), torch.max(output_drumbeats))
+    print("DEBUG mean of output_drumbeats: ", output_drumbeats.mean())
+
+    output_drumbeats = output_drumbeats * 70
+    print("DEBUG min max of output_drumbeats: ", torch.min(output_drumbeats), torch.max(output_drumbeats))
     output_drumbeats.type(torch.uint8)
     print(torch.sum(output_drumbeats))
 
-    to_midi(output_drumbeats,1)
+    to_midi(output_drumbeats, index)
 
 
 if __name__ == "__main__":

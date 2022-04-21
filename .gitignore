@@ -12,3 +12,6 @@ src/__pycache__/*
 
 # for greatlakes submissions
 *.sbat
+
+# for midi results
+*.mid

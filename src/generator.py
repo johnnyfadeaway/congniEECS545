@@ -51,7 +51,7 @@ class generator(Module):
             self.convtrans3 = generator_block(32, 16, kernel=(2,1), stride=(2,1), d=(1,1), p=(0,0))
             # self.convtrans4 = generator_block(16, 1, kernel=(2,2), stride=(2,2), d=(1,1), p=(0,0))
             self.last_conv_trans = nn.ConvTranspose2d(16, 1, kernel_size=(2, 2), stride=(2, 2), dilation=(1, 1), padding=(0, 0))
-            self.last_active = nn.Sigmoid()
+            self.last_active = nn.ReLU()
 
       def forward(self, x):
             x = self.conv0(x, batch=False)

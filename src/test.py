@@ -62,7 +62,7 @@ def to_midi(generated_drumtrack,idx):
 
 def main():
     # this main funciton is used for testing only
-    generated_drumtrack = torch.randint(0,127,(7168,128),dtype=torch.uint8)
+    generated_drumtrack = torch.randint(0,1,(7168,128),dtype=torch.uint8)
     #print(generated_drumtrack)
 
     to_midi(generated_drumtrack,1)

@@ -227,7 +227,7 @@ class TempoSet(Dataset):
 
             chunk_pos_enc = pos_enc_enlarged[chunk_start:chunk_end].unsqueeze(0)
             chunk = htracks[chunk_start:chunk_end]
-            channeled_chunk = torch.cat([chunk, genre_2d, chunk_pos_enc], dim=0)
+            channeled_chunk = torch.cat([chunk.unsqueeze(0), genre_2d, chunk_pos_enc], dim=0)
 
             chunks.append(channeled_chunk)
             drum_chunks.append(drum_track[chunk_start:chunk_end].unsqueeze(0))

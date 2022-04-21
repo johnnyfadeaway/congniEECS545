@@ -104,7 +104,7 @@ def train_gan_with_classic_discriminator(generator, discriminator, gan_loader, l
             d_input = torch.cat([generated_result, channelized_x], dim=1)
             d_result = discriminator(d_input)
 
-            g_train_loss = BCE_loss(d_result, torch.ones_like(d_result).to(device)) + 100 * L1_loss(generated_result, y)
+            g_train_loss = BCE_loss(d_result, torch.ones_like(d_result).to(device)) + 50 * L1_loss(generated_result, y)
 
             # record loss
             hist_G_loss.append(g_train_loss.detach().item())
@@ -228,7 +228,7 @@ if __name__ == "__main__":
     classifier_set = ClassifierSet(all_data, chunk_size=(128*4))
     gan_set = GANdataset(classifier_set)
 
-    gan_loader = DataLoader(gan_set, batch_size=16, shuffle=True, num_workers=4)
+    gan_loader = DataLoader(gan_set, batch_size=16, shuffle=True, num_workers=1)
     
     discriminator_classic = DiscriminatorClassic(discriminator_config)
     discriminator_classic.to(device)

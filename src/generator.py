@@ -73,6 +73,10 @@ class generator(Module):
             for m in self.modules():
                   if isinstance(m, Conv2d):
                         torch.nn.init.kaiming_normal_(m.weight, mode='fan_in', nonlinearity='leaky_relu')
+      
+      def load_weights(self,PATH):
+            temp = torch.load(PATH)
+            self.load_state_dict(temp,strict=False)
                   
 
 def training_loader(loader:GANdataset, indx):

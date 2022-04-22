@@ -157,7 +157,7 @@ if __name__ == "__main__":
         print("CUDA not available, Using CPU")
     print("======\n")
     
-    gc.clear()
+    gc.collect()
     torch.cuda.empty_cache()
 
     data_dir = "../data/lpd_5/lpd_5_cleansed"

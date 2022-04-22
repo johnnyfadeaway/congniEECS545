@@ -57,10 +57,11 @@ def train(generator, gan_loader, logger, device, num_epoch=100):
         L1_loss = nn.L1Loss().to(device)
         for x, y  in tqdm(gan_loader):
             x = x.type(torch.FloatTensor)
-            
-            x, y = x.to(device), y.to(device)
             x = x[:, 0, :, :]
             x = x.unsqueeze(1)
+            
+            x, y = x.to(device), y.to(device)
+            
             
             # train the generator
             generator.zero_grad()

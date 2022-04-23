@@ -59,7 +59,7 @@ def train(generator, gan_loader, logger, device, num_epoch=100):
             x = x.type(torch.FloatTensor)
             x = x[:, 0, :, :]
             x = x.unsqueeze(1)
-            
+
             x, y = x.to(device), y.to(device)
             
             
@@ -168,7 +168,7 @@ if __name__ == "__main__":
     classifier_set = ClassifierSet(all_data, chunk_size=(128*4))
     gan_set = GANdataset(classifier_set)
 
-    gan_loader = DataLoader(gan_set, batch_size=32, shuffle=True, num_workers=2)
+    gan_loader = DataLoader(gan_set, batch_size=16, shuffle=True, num_workers=2)
     
     baseline = TempoBenchmark(num_in_channels=1, chunk_len=512)
     baseline.to(device)

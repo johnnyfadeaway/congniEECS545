@@ -1,5 +1,6 @@
 import torch as torch
 from torch.nn import Conv2d, ConvTranspose2d, Module, BatchNorm2d, LeakyReLU, ReLU
+import torch.nn as nn
 import numpy as np
 from loader import GANdataset, TempoSet, ClassifierSet
 from torchsummary import summary
@@ -11,12 +12,12 @@ class generator_block(Module):
           super().__init__()
           self.deconv = ConvTranspose2d(in_dim, out_dim, kernel, stride, dilation=d, padding=p)
           self.batchnorm = BatchNorm2d(out_dim)
-          self.relu = ReLU()
+          self.leaky_relu = nn.LeakyReLU()
 
       def forward(self, input):
             input = self.deconv(input)
             input = self.batchnorm(input)
-            input = self.relu(input)
+            input = self.leaky_relu(input)
             return input
 
 class conv_block(Module):
@@ -101,11 +102,84 @@ class test_generator(Module):
 
             return pieces
 
+
+class GeneratorUnet(nn.Module):
+      def __init__(self, unet_config, seq):
+            super(GeneratorUnet, self).__init__()
+
+            self.unet_config = unet_config
+            self.conv_dict = nn.ModuleDict()
+            self.deconv_dict = nn.ModuleDict()
+            
+            self.seq = seq
+            encoding_depth = len(self.seq["conv"])
+            decoding_depth = len(self.seq["deconv"])
+
+            if encoding_depth != decoding_depth:
+                  raise ValueError("Encoding and Decoding depth in GeneratorUnet() must be equal")
+            
+            self.depth = encoding_depth
+
+            self.running_results = dict()
+
+            for layer_key in unet_config["conv"].keys():
+                  layer_info = unet_config["conv"][layer_key]
+                  in_channels, out_channels, kernel_size, stride, padding = layer_info
+                  self.conv_dict[layer_key] = conv_block(in_channels, out_channels, kernel_size, stride, padding)
+            
+            for layer_key in unet_config["deconv"].keys():
+                  layer_info = unet_config["deconv"][layer_key]
+                  in_channels, out_channels, kernel_size, stride, padding, d = layer_info
+                  self.deconv_dict[layer_key] = generator_block(in_channels, out_channels, kernel_size, stride, d, padding)
+            
+            return 
+
+      def forward(self, x):
+            self.running_results[self.depth] = x.clone()
+            for i, layer_key in enumerate(self.seq["conv"]):
+                  b = False
+                  if i == 0:
+                        b = True
+                  x = self.conv_dict[layer_key](x, batch=b)
+                  self.running_results[self.depth-i-1] = x.clone()
+            
+            for i, layer_key in enumerate(self.seq["deconv"]):
+                  if i == 0:
+                        x_cat = x.clone()
+                  else:
+                        b = False
+                        x_cat = torch.cat([x, self.running_results[i]], dim=1)
+                  x = self.deconv_dict[layer_key](x_cat)
+            
+            return x
+
+      def weight_init(self):
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='leaky_relu')
+                if m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.ConvTranspose2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='leaky_relu')
+                if m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, 0, 0.01)
+                nn.init.constant_(m.bias, 0)
+
+
+
+
 if __name__ == "__main__":
       # a = test_generator()
       # result = a.test()
       # print(result.size())
-      G = generator()
+      
+      #G = generator()
 
       if torch.cuda.is_available():
         device = torch.device("cuda")
@@ -117,6 +191,37 @@ if __name__ == "__main__":
         device = torch.device("cpu")
         print("CUDA not available, Using CPU")
       
+      # G.to(device)
+      # summary(G, (3, 512, 512))
+
+      # === testbench for GeneratorUnet ===
+      # also would serve as the new generator
+      unet_config = {
+            "conv": {
+                  "conv0": (6, 16, (4,4), (2,2), (1,1)),
+                  "conv1": (16, 32, (4,4), (2,2), (1,1)),
+                  "conv2": (32, 64, (4,4), (2,2), (1,1)),
+                  "conv3": (64, 128, (4,4), (2,2), (1,1)),
+                  "conv4": (128, 256, (4,4), (2,2), (1,1)),
+                  "conv5": (256, 256, (4,4), (2,2), (1,1)),
+            },
+            "deconv": {
+                  "deconv0": (256, 256, (4,4), (2,2), (1,1), (1,1)),
+                  "deconv1": (256*2, 128, (4,4), (2,2), (1,1), (1,1)),
+                  "deconv2": (128*2, 64, (4,4), (2,2), (1,1), (1,1)),
+                  "deconv3": (64*2, 32, (4,4), (2,2), (1,1), (1,1)),
+                  "deconv4": (32*2, 16, (4,4), (2,2), (1,1), (1,1)),
+                  "deconv5": (16*2, 1, (4,4), (2,2), (1,1), (1,1)),
+            }
+      }
+
+      seq = {
+            "conv": ["conv0", "conv1", "conv2", "conv3", "conv4", "conv5"],
+            "deconv": ["deconv0", "deconv1", "deconv2", "deconv3", "deconv4", "deconv5"]
+      }
+
+      G = GeneratorUnet(unet_config, seq)
+      G.weight_init()
       G.to(device)
-      summary(G, (3, 512, 512))
+      summary(G, (6, 512, 128))
       

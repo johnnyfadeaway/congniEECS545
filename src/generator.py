@@ -5,7 +5,6 @@ import numpy as np
 from loader import GANdataset, TempoSet, ClassifierSet
 from torchsummary import summary
 
-from utils import normal_init
 
 class generator_block(Module):
       def __init__(self, in_dim, out_dim, kernel, stride, d, p):
@@ -50,7 +49,9 @@ class generator(Module):
             self.convtrans1 = generator_block(128, 64, kernel=(2,2), stride=(2,2), d=(1,1), p=(0,0))
             self.convtrans2 = generator_block(64, 32, kernel=(2,1), stride=(2,1), d=(1,1), p=(0,0))
             self.convtrans3 = generator_block(32, 16, kernel=(2,1), stride=(2,1), d=(1,1), p=(0,0))
-            self.convtrans4 = generator_block(16, 1, kernel=(2,2), stride=(2,2), d=(1,1), p=(0,0))
+            # self.convtrans4 = generator_block(16, 1, kernel=(2,2), stride=(2,2), d=(1,1), p=(0,0))
+            self.last_conv_trans = nn.ConvTranspose2d(16, 1, kernel_size=(2, 2), stride=(2, 2), dilation=(1, 1), padding=(0, 0))
+            self.last_active = nn.Sigmoid()
 
       def forward(self, x):
             x = self.conv0(x, batch=False)
@@ -63,13 +64,20 @@ class generator(Module):
             x = self.convtrans1(x)
             x = self.convtrans2(x)
             x = self.convtrans3(x)
-            x = self.convtrans4(x)
+            x = self.last_conv_trans(x)
+            x = self.last_active(x)
 
             return x
       
       def weight_init(self, mean, std):
             for m in self.modules():
-                  normal_init(m, mean=mean, std=std)
+                  if isinstance(m, Conv2d):
+                        torch.nn.init.kaiming_normal_(m.weight, mode='fan_in', nonlinearity='leaky_relu')
+      
+      def load_weights(self,PATH):
+            temp = torch.load(PATH)
+            self.load_state_dict(temp,strict=False)
+                  
 
 def training_loader(loader:GANdataset, indx):
             """

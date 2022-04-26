@@ -189,6 +189,51 @@ class TempoSet(Dataset):
         multitrack = ppr.load(f_path)
         return multitrack
     
+    def get_chunks_from_song(self, idx, chunk_size=512):
+
+        chunks = []
+        drum_chunks = []
+
+        htracks, gt_dict = self[idx]
+        song_len = htracks.shape[0]
+
+        num_chunks = int(song_len / chunk_size)
+
+        drum_track = gt_dict["drum_track"]
+        
+        genre = gt_dict["genre"]
+        genre_pertrub = torch.abs(genre - torch.rand(genre.shape)*0.5)
+        genre_vec = genre_pertrub[1:].reshape(-1, 1)
+
+        h_genre, w_genre = genre_vec.shape
+        h_chunk, w_chunk = chunk_size, htracks.shape[1]
+
+
+        h_repeat, v_repeat = math.ceil(h_chunk/h_genre), math.ceil(w_chunk/w_genre)
+        genre_2d = torch.tile(genre_vec, (h_repeat, v_repeat))[:h_chunk, :w_chunk]
+        genre_2d = genre_2d.unsqueeze(0)
+
+        pos_enc = torch.arange(0, song_len, dtype=torch.float32)
+        sin_mask = (pos_enc % 2 == 0).to(torch.int8)
+        cos_mask = (pos_enc % 2 == 1).to(torch.int8)
+        
+        pos_enc = torch.sin(1/torch.float_power(10000, 2 * (pos_enc * sin_mask) /song_len))  + \
+                                    torch.cos(1/torch.float_power(10000, 2 * (pos_enc * cos_mask) /song_len))
+        
+        pos_enc_enlarged = torch.zeros(song_len, 512) + pos_enc.reshape(-1, 1) 
+
+        for i in range(num_chunks):
+            chunk_start, chunk_end = i*chunk_size, (i+1)*chunk_size
+
+            chunk_pos_enc = pos_enc_enlarged[chunk_start:chunk_end].unsqueeze(0)
+            chunk = htracks[chunk_start:chunk_end]
+            channeled_chunk = torch.cat([chunk.unsqueeze(0), genre_2d, chunk_pos_enc], dim=0)
+
+            chunks.append(channeled_chunk)
+            drum_chunks.append(drum_track[chunk_start:chunk_end].unsqueeze(0))
+        
+        return chunks, drum_chunks
+
     def __len__(self):
         """
         return num of data loaded
@@ -469,9 +514,8 @@ class GANdataset(Dataset):
 
         # -- concatenate the three channels
         cat_htracks = torch.cat((htracks, genre_enlarged, htracks_pos_enc), dim=0)
-        cat_htracks = cat_htracks.unsqueeze(0)
         
-        drum_gt = drum_track[chunk_start:chunk_end, :].unsqueeze(0).unsqueeze(0)
+        drum_gt = drum_track[chunk_start:chunk_end, :].unsqueeze(0)
         
         return cat_htracks, drum_gt
 
@@ -501,6 +545,10 @@ if __name__ == "__main__":
     gan_dataset = GANdataset(classifier_loader)
     print("DEBUG length of gan_dataset", len(gan_dataset))
     print("DEBUG first chunk", gan_dataset[0][0].shape, gan_dataset[0][1].shape)
+
+    print("DEBUG len of gan_dataset", len(gan_dataset))
+    print("DEBUG len of classifier_loader", len(classifier_loader))
+    print("DEBUG loader first", gan_dataset[0][0].shape, gan_dataset[0][1].shape)
 
     """
     size_hist = np.zeros((len(loader), ))

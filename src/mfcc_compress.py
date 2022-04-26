@@ -7,7 +7,11 @@ from scipy.fftpack import dct
 import numpy
 import sys
 sys.path.append(".")
+<<<<<<< HEAD
+#from loader import TempoSet
+=======
 from loader import TempoSet
+>>>>>>> 0b114b20375e5d24265ed1421797590574565450
 from matplotlib import pyplot as plt
 
 # compress the pypianoroll to calculable size

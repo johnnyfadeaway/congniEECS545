@@ -1,0 +1,157 @@
+
+
+==========
+training started on 2022-04-20 02:51:09.787384
+total epoch: 25
+==========
+
+
+=======epoch: 0/25
+=======
+epoch start time: 2022-04-20 02:51:09.787477
+currently used memory on GPU: 3968000
+used time: 0hrs 0min 0sec
+discriminator loss 0.14228669987973402 at epoch 0generator loss 17.424681402072963 at epoch 0
+epoch end time: 2022-04-20 03:19:26.690503
+epoch used time 0 hrs 28 min 16 sec
+
+=======epoch: 1/25
+=======
+epoch start time: 2022-04-20 03:19:26.690780
+currently used memory on GPU: 31079424
+used time: 0hrs 28min 16sec
+discriminator loss 0.09778339131710978 at epoch 1generator loss 16.154878572430423 at epoch 1
+epoch end time: 2022-04-20 03:47:39.167629
+epoch used time 0 hrs 28 min 12 sec
+
+=======epoch: 2/25
+=======
+epoch start time: 2022-04-20 03:47:39.167714
+currently used memory on GPU: 30292992
+used time: 0hrs 56min 29sec
+discriminator loss 0.09114035199389385 at epoch 2generator loss 16.267849889070682 at epoch 2
+epoch end time: 2022-04-20 04:15:51.585472
+epoch used time 0 hrs 28 min 12 sec
+
+=======epoch: 3/25
+=======
+epoch start time: 2022-04-20 04:15:51.585554
+currently used memory on GPU: 30817280
+used time: 1hrs 24min 41sec
+discriminator loss 0.08701171651374115 at epoch 3generator loss 16.381955739834538 at epoch 3
+epoch end time: 2022-04-20 04:44:00.994486
+epoch used time 0 hrs 28 min 9 sec
+
+=======epoch: 4/25
+=======
+epoch start time: 2022-04-20 04:44:00.994569
+currently used memory on GPU: 29768704
+used time: 1hrs 52min 51sec
+discriminator loss 0.0830737757714642 at epoch 4generator loss 16.53648579304273 at epoch 4
+epoch end time: 2022-04-20 05:12:09.323442
+epoch used time 0 hrs 28 min 8 sec
+
+=======epoch: 5/25
+=======
+epoch start time: 2022-04-20 05:12:09.323522
+currently used memory on GPU: 29768704
+used time: 2hrs 20min 59sec
+discriminator loss 0.07860628154361234 at epoch 5generator loss 16.767685404788256 at epoch 5
+epoch end time: 2022-04-20 05:40:18.372017
+epoch used time 0 hrs 28 min 9 sec
+
+=======epoch: 6/25
+=======
+epoch start time: 2022-04-20 05:40:18.372102
+currently used memory on GPU: 31079424
+used time: 2hrs 49min 8sec
+discriminator loss 0.07409094182668066 at epoch 6generator loss 17.04517072034097 at epoch 6
+epoch end time: 2022-04-20 06:09:02.765026
+epoch used time 0 hrs 28 min 44 sec
+
+=======epoch: 7/25
+=======
+epoch start time: 2022-04-20 06:09:02.765189
+currently used memory on GPU: 30292992
+used time: 3hrs 17min 52sec
+discriminator loss 0.06933312134647122 at epoch 7generator loss 17.357005248052747 at epoch 7
+epoch end time: 2022-04-20 06:39:41.700157
+epoch used time 0 hrs 30 min 38 sec
+
+=======epoch: 8/25
+=======
+epoch start time: 2022-04-20 06:39:41.700362
+currently used memory on GPU: 30817280
+used time: 3hrs 48min 31sec
+discriminator loss 0.06493840624244414 at epoch 8generator loss 17.748794255371376 at epoch 8
+epoch end time: 2022-04-20 07:08:02.371563
+epoch used time 0 hrs 28 min 20 sec
+
+=======epoch: 9/25
+=======
+epoch start time: 2022-04-20 07:08:02.371647
+currently used memory on GPU: 29768704
+used time: 4hrs 16min 52sec
+discriminator loss 0.06073947512436041 at epoch 9generator loss 18.22726698223469 at epoch 9
+epoch end time: 2022-04-20 07:36:25.884361
+epoch used time 0 hrs 28 min 23 sec
+
+=======epoch: 10/25
+=======
+epoch start time: 2022-04-20 07:36:25.884630
+currently used memory on GPU: 29768704
+used time: 4hrs 45min 16sec
+discriminator loss 0.05723474094249396 at epoch 10generator loss 18.69806622105857 at epoch 10
+epoch end time: 2022-04-20 08:04:50.754859
+epoch used time 0 hrs 28 min 24 sec
+
+=======epoch: 11/25
+=======
+epoch start time: 2022-04-20 08:04:50.754959
+currently used memory on GPU: 31079424
+used time: 5hrs 13min 40sec
+discriminator loss 0.05510643339842114 at epoch 11generator loss 19.15047037309944 at epoch 11
+epoch end time: 2022-04-20 08:33:19.869740
+epoch used time 0 hrs 28 min 29 sec
+
+=======epoch: 12/25
+=======
+epoch start time: 2022-04-20 08:33:19.869994
+currently used memory on GPU: 30292992
+used time: 5hrs 42min 10sec
+discriminator loss 0.05297643915566463 at epoch 12generator loss 19.582945842410975 at epoch 12
+epoch end time: 2022-04-20 09:01:52.776093
+epoch used time 0 hrs 28 min 32 sec
+
+=======epoch: 13/25
+=======
+epoch start time: 2022-04-20 09:01:52.776542
+currently used memory on GPU: 30817280
+used time: 6hrs 10min 42sec
+discriminator loss 0.051930841641774195 at epoch 13generator loss 20.009131466944567 at epoch 13
+epoch end time: 2022-04-20 09:30:20.695956
+epoch used time 0 hrs 28 min 27 sec
+
+=======epoch: 14/25
+=======
+epoch start time: 2022-04-20 09:30:20.696250
+currently used memory on GPU: 29768704
+used time: 6hrs 39min 10sec
+discriminator loss 0.04966602288426982 at epoch 14generator loss 20.52822870080361 at epoch 14
+epoch end time: 2022-04-20 09:58:57.305025
+epoch used time 0 hrs 28 min 36 sec
+
+=======epoch: 15/25
+=======
+epoch start time: 2022-04-20 09:58:57.305315
+currently used memory on GPU: 29768704
+used time: 7hrs 7min 47sec
+discriminator loss 0.049091373172920665 at epoch 15generator loss 20.93358228455888 at epoch 15
+epoch end time: 2022-04-20 10:27:35.872790
+epoch used time 0 hrs 28 min 38 sec
+
+=======epoch: 16/25
+=======
+epoch start time: 2022-04-20 10:27:35.874818
+currently used memory on GPU: 31079424
+used time: 7hrs 36min 26sec

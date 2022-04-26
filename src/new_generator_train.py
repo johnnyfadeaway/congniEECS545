@@ -72,7 +72,7 @@ def train_new_gan_with_classic_discriminator(generator, discriminator, gan_loade
             num_channels = x.shape[1]
 
             channelized_x = x.reshape(-1, num_channels*4, 512, int(pitch_height/4),)
-            print("DEBUG shape of channelized_x: {}".format(channelized_x.shape))
+            # print("DEBUG shape of channelized_x: {}".format(channelized_x.shape))
             # htracks * 4, genre_enlarged * 4, htracks_pos_enc * 4
             genre_channel = channelized_x[:, 4, :, :].unsqueeze(1)
             pos_enc_channel = channelized_x[:, 8, :, :].unsqueeze(1)
@@ -84,6 +84,7 @@ def train_new_gan_with_classic_discriminator(generator, discriminator, gan_loade
             d_optimizer.zero_grad()
 
             cat_real_d_input = torch.cat([y, x], dim=1)
+            # print("DEBUG shape of cat_real_d_input: {}".format(cat_real_d_input.shape))
 
             d_result_real = discriminator(cat_real_d_input)
 
@@ -103,7 +104,7 @@ def train_new_gan_with_classic_discriminator(generator, discriminator, gan_loade
             generator.zero_grad()
 
             generated_result = generator(x)
-            d_input = torch.cat([generated_result, channelized_x], dim=1)
+            d_input = torch.cat([generated_result, x], dim=1)
             d_result = discriminator(d_input)
 
             g_train_loss = BCE_loss(d_result, torch.ones_like(d_result).to(device)) + 100 * L1_loss(generated_result, y)
@@ -186,12 +187,12 @@ if __name__ == "__main__":
     # discriminator config
     discriminator_config = [ 
         ## in_channels(int), out_channels(int), kernel_size(tuple), stride(tuple), padding(tuple), batch_norm(bool)
-        (12, 32, (4, 4), (2, 2), (1, 1), False), ## conv1, out size = 256 x 64
+        (7, 32, (4, 4), (2, 2), (1, 1), False), ## conv1, out size = 256 x 64
         (32, 64, (4, 4), (2, 2), (1, 1), True), ## conv2, out size = 128 x 32
         (64, 128, (4, 4), (2, 2), (1, 1), True), ## conv3, out size = 64 x 16
-        (128, 256, (4, 2), (2, 1), (1, 0), True), ## conv4, out size = 32 x 15
-        (256, 128, (2, 2), (1, 1), (0, 0), True), ## conv5, out size = 31 x 14
-        (128, 64, (2, 1), (1, 1), (0, 0), False), ## conv6, out size = 30 x 14
+        (128, 64, (4, 2), (2, 1), (1, 0), True), ## conv4, out size = 32 x 15
+        (64, 32, (2, 2), (1, 1), (0, 0), True), ## conv5, out size = 31 x 14
+        (32, 16, (2, 1), (1, 1), (0, 0), False), ## conv6, out size = 30 x 14
     ]
 
     discriminator_classic = DiscriminatorClassic(discriminator_config)
@@ -227,14 +228,16 @@ if __name__ == "__main__":
 
     print("configuring models finished!")
     print("=== model report ===")
+    print("generator_unet:")
     summary(generator_unet, (6, 512, 128))
-    summary(discriminator_classic, (12, 512, 128))
+    print("\ndiscriminator_classic:")
+    summary(discriminator_classic, (7, 512, 128))
     print("=======")
 
     # attempt training
     logger = Logger('../log/unet/')
     print("training start!")
-    train_new_gan_with_classic_discriminator(generator_unet, discriminator_classic, gan_loader, logger, device)
+    train_new_gan_with_classic_discriminator(generator_unet, discriminator_classic, gan_loader, logger, device, num_epoch=20)
 
     print("training finished!")
     print("Program finished!")
